@@ -708,6 +708,8 @@ table.rt td+td,table.rt th+th{text-align:right}
 .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;border:1px solid #0004}
 .bars{width:400px}.bars>div{display:flex;align-items:center;gap:6px;margin:3px 0}.bl{width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 .bb{flex:1;background:#eef0ec;border-radius:5px;height:13px}.bb i{display:block;height:100%;border-radius:5px}.bars b{font-size:12px;min-width:44px;text-align:right}
+#fst{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#fff;padding:16px 20px}#fst .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;max-width:1000px}
+#fst details{border:1px solid var(--line);border-radius:6px;margin:6px 0}#fst summary{cursor:pointer;padding:6px 10px}#fst details details{margin:4px 10px}#fst table{border-collapse:collapse;margin:4px 0 8px;width:100%}#fst td,#fst th{border-bottom:1px solid var(--line);padding:3px 8px;text-align:left}
 @media(max-width:760px){#app{grid-template-columns:1fr;grid-template-rows:auto 60vh}aside{max-height:40vh}}
 @media print{
  body[data-print] aside,body[data-print] #rp,body[data-print] #pv,body[data-print] .leaflet-control-zoom,body[data-print] .leaflet-control-layers{display:none!important}
@@ -731,9 +733,9 @@ table.rt td+td,table.rt th+th{text-align:right}
 <div id="app">
 <aside>
   <h1>Interventions sur les arbres</h1>
-  <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button></div>
+  <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button><button id="tbF" class="s">Fiche station</button></div>
   <div id="fmap" style="display:flex;flex-direction:column;gap:8px">
-  <div id="sb"><b>Rechercher une intervention</b><div class="row"><input type="search" id="q" placeholder="N° d'intervention ou classification…"><button id="bq" style="flex:none;width:auto">Rechercher</button></div></div>
+  <div id="sb"><b>Rechercher une intervention</b><div class="row"><input type="search" id="q" placeholder="N° d'intervention ou classification…"><button id="bq" style="flex:none;width:auto">Rechercher</button></div><b style="margin-top:6px">Rechercher une station</b><input type="search" id="qs" list="dlStation" placeholder="Nom de station (saisie semi-automatique)" autocomplete="off"><datalist id="dlStation"></datalist><div id="qsi" class="mut"></div></div>
   <div id="fiche">
     <div id="ft"></div>
     <button id="bf">Imprimer la fiche d'intervention</button>
@@ -768,6 +770,17 @@ table.rt td+td,table.rt th+th{text-align:right}
     <button id="sgo" style="width:auto;padding:6px 14px">Afficher cette sélection sur la carte</button>
     <div id="sout"></div>
   </div>
+<div id="fst">
+  <h2 style="margin:0 0 10px">Fiche station</h2>
+  <div class="g">
+    <div><label>Unité</label><select id="fUn"></select></div>
+    <div><label>Site</label><select id="fSi"></select></div>
+    <div><label>Station</label><select id="fSt"></select></div>
+    <div><label>ou rechercher une station</label><input type="search" id="fQ" list="dlStation" placeholder="Nom de station…" autocomplete="off"></div>
+  </div>
+  <div class="row" style="max-width:520px;margin:10px 0"><button id="fMap" class="s">Voir sur la carte</button><button id="fPrn" class="s">Imprimer</button></div>
+  <div id="fBody"></div>
+</div>
 </div>
 <div id="rp"><h3 style="margin-top:0">Zone filtrée</h3>
  <div><label>Territoire</label><select id="tp"></select></div>
@@ -806,16 +819,18 @@ function parseCSV(t){
 }
 const ixl=(l,v)=>{let i=l.indexOf(v);if(i<0)i=l.push(v)-1;return i;};
 function bDA(rows){
- const s=[],tp=[],qu=[],eg=[],T=[],r0=rows[0]||{},P=[['X','Y'],['LON','LAT'],['LONGITUDE','LATITUDE']].find(p=>p[0] in r0&&p[1] in r0);
+ const s=[],tp=[],qu=[],eg=[],un=[],si=[],sta=[],sp=[],T=[],r0=rows[0]||{},P=[['X','Y'],['LON','LAT'],['LONGITUDE','LATITUDE']].find(p=>p[0] in r0&&p[1] in r0);
  if(!P)throw new Error('Colonnes de coordonnées introuvables (X/Y ou LON/LAT) dans le fichier des arbres.');
- const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),ni=v=>{const n=parseInt(v);return isNaN(n)?0:n;};
+ const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),ix2=(l,v)=>v?ixl(l,v):-1;
  rows.forEach(r=>{let x=nb(r[P[0]]),y=nb(r[P[1]]);if(isNaN(x)||isNaN(y))return;
   if(Math.abs(x)>180){const c=proj4('CC45','WGS84',[x,y]);x=c[0];y=c[1];}
-  const e=r.ETAT_GEN;
-  T.push([parseInt(r.GID),+x.toFixed(6),+y.toFixed(6),ixl(s,r.STATUT||'INCONNU'),ixl(tp,r.TERRIT_P||'—'),ixl(qu,r.QUARTIER||'—'),ni(r.RS_EV_UNITE_S),ni(r.RS_EV_SITE_S),ni(r.RS_EV_STATION_S),e?ixl(eg,e):-1,r.CARRE_NUMERO||r.CARRE_NUM||null]);});
+  const e=r.ETAT_GEN,cn=r.EMPL_CARRE_NUM||r.CARRE_NUMERO||r.CARRE_NUM;
+  /* t = [gid, lon, lat, statut, territoire, quartier, unité, site, station, état général, carré-numéro, espèce] */
+  T.push([parseInt(r.GID),+x.toFixed(6),+y.toFixed(6),ixl(s,r.STATUT||'INCONNU'),ixl(tp,r.TERRIT_P||'—'),ixl(qu,r.QUARTIER||'—'),
+   ix2(un,r.EMPL_UNITE_UNITE),ix2(si,r.EMPL_SITE_SITE),ix2(sta,r.EMPL_STATION_STATION),e?ixl(eg,e):-1,cn&&cn!=='0'?cn:null,ix2(sp,r.ESPECES_NOM_LATIN)]);});
  const o=eg.map((_,i)=>i).sort((a,b)=>eg[a].localeCompare(eg[b])),rm={};o.forEach((i,k)=>rm[i]=k);
  T.forEach(t=>{if(t[9]>=0)t[9]=rm[t[9]];});
- return{s,tp,qu,eg:o.map(i=>eg[i]),T};
+ return{s,tp,qu,eg:o.map(i=>eg[i]),T,un,si,sta,sp};
 }
 function bDI(rows){
  const C=[],S=[],AF=[],E=[],TE={},I={},txt=v=>(v||'').trim();
@@ -878,6 +893,8 @@ const IC={VIVANT:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="#00c43a" stroke
  ELIMINE:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="none" stroke="#c0392b" stroke-width="1.4"/><path d="M2 12L12 2" stroke="#c0392b" stroke-width="1.6"/>'),PROJET:sv(trunk+'<path d="M7 1L11 8H3Z" fill="#2e6da4"/>')};
 /* étiquette "carré-numéro" : champ t[10] quand il existera dans les exports, sinon le gid */
 const GEO='https://geopro.bordeaux-metropole.fr/adws/app/7e191113-a8ee-11f0-8c10-d7297c04ea52/?_r=Arbre&_f.GID=';
+const nmi=(a,i)=>i>=0?a[i]:'';
+const espT=t=>{const e=DI.TE[t[0]];return e!==undefined?DI.E[e]:(t[11]>=0?DA.sp[t[11]]:'—');};
 const lab=t=>t[10]||('gid '+t[0]);
 const egk=t=>t[9]<0?'—':DA.eg[t[9]];
 
@@ -898,19 +915,18 @@ const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),
 L.control.layers({'Orthophoto IGN + noms de rues':ign,'Plan IGN':planIgn,'Satellite Esri + noms de rues':sat,'Plan OpenStreetMap':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,maxNativeZoom:19,attribution:'&copy; OpenStreetMap'})}).addTo(map);
 L.control.scale({imperial:false}).addTo(map);
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
-let V=[],BKc={},BKt={},PX=new Float64Array(0),PZ=null,sel=new Set(),selK=-1,route=null;
+let V=[],BKc={},BKt={},PX=new Float64Array(0),PZ=null,sel=new Set(),selSt=new Set(),selK=-1,route=null;
 function proj(){const z=map.getZoom();PZ=z;PX=new Float64Array(V.length*2);V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;});}
 /* canvas plus large que l'écran, redessiné en fin de déplacement */
 function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,rt=r+2.5,lb=z>=17;
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,rt=r+1.3,lb=z>=17;
  const ins=(x,y)=>x>-16&&y>-16&&x<W+16&&y<H+16;
- g.lineJoin='round';g.strokeStyle='#000';g.lineWidth=z>=16?2:z>=14?1.6:1.2;
- /* liseré noir : chaque rond et chaque triangle est rempli puis contouré (les contours restent par-dessus les voisins) */
- for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();g.stroke();}
- for(const c in BKt){g.fillStyle=c;g.beginPath();for(const k of BKt[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x,y-rt*1.15);g.lineTo(x+rt*1.1,y+rt*.8);g.lineTo(x-rt*1.1,y+rt*.8);g.closePath();}g.fill();g.stroke();}
+ g.lineJoin='round';
+ for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();}
+ for(const c in BKt){g.fillStyle=c;g.beginPath();for(const k of BKt[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x,y-rt*1.15);g.lineTo(x+rt*1.1,y+rt*.8);g.lineTo(x-rt*1.1,y+rt*.8);g.closePath();}g.fill();}
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2.5;g.beginPath();
   for(let k=0;k<V.length;k++){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;
    if(sel.has(V[k].t[0])){g.moveTo(x+rt+3,y);g.arc(x,y,rt+3,0,6.2832);}
@@ -947,14 +963,14 @@ function fitV(){const a=V.filter(v=>v.ti),b=a.length?a:V;if(b.length)map.fitBoun
 function refresh(fit){
  const th=$('th').value,off=offT[th==='eg'?'eg':'st'],cnt={},cC={},sA=$('lyA').checked,sI=$('lyI').checked;V=[];
  T.forEach(t=>{
-  const f=sel.has(t[0]);
+  const bl=selSt.has(t[0]),f=sel.has(t[0])||bl;
   if(!f&&!geoOK(t,M))return;
   const k=th==='eg'?egk(t):DA.s[t[3]];cnt[k]=(cnt[k]||0)+1;
   const al=(tInt.get(t[0])||[]).filter(x=>passI(I[x],M,'cl'));
   new Set(al.map(x=>I[x][1])).forEach(c=>cC[c]=(cC[c]||0)+1);
   const m=al.filter(x=>!M.off.cl.has(I[x][1])),ti=sI&&m.length?CC(I[m[0]][1]):null;
   const c=((sA&&!off.has(k))||(f&&!ti))?(th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')):null;
-  if(c||ti)V.push({t,m,c,ti});
+  const cb=bl?'#1565ff':c;if(cb||ti)V.push({t,m,c:cb,ti});
  });
  BKc={};BKt={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);});
  legendT(th,cnt);legendCl(cC);panel();proj();draw();
@@ -995,15 +1011,15 @@ $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s
 $('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
 function resetM(){
  $('tp').value=DEFTP;fillQ('tp','qu');['qu','d1','d2','r1','r2'].forEach(i=>$(i).value='');readM();
- M.off={st:new Set(),af:new Set(),cl:new Set()};offT.st=new Set(['ELIMINE']);offT.eg=new Set();
- $('th').value='st';$('lyA').checked=$('lyI').checked=true;sel=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}
- $('fiche').style.display='none';$('q').value='';refresh(true);}
+ M.off={st:new Set(['CLOTUREE','TERMINEE','ABANDONNEE'].map(n=>DI.S.indexOf(n)).filter(i=>i>=0)),af:new Set(),cl:new Set()};offT.st=new Set(DA.s);offT.eg=new Set();
+ $('th').value='st';$('lyA').checked=$('lyI').checked=true;sel=new Set();selSt=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}
+ $('qs').value='';$('qsi').textContent='';$('fiche').style.display='none';$('q').value='';refresh(true);}
 $('rsM').onclick=resetM;
 
 /* ---- popup arbre ---- */
 function pop(v){
  const t=v.t,e=DI.TE[t[0]];
- return `<b>${esc(lab(t))}</b> · station ${t[8]||'—'}<br>${e===undefined?'—':esc(DI.E[e])} · ${IC[DA.s[t[3]]]||''} <b>${esc(SL[DA.s[t[3]]]||DA.s[t[3]])}</b> · état ${esc(egk(t))}<br><a href="${GEO}${t[0]}" target="_blank" rel="noopener">Lien Géo</a>`+
+ return `<b>${esc(lab(t))}</b> ${t[8]>=0?'· station '+esc(DA.sta[t[8]]):''}<br>${esc(espT(t))} · ${IC[DA.s[t[3]]]||''} <b>${esc(SL[DA.s[t[3]]]||DA.s[t[3]])}</b> · état ${esc(egk(t))}<br><a href="${GEO}${t[0]}" target="_blank" rel="noopener">Lien Géo</a>`+
  v.m.slice(0,6).map(k=>{const it=I[k];return `<hr style="margin:5px 0"><b>N° ${esc(it[0])}</b> — ${esc(DI.C[it[1]])}<br>Statut : ${esc(DI.S[it[2]])} · <a href="#" onclick="fiche(${k});return false">Fiche</a> · <a href="#" onclick="choisir(${k});return false">Sélectionner</a>`;}).join('')+
  (v.m.length>6?`<br>+ ${v.m.length-6} autre(s) intervention(s)`:'');
 }
@@ -1030,8 +1046,23 @@ function chercher(){
  else{$('fiche').style.display='flex';$('ft').textContent='Aucun résultat pour « '+q+' »';$('bf').style.display='none';}
 }
 $('bq').onclick=chercher;$('q').onkeydown=e=>{if(e.key==='Enter')chercher();};
-$('bx').onclick=()=>{sel=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}$('fiche').style.display='none';refresh(false);};
+$('bx').onclick=()=>{sel=new Set();selSt=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}$('fiche').style.display='none';refresh(false);};
 $('bf').onclick=()=>fiche(selK);
+/* ---- stations (liste, saisie semi-automatique, sélection en bleu) ---- */
+const STN=new Map();
+T.forEach(t=>{if(t[8]<0)return;const k=t[6]+'|'+t[7]+'|'+t[8];let e=STN.get(k);if(!e)STN.set(k,e={k,un:t[6],si:t[7],sta:t[8],gids:[]});e.gids.push(t[0]);});
+const stLab=e=>DA.sta[e.sta]+' · '+(e.un>=0?DA.un[e.un]:'sans unité')+(e.si>=0?' / '+DA.si[e.si]:'');
+const STL=new Map();[...STN.values()].sort((a,b)=>stLab(a).localeCompare(stLab(b),'fr')).forEach(e=>{let l=stLab(e),n=2;while(STL.has(l))l=stLab(e)+' ('+n+++')';STL.set(l,e);});
+const lblOf=e=>{for(const[l,x]of STL)if(x===e)return l;return stLab(e);};
+$('dlStation').innerHTML=[...STL.keys()].map(l=>`<option value="${esc(l)}">`).join('');
+function stFind(v){v=(v||'').trim();if(!v)return null;if(STL.has(v))return STL.get(v);const n=v.toLowerCase(),c=[...STL.entries()].filter(([l])=>l.toLowerCase().includes(n));return c.length?c[0][1]:null;}
+function selStation(e){
+ selSt=new Set(e.gids);refresh(false);
+ const p=pts(e.gids);if(p.length)map.fitBounds(L.latLngBounds(p).pad(.3),{maxZoom:19});
+ $('qsi').innerHTML=`${esc(stLab(e))} — ${e.gids.length} arbre(s) en bleu · <a href="#" onclick="ficheStation('${e.k}');return false">Fiche station</a> · <a href="#" onclick="clrSt();return false">Effacer</a>`;}
+function pickStation(v){const e=stFind(v);if(!e){$('qsi').textContent='Station introuvable.';return;}selStation(e);}
+function clrSt(){selSt=new Set();$('qs').value='';$('qsi').textContent='';refresh(false);}
+$('qs').addEventListener('change',()=>pickStation($('qs').value));$('qs').onkeydown=e=>{if(e.key==='Enter')pickStation($('qs').value);};
 
 /* ---- fiche d'intervention (avec cartes de situation) ---- */
 function groupes(ts){const out=[];(function r(a){
@@ -1061,9 +1092,10 @@ function carteHTML(a,k){
 }
 function fiche(k){
  const it=I[k],ts=it[7].map(g=>T[tree.get(g)]).filter(Boolean);
- const loc=[...new Set(ts.map(t=>`Unité ${t[6]||'—'} · Site ${t[7]||'—'} · Station ${t[8]||'—'}`))].slice(0,5).join('<br>')||'—';
+ const dl=f=>{const a=[...new Set(ts.map(f).filter(Boolean))];return a.length?esc(a.slice(0,12).join(', '))+(a.length>12?' … (+'+(a.length-12)+')':''):'—';};
+ const locU=dl(t=>nmi(DA.un,t[6])),locS=dl(t=>nmi(DA.si,t[7])),locT=dl(t=>nmi(DA.sta,t[8]));
  const rows=it[7].map(g=>{const t=T[tree.get(g)],e=DI.TE[g],s=t?DA.s[t[3]]:'';
-  return `<tr><td>${IC[s]||''}</td><td>${esc(t?lab(t):'gid '+g)}</td><td>${e===undefined?'—':esc(DI.E[e])}</td><td>${esc(SL[s]||s||'non localisé')}</td></tr>`;}).join('');
+  return `<tr><td>${IC[s]||''}</td><td>${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td>${esc(SL[s]||s||'non localisé')}</td></tr>`;}).join('');
  const gr=groupes(ts),cartes=gr.slice(0,12).map((a,i)=>`<h3>Carte ${i+1}/${Math.min(gr.length,12)} — ${a.length} arbre(s)</h3>`+carteHTML(a,k)).join('')+(gr.length>12?`<p>${gr.slice(12).reduce((n,a)=>n+a.length,0)} arbre(s) non cartographié(s) (limite de 12 cartes).</p>`:'');
  const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer la fiche.');
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
@@ -1076,7 +1108,9 @@ function fiche(k){
  <div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>
  <h1>Fiche d'intervention n° ${esc(it[0])}</h1><table>
  <tr><td class="k">Classification</td><td>${esc(DI.C[it[1]])}</td></tr>
- <tr><td class="k">Unité · Site · Station</td><td>${loc}</td></tr>
+ <tr><td class="k">Unité</td><td>${locU}</td></tr>
+ <tr><td class="k">Site</td><td>${locS}</td></tr>
+ <tr><td class="k">Station</td><td>${locT}</td></tr>
  <tr><td class="k">Statut</td><td>${esc(DI.S[it[2]])}</td></tr>
  <tr><td class="k">Date objectif de fin</td><td>${fd(it[5])}</td></tr>
  <tr><td class="k">Date de fin réelle</td><td>${fd(it[6])}</td></tr>
@@ -1128,9 +1162,10 @@ $('bi').onclick=()=>{
 };
 
 /* ---- onglet statistiques ---- */
-function showTab(s){$('stats').style.display=s?'block':'none';$('fmap').style.display=s?'none':'flex';$('app').classList.toggle('st',!!s);
- $('tbC').className=s?'s':'';$('tbS').className=s?'':'s';$('rsM').style.display=s?'none':'';if(s)stat();else map.invalidateSize();}
-$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);
+function showTab(s){$('stats').style.display=s===1?'block':'none';$('fst').style.display=s===2?'block':'none';$('fmap').style.display=s?'none':'flex';$('app').classList.toggle('st',!!s);
+ $('tbC').className=s===0?'':'s';$('tbS').className=s===1?'':'s';$('tbF').className=s===2?'':'s';$('rsM').style.display=s?'none':'';
+ if(s===1)stat();else if(s===2)fstBody();else map.invalidateSize();}
+$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);$('tbF').onclick=()=>showTab(2);
 $('stp').innerHTML=optsS('Tous les territoires',DA.tp);
 const sIdx=n=>DI.S.indexOf(n);
 function readG(){G.tp=$('stp').value;G.qu=$('squ').value;G.d1=$('sd1').value;G.d2=$('sd2').value;G.r1=$('sr1').value;G.r2=$('sr2').value;}
@@ -1165,10 +1200,49 @@ $('rsS').onclick=resetG;
 $('sgo').onclick=()=>{readG();
  Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
  $('tp').value=M.tp;fillQ('tp','qu');$('qu').value=M.qu;['d1','d2','r1','r2'].forEach(k=>$(k).value=M[k]);
- sel=new Set();selK=-1;$('fiche').style.display='none';showTab(0);refresh(true);};
+ sel=new Set();selSt=new Set();selK=-1;$('fiche').style.display='none';showTab(0);refresh(true);};
+/* ---- fiche station : une section par statut d'intervention, interventions dépliables avec leurs arbres ---- */
+const ORD=['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION','TERMINEE','CLOTUREE','ABANDONNEE'];
+let curSt=null;
+const stList=()=>[...STN.values()];
+function fstUn(){const us=[...new Set(stList().map(e=>e.un))].sort((a,b)=>(a<0?'~':DA.un[a]).localeCompare(b<0?'~':DA.un[b],'fr'));
+ $('fUn').innerHTML='<option value="">— Unité —</option>'+us.map(u=>`<option value="${u}">${u<0?'(sans unité)':esc(DA.un[u])}</option>`).join('');}
+function fstSi(){const u=$('fUn').value,ss=[...new Set(stList().filter(e=>String(e.un)===u).map(e=>e.si))].sort((a,b)=>(a<0?'':DA.si[a]).localeCompare(b<0?'':DA.si[b],'fr'));
+ $('fSi').innerHTML='<option value="">— Tous les sites —</option>'+ss.map(s=>`<option value="${s}">${s<0?'(sans site)':esc(DA.si[s])}</option>`).join('');}
+function fstSt(){const u=$('fUn').value,s=$('fSi').value,l=stList().filter(e=>u!==''&&String(e.un)===u&&(s===''||String(e.si)===s)).sort((a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr'));
+ $('fSt').innerHTML='<option value="">— Station —</option>'+l.map(e=>`<option value="${esc(e.k)}">${esc(DA.sta[e.sta])}${s===''&&e.si>=0?' ('+esc(DA.si[e.si])+')':''}</option>`).join('');}
+function fstHTML(e,all){
+ const gs=new Set(e.gids),ts=e.gids.map(g=>T[tree.get(g)]),sc={};ts.forEach(t=>{const s=DA.s[t[3]];sc[s]=(sc[s]||0)+1;});
+ const t0=ts[0];
+ const head=`<h3 style="font-size:16px;margin:8px 0 2px">${esc(DA.sta[e.sta])}</h3><div class="crit">Unité : <b>${e.un>=0?esc(DA.un[e.un]):'—'}</b> · Site : <b>${e.si>=0?esc(DA.si[e.si]):'—'}</b> · Territoire : <b>${esc(DA.tp[t0[4]])}</b> · Quartier : <b>${esc(DA.qu[t0[5]])}</b></div>`+
+  `<div class="crit">${ts.length} arbre(s) : ${Object.entries(sc).map(([s,n])=>`${IC[s]||''} ${esc(SL[s]||s)} ${n}`).join(' · ')}</div>`;
+ const its=new Set();e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>its.add(k)));
+ const by={};[...its].forEach(k=>(by[I[k][2]]??=[]).push(k));
+ const order=Object.keys(by).map(Number).sort((a,b)=>{const x=ORD.indexOf(DI.S[a]),y=ORD.indexOf(DI.S[b]);return(x<0?99:x)-(y<0?99:y);});
+ const sec=order.map(si=>{
+  const ks=by[si].sort((a,b)=>(I[b][5]||'').localeCompare(I[a][5]||'')||I[a][0].localeCompare(I[b][0])),closed=['CLOTUREE','TERMINEE','ABANDONNEE'].includes(DI.S[si]);
+  return `<details ${all||!closed?'open':''}><summary><b>${esc(DI.S[si])}</b> — ${ks.length} intervention(s)</summary>`+ks.map(k=>{
+   const it=I[k],tr=it[7].filter(g=>gs.has(g));
+   return `<details ${all?'open':''}><summary>${tri(CC(it[1]))} <b>N° ${esc(it[0])}</b> — ${esc(DI.C[it[1]])} · objectif ${fd(it[5])} · fin réelle ${fd(it[6])} · ${tr.length} arbre(s) <a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
+    (it[4]?`<div class="mut" style="padding:0 10px">${esc(it[4])}</div>`:'')+
+    '<table><tr><th></th><th>Carré-numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td>${esc(lab(t))}</td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</details>';}).join('');
+ return head+`<h3>Interventions de la station (${its.size})</h3>`+(sec||'<p class="mut">Aucune intervention sur cette station.</p>');
+}
+function fstBody(){$('fBody').innerHTML=curSt?fstHTML(curSt,false):'<p class="mut">Choisissez une unité, un site et une station, ou saisissez un nom de station.</p>';}
+function ficheStation(k){curSt=STN.get(k)||null;showTab(2);
+ if(curSt){$('fUn').value=String(curSt.un);fstSi();$('fSi').value=String(curSt.si);fstSt();$('fSt').value=curSt.k;$('fQ').value='';}
+ fstBody();}
+$('fUn').onchange=()=>{fstSi();fstSt();curSt=null;fstBody();};
+$('fSi').onchange=()=>{fstSt();curSt=null;fstBody();};
+$('fSt').onchange=()=>{curSt=STN.get($('fSt').value)||null;fstBody();};
+$('fQ').addEventListener('change',()=>{const e=stFind($('fQ').value);if(e)ficheStation(e.k);});
+$('fMap').onclick=()=>{if(!curSt)return;showTab(0);$('qs').value=lblOf(curSt);selStation(curSt);};
+$('fPrn').onclick=()=>{if(!curSt)return;const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
+ w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px}.mut{color:#555}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHTML(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}<p class="mut">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
+fstUn();
 $('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
 resetM();
-window.fiche=fiche;window.choisir=choisir;
+window.fiche=fiche;window.choisir=choisir;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 </script>
 </body>
