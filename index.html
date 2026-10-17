@@ -680,23 +680,34 @@ button.s{background:#fff;color:var(--ink);border-color:var(--line)}
 .row{display:flex;gap:6px}.row>*{flex:1}
 .chk{display:flex;gap:6px;align-items:center;color:var(--ink);margin:1px 0}.chk input{margin:0;width:auto}
 .chk i{width:12px;height:12px;border-radius:50%;border:1px solid #000;flex:none}
-#ll{max-height:230px;overflow:auto;border:1px solid var(--line);padding:4px 6px;margin-top:4px}
+#ll{max-height:55vh;overflow:auto;border:1px solid var(--line);padding:4px 6px;margin-top:4px}
 #fiche{display:none;border:1px solid var(--line);border-radius:4px;padding:8px;gap:6px;flex-direction:column}
 #bilan,#iti,.mut{color:var(--mut);font-size:12px}
 #mw{position:relative;isolation:isolate;background:#e9ebe6;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #map{width:100%;height:100%}
 #stats{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#fff;padding:16px 20px}
 #stats table{border-collapse:collapse;margin:6px 0 14px;min-width:420px}#stats td,#stats th{border:1px solid var(--line);padding:4px 8px;text-align:left}
-#stats td+td,#stats th+th{text-align:right}#stats .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-width:900px}
+#stats .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-width:900px}
 #pv{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:1200;background:#fff;padding:6px 10px;border-radius:6px;box-shadow:0 1px 6px #0006;gap:8px;align-items:center}
 #pv button{width:auto;padding:6px 12px}
 body[data-pv] #mw{background:#2b302d}body[data-pv] #map{outline:4px solid #fff;box-shadow:0 0 0 2px #000}
 #imp{display:none}
 #sb{border:2px solid var(--acc);border-radius:6px;padding:8px;background:#f3f8f3;display:flex;flex-direction:column;gap:6px}#sb input{font-size:15px;padding:8px}#sb button{padding:8px 14px}
 #rp{overflow:auto;border-left:1px solid var(--line);padding:10px;background:#fff}#rp table{border-collapse:collapse;width:100%;margin:4px 0 12px;font-size:12px}#rp td,#rp th{padding:3px 4px;border-bottom:1px solid var(--line);text-align:left}
-#rp td+td,#rp th+th{text-align:right}#rp tr[data-f]{cursor:pointer}#rp tr[data-f]:hover{background:#eef2ea}
+#rp td:nth-child(n+3),#rp th:nth-child(n+3){text-align:right}#rp tr[data-f]{cursor:pointer}#rp tr[data-f]:hover{background:#eef2ea}
 .big{display:flex;gap:8px;margin:6px 0}.big div{flex:1;background:#f3f6f1;border-radius:6px;padding:6px 8px;text-align:center}.big b{display:block;font-size:20px}.big span{font-size:11px;color:var(--mut)}.big.sh div{background:#e2f4e6}
 @media(max-width:1100px){#app{grid-template-columns:350px 1fr}#rp{display:none}}
+#app.st{grid-template-columns:350px 1fr}#app.st #rp{display:none}
+#rsM{position:absolute;left:56px;top:10px;z-index:1100;width:auto;padding:6px 10px;box-shadow:0 1px 4px #0005}
+body[data-print] #rsM,body[data-pv] #rsM{display:none!important}
+.crit{font-size:12px;line-height:1.5;margin:6px 0}
+table.ck td:nth-child(2),table.ck th:nth-child(2){text-align:left}table.ck td:nth-child(n+3),table.ck th:nth-child(n+3){text-align:right}
+table.rt td+td,table.rt th+th{text-align:right}
+#stats .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin:10px 0}#stats .cols>div>div{max-height:300px;overflow:auto}
+.rb{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;border:1px solid #0004}
+.bars{width:400px}.bars>div{display:flex;align-items:center;gap:6px;margin:3px 0}.bl{width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.bb{flex:1;background:#eef0ec;border-radius:5px;height:13px}.bb i{display:block;height:100%;border-radius:5px}.bars b{font-size:12px;min-width:44px;text-align:right}
 @media(max-width:760px){#app{grid-template-columns:1fr;grid-template-rows:auto 60vh}aside{max-height:40vh}}
 @media print{
  body[data-print] aside,body[data-print] #rp,body[data-print] #pv,body[data-print] .leaflet-control-zoom,body[data-print] .leaflet-control-layers{display:none!important}
@@ -730,44 +741,46 @@ body[data-pv] #mw{background:#2b302d}body[data-pv] #map{outline:4px solid #fff;b
     <button id="bx" class="s">Effacer la sélection</button>
     <div id="iti"></div>
   </div>
-    <div class="row"><div><label>Territoire</label><select id="tp"></select></div><div><label>Quartier</label><select id="qu"></select></div></div>
-  <div><label>Statut de l'intervention (interventions · arbres)</label><select id="si"></select></div>
-  <div><label>Affectation (interventions · arbres)</label><select id="af"></select></div>
-  <div><label>Date d'objectif de fin, entre le … et le …</label><div class="row"><input type="date" id="d1"><input type="date" id="d2"></div></div>
-  <div><label>Date de fin réelle, entre le … et le …</label><div class="row"><input type="date" id="r1"><input type="date" id="r2"></div></div>
-  <div><h3>Statut des arbres</h3><div id="stt"></div></div>
-  <div><h3>Classification (cases = filtre, couleurs = carte)</h3><div id="clp"></div></div>
-  <div><h3>Thématique (couleur des points)</h3><select id="th"><option value="no">Statut de l'arbre</option><option value="cl">Classification d'intervention</option><option value="eg">État général de l'arbre</option></select><div id="leg"></div></div>
-  <label class="chk"><input type="checkbox" id="sans"> Afficher aussi les arbres sans intervention</label>
+    <div><h3>Thématique (couleur des arbres)</h3><select id="th"><option value="st">Statut de l'arbre</option><option value="eg">État général</option></select><div id="leg"></div></div>
+  <div><h3>Couches</h3><label class="chk"><input type="checkbox" id="lyA" checked> Arbres (ronds)</label><label class="chk"><input type="checkbox" id="lyI" checked> Interventions (triangles)</label></div>
+  <div><h3>Classification des interventions</h3><div id="clp"></div></div>
   <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
     <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
   </div>
 </aside>
 <div id="mw">
-  <div id="map"></div>
+  <div id="map"></div><button id="rsM" class="s">Réinitialiser les filtres</button>
   <div id="pv"><span id="pvt"></span><button id="pvp">Imprimer</button><button id="pvc" class="s">Annuler</button></div>
   <div id="stats">
-    <h2 style="margin:0 0 10px">Statistiques</h2>
+    <div class="row" style="max-width:260px"><button id="rsS" class="s">Réinitialiser les filtres</button></div>
+    <h2 style="margin:10px 0">Statistiques</h2>
     <div class="g">
-      <div><label>Type</label><select id="sm"><option value="C">Interventions clôturées</option><option value="I">Interventions initialisées</option><option value="T">Tous les statuts</option></select></div>
+      <div><label>Type (présélection des statuts)</label><select id="sm"><option value="T">Tous les statuts</option><option value="C">Interventions clôturées</option><option value="I">Interventions initialisées</option></select></div>
       <div><label>Territoire</label><select id="stp"></select></div>
       <div><label>Quartier</label><select id="squ"></select></div>
-      <div><label>Classification</label><select id="scl"></select></div>
-      <div id="wsi"><label>Statut</label><select id="ssi"></select></div>
+      <div><label>Objectif de fin : du</label><input type="date" id="sd1"></div>
+      <div><label>Objectif de fin : au</label><input type="date" id="sd2"></div>
       <div><label>Fin réelle : du</label><input type="date" id="sr1"></div>
       <div><label>Fin réelle : au</label><input type="date" id="sr2"></div>
     </div>
+    <div class="cols"><div><h3>Statut</h3><div id="sks"></div></div><div><h3>Affectation</h3><div id="ska"></div></div><div><h3>Classification</h3><div id="skc"></div></div></div>
     <p><b id="sres"></b></p>
     <button id="sgo" style="width:auto;padding:6px 14px">Afficher cette sélection sur la carte</button>
-    <h3>Par statut</h3><div id="tst"></div>
-    <h3>Par classification</h3><div id="tcl"></div>
+    <div id="sout"></div>
   </div>
 </div>
-<div id="rp"><h3>Zone filtrée</h3><div id="rz" class="mut"></div>
+<div id="rp"><h3 style="margin-top:0">Zone filtrée</h3>
+ <div><label>Territoire</label><select id="tp"></select></div>
+ <div style="margin-top:6px"><label>Quartier</label><select id="qu"></select></div>
+ <div id="rz" class="crit"></div>
  <div class="big"><div><b id="rni">0</b><span>interventions</span></div><div><b id="rna">0</b><span>arbres concernés</span></div></div>
  <div class="big sh"><div><b id="bilan">0</b><span>arbres affichés sur la carte</span></div></div>
- <div class="mut" style="margin-bottom:8px">Le nombre affiché est plus petit si des statuts d'arbres sont décochés (éliminés par défaut) ou si un filtre de statut, d'affectation, de dates ou de classification est actif. Un arbre ayant plusieurs interventions compte dans chaque ligne. Cliquer sur une ligne applique le filtre.</div>
- <h3>Par statut d'intervention</h3><div id="rst"></div><h3>Par affectation</h3><div id="raf"></div></div>
+ <h3>Statut d'intervention</h3><div id="rst"></div>
+ <h3>Affectation</h3><div id="raf"></div>
+ <h3>Dates</h3>
+ <div><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="d1"><input type="date" id="d2"></div></div>
+ <div style="margin-top:6px"><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="r1"><input type="date" id="r2"></div></div>
+</div>
 </div>
 <div id="imp"></div>
 <script>
@@ -864,6 +877,7 @@ const IC={VIVANT:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="#00c43a" stroke
  SOUCHE:sv('<rect x="3.5" y="7" width="7" height="5" fill="#8b5a2b" stroke="#4a2f14"/><ellipse cx="7" cy="7" rx="3.5" ry="1.4" fill="#c9a26b" stroke="#4a2f14"/>'),
  ELIMINE:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="none" stroke="#c0392b" stroke-width="1.4"/><path d="M2 12L12 2" stroke="#c0392b" stroke-width="1.6"/>'),PROJET:sv(trunk+'<path d="M7 1L11 8H3Z" fill="#2e6da4"/>')};
 /* étiquette "carré-numéro" : champ t[10] quand il existera dans les exports, sinon le gid */
+const GEO='https://geopro.bordeaux-metropole.fr/adws/app/7e191113-a8ee-11f0-8c10-d7297c04ea52/?_r=Arbre&_f.GID=';
 const lab=t=>t[10]||('gid '+t[0]);
 const egk=t=>t[9]<0?'—':DA.eg[t[9]];
 
@@ -874,99 +888,122 @@ ord.forEach((i,k)=>CCOL[i]=`hsl(${Math.round((k*137.508)%360)},${62+(k%3)*10}%,$
 const TQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);});
 
 /* ---- carte ---- */
-const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:19}).setView([44.84,-0.58],12);
+const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:20}).setView([44.84,-0.58],12);
 const esri=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/{z}/{y}/{x}`;
-const sat=L.layerGroup([L.tileLayer(esri('World_Imagery'),{maxZoom:19,attribution:'Imagerie &copy; Esri, Maxar, Earthstar Geographics'}),
- L.tileLayer(esri('Reference/World_Transportation'),{maxZoom:19}),L.tileLayer(esri('Reference/World_Boundaries_and_Places'),{maxZoom:19,attribution:'Noms &copy; Esri'})]).addTo(map);
-const ign=L.layerGroup([L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',{maxZoom:19,attribution:'Orthophotographie &copy; IGN'}),
- L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abcd',attribution:'Noms &copy; OpenStreetMap, CARTO'})]);
-const plan=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OpenStreetMap, &copy; CARTO'});
-L.control.layers({'Satellite + noms de rues (Esri)':sat,'Orthophoto IGN + noms':ign,'Plan (CARTO)':plan,'Plan OpenStreetMap':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'})}).addTo(map);
+const ignU=(l,f)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${l}&STYLE=normal&FORMAT=${f}&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}`;
+const noms=()=>[L.tileLayer(esri('Reference/World_Transportation'),{maxZoom:20,maxNativeZoom:19}),L.tileLayer(esri('Reference/World_Boundaries_and_Places'),{maxZoom:20,maxNativeZoom:19,attribution:'Noms &copy; Esri'})];
+const ign=L.layerGroup([L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:20,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}),...noms()]).addTo(map);
+const sat=L.layerGroup([L.tileLayer(esri('World_Imagery'),{maxZoom:20,maxNativeZoom:19,attribution:'Imagerie &copy; Esri, Maxar, Earthstar Geographics'}),...noms()]);
+const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:20,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
+L.control.layers({'Orthophoto IGN + noms de rues':ign,'Plan IGN':planIgn,'Satellite Esri + noms de rues':sat,'Plan OpenStreetMap':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,maxNativeZoom:19,attribution:'&copy; OpenStreetMap'})}).addTo(map);
 L.control.scale({imperial:false}).addTo(map);
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
-let V=[],BK={},PX=new Float64Array(0),PZ=null,sel=new Set(),selK=-1,route=null;
+let V=[],BKc={},BKt={},PX=new Float64Array(0),PZ=null,sel=new Set(),selK=-1,route=null;
 function proj(){const z=map.getZoom();PZ=z;PX=new Float64Array(V.length*2);V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;});}
-/* le canvas déborde de 25 % autour de l'écran et n'est redessiné qu'en fin de déplacement : rien ne disparaît pendant qu'on déplace la carte */
+/* canvas plus large que l'écran, redessiné en fin de déplacement */
 function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,lb=z>=17;
- g.lineJoin='round';g.strokeStyle='#000';g.lineWidth=r>=3?1.2:.6;
- for(const c in BK){g.fillStyle=c;g.beginPath();
-  for(const k of BK[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(x<-12||y<-12||x>W+12||y>H+12)continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}
-  g.fill();g.stroke();}
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,rt=r+2.5,lb=z>=17;
+ const ins=(x,y)=>x>-16&&y>-16&&x<W+16&&y<H+16;
+ g.lineJoin='round';g.strokeStyle='#000';g.lineWidth=z>=16?2:z>=14?1.6:1.2;
+ /* liseré noir : chaque rond et chaque triangle est rempli puis contouré (les contours restent par-dessus les voisins) */
+ for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();g.stroke();}
+ for(const c in BKt){g.fillStyle=c;g.beginPath();for(const k of BKt[c]){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;g.moveTo(x,y-rt*1.15);g.lineTo(x+rt*1.1,y+rt*.8);g.lineTo(x-rt*1.1,y+rt*.8);g.closePath();}g.fill();g.stroke();}
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2.5;g.beginPath();
-  for(let k=0;k<V.length;k++){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(x<-12||y<-12||x>W+12||y>H+12)continue;
-   if(sel.has(V[k].t[0])){g.moveTo(x+r+3,y);g.arc(x,y,r+3,0,6.2832);}
+  for(let k=0;k<V.length;k++){const x=PX[2*k]-ox,y=PX[2*k+1]-oy;if(!ins(x,y))continue;
+   if(sel.has(V[k].t[0])){g.moveTo(x+rt+3,y);g.arc(x,y,rt+3,0,6.2832);}
    if(lb&&lbl.length<2500)lbl.push([lab(V[k].t),x,y]);}
   g.stroke();g.restore();g.font='11px "Segoe UI",sans-serif';
-  lbl.forEach(([l,x,y])=>{g.lineWidth=3;g.strokeStyle='#fff';g.strokeText(l,x+r+2,y+4);g.fillStyle='#111';g.fillText(l,x+r+2,y+4);});}
+  lbl.forEach(([l,x,y])=>{g.lineWidth=3;g.strokeStyle='#fff';g.strokeText(l,x+rt+3,y+4);g.fillStyle='#111';g.fillText(l,x+rt+3,y+4);});}
 }
 map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
 
 /* ---- filtres ---- */
-const F={tp:'',qu:'',si:'',af:'',d1:'',d2:'',r1:'',r2:''},offS=new Set(['ELIMINE']),offV={cl:new Set(),eg:new Set()};
+const mkS=()=>({tp:'',qu:'',d1:'',d2:'',r1:'',r2:'',off:{st:new Set(),af:new Set(),cl:new Set()}});
+const M=mkS(),G=mkS(),offT={st:new Set(['ELIMINE']),eg:new Set()},NAMES={st:DI.S,af:DI.AF,cl:DI.C},DEFTP=String(DA.tp.indexOf('PT_BORDEAUX'));
 const opts=(l,a)=>`<option value="">${l}</option>`+a.map((v,i)=>`<option value="${i}">${esc(v)}</option>`).join('');
 const optsS=(l,a)=>`<option value="">${l}</option>`+a.map((_,i)=>i).sort((x,y)=>a[x].localeCompare(a[y],'fr')).map(i=>`<option value="${i}">${esc(a[i])}</option>`).join('');
-$('tp').innerHTML=optsS('Tous les territoires',DA.tp);$('tp').value=String(DA.tp.indexOf('PT_BORDEAUX'));
-$('si').innerHTML=optsS('Tous les statuts',DI.S);$('af').innerHTML=optsS('Toutes les affectations',DI.AF);
-$('stt').innerHTML=DA.s.map(s=>`<label class="chk"><input type="checkbox" data-s="${s}" ${offS.has(s)?'':'checked'}><i style="background:${SC[s]||'#777'}"></i>${SL[s]||s}</label>`).join('');
+$('tp').innerHTML=optsS('Tous les territoires',DA.tp);
 function fillQ(tpEl,quEl){const tp=$(tpEl).value,ids=tp===''?DA.qu.map((_,i)=>i):[...TQ[+tp]];ids.sort((a,b)=>DA.qu[a].localeCompare(DA.qu[b]));
  $(quEl).innerHTML='<option value="">Tous les quartiers</option>'+ids.map(i=>`<option value="${i}">${esc(DA.qu[i])}</option>`).join('');}
-function readF(){['tp','qu','si','af','d1','d2','r1','r2'].forEach(k=>F[k]=$(k).value);}
-const okI=it=>(F.si===''||it[2]==F.si)&&(F.af===''||it[9]==F.af)&&(!F.d1||it[5]>=F.d1)&&(!F.d2||(it[5]&&it[5]<=F.d2))&&(!F.r1||it[6]>=F.r1)&&(!F.r2||(it[6]&&it[6]<=F.r2));
+const geoOK=(t,S)=>(S.tp===''||t[4]==S.tp)&&(S.qu===''||t[5]==S.qu);
+const dOK=(it,S)=>(!S.d1||it[5]>=S.d1)&&(!S.d2||(it[5]&&it[5]<=S.d2))&&(!S.r1||it[6]>=S.r1)&&(!S.r2||(it[6]&&it[6]<=S.r2));
+const passI=(it,S,skip)=>(skip==='st'||!S.off.st.has(it[2]))&&(skip==='af'||!S.off.af.has(it[9]))&&(skip==='cl'||!S.off.cl.has(it[1]))&&dOK(it,S);
+const gcache={};
+function geoG(S){const k=S.tp+'|'+S.qu;return gcache[k]??=I.map(it=>it[7].filter(g=>{const i=tree.get(g);return i!==undefined&&geoOK(T[i],S);}));}
+/* comptages : k = par critère en ignorant ce critère (pour les cases), res = résultat avec tous les critères */
+function agg(S){
+ const GG=geoG(S),r={ni:0,all:new Set(),k:{st:{},af:{},cl:{}},res:{st:{},af:{},cl:{}}};
+ const add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
+ I.forEach((it,x)=>{const gs=GG[x];if(!gs.length||!dOK(it,S))return;
+  const ps=!S.off.st.has(it[2]),pa=!S.off.af.has(it[9]),pc=!S.off.cl.has(it[1]);
+  if(pa&&pc)add(r.k.st,it[2],gs);if(ps&&pc)add(r.k.af,it[9],gs);if(ps&&pa)add(r.k.cl,it[1],gs);
+  if(ps&&pa&&pc){r.ni++;gs.forEach(g=>r.all.add(g));add(r.res.st,it[2],gs);add(r.res.af,it[9],gs);add(r.res.cl,it[1],gs);}
+ });return r;}
+function readM(){M.tp=$('tp').value;M.qu=$('qu').value;['d1','d2','r1','r2'].forEach(k=>M[k]=$(k).value);}
+function fitV(){const a=V.filter(v=>v.ti),b=a.length?a:V;if(b.length)map.fitBounds(L.latLngBounds(b.map(v=>[v.t[2],v.t[1]])).pad(.05));}
 function refresh(fit){
- const th=$('th').value,sans=$('sans').checked,cnt={},ecnt={};V=[];
+ const th=$('th').value,off=offT[th==='eg'?'eg':'st'],cnt={},cC={},sA=$('lyA').checked,sI=$('lyI').checked;V=[];
  T.forEach(t=>{
   const f=sel.has(t[0]);
-  if(!f&&(offS.has(DA.s[t[3]])||(F.tp!==''&&t[4]!=F.tp)||(F.qu!==''&&t[5]!=F.qu)))return;
-  const al=(tInt.get(t[0])||[]).filter(k=>okI(I[k]));
-  new Set(al.map(k=>I[k][1])).forEach(c=>cnt[c]=(cnt[c]||0)+1);
-  const m=al.filter(k=>!offV.cl.has(String(I[k][1]))),ek=egk(t);
-  if(!m.length&&!sans&&!f)return;
-  ecnt[ek]=(ecnt[ek]||0)+1;
-  if(th==='eg'&&offV.eg.has(ek)&&!f)return;
-  V.push({t,m,c:th==='cl'?(m.length?CC(I[m[0]][1]):GR):th==='eg'?(EGC[ek]||EGN):(SC[DA.s[t[3]]]||'#777')});
+  if(!f&&!geoOK(t,M))return;
+  const k=th==='eg'?egk(t):DA.s[t[3]];cnt[k]=(cnt[k]||0)+1;
+  const al=(tInt.get(t[0])||[]).filter(x=>passI(I[x],M,'cl'));
+  new Set(al.map(x=>I[x][1])).forEach(c=>cC[c]=(cC[c]||0)+1);
+  const m=al.filter(x=>!M.off.cl.has(I[x][1])),ti=sI&&m.length?CC(I[m[0]][1]):null;
+  const c=((sA&&!off.has(k))||(f&&!ti))?(th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')):null;
+  if(c||ti)V.push({t,m,c,ti});
  });
- BK={};V.forEach((v,k)=>(BK[v.c]??=[]).push(k));
- legendCl(cnt);legendEg(th,ecnt);proj();draw();
- $('bilan').textContent=nf(V.length);
- if(fit&&V.length)map.fitBounds(L.latLngBounds(V.map(v=>[v.t[2],v.t[1]])).pad(.05));
+ BKc={};BKt={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);});
+ legendT(th,cnt);legendCl(cC);panel();proj();draw();
+ if(fit)fitV();
 }
-const bar='<div class="row" style="margin:4px 0"><button class="s" data-a="all">Tout cocher</button><button class="s" data-a="none">Tout décocher</button></div>';
-function legendCl(cnt){
- const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cnt[i]||offV.cl.has(String(i)));
- $('clp').innerHTML=bar+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-k="${i}" ${offV.cl.has(String(i))?'':'checked'}><i style="background:${CC(i)}"></i>${esc(DI.C[i])} (${nf(cnt[i]||0)})</label>`).join('')+'</div>';
- $('ll').scrollTop=sc;}
-function legendEg(th,cnt){
- const L2=$('leg');if(th!=='eg'){L2.innerHTML='';return;}
- L2.innerHTML=bar+[...DA.eg,'—'].filter(k=>cnt[k]||offV.eg.has(k)).map(k=>`<label class="chk"><input type="checkbox" data-k="${esc(k)}" ${offV.eg.has(k)?'':'checked'}><i style="background:${EGC[k]||EGN}"></i>État ${k==='—'?'non renseigné':esc(k)} (${nf(cnt[k]||0)})</label>`).join('');}
-const bindL=(el,k,keys)=>{el.onclick=e=>{const a=e.target.dataset.a;if(!a)return;offV[k]=a==='all'?new Set():new Set(keys().map(String));refresh(false);};
- el.onchange=e=>{const v=e.target.dataset.k;if(v===undefined)return;const s=offV[k];e.target.checked?s.delete(v):s.add(v);refresh(false);};};
-bindL($('clp'),'cl',()=>DI.C.map((_,i)=>i));bindL($('leg'),'eg',()=>[...DA.eg,'—']);
-$('stt').onchange=e=>{const s=e.target.dataset.s;e.target.checked?offS.delete(s):offS.add(s);refresh(false);};
-/* panneau de droite : interventions et arbres de la zone géographique choisie */
-function panneau(){
- const by=[{},{}],all=new Set();let ni=0;
- I.forEach(it=>{const gs=it[7].filter(g=>{const i=tree.get(g);if(i===undefined)return false;const t=T[i];return(F.tp===''||t[4]==F.tp)&&(F.qu===''||t[5]==F.qu);});
-  if(!gs.length)return;ni++;gs.forEach(g=>all.add(g));
-  [[by[0],it[2]],[by[1],it[9]]].forEach(([o,k])=>{const e=o[k]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));});});
- $('rz').textContent=(F.tp===''?'Tous les territoires':DA.tp[F.tp])+' · '+(F.qu===''?'tous les quartiers':DA.qu[F.qu]);
- $('rni').textContent=nf(ni);$('rna').textContent=nf(all.size);
- const tb=(o,names,f)=>'<table><tr><th></th><th>Interv.</th><th>Arbres</th></tr>'+Object.entries(o).sort((a,b)=>names[a[0]].localeCompare(names[b[0]],'fr')).map(([k,e])=>`<tr data-f="${f}" data-v="${k}"><td>${esc(names[k])}</td><td>${nf(e.n)}</td><td>${nf(e.g.size)}</td></tr>`).join('')+'</table>';
- $('rst').innerHTML=tb(by[0],DI.S,'si');$('raf').innerHTML=tb(by[1],DI.AF,'af');
-}
-$('rp').onclick=e=>{const tr=e.target.closest('tr[data-f]');if(!tr)return;const el=$(tr.dataset.f);el.value=el.value===tr.dataset.v?'':tr.dataset.v;readF();refresh(true);};
-$('tp').onchange=()=>{fillQ('tp','qu');readF();refresh(true);panneau();};
-$('qu').onchange=()=>{readF();refresh(true);panneau();};
-['si','af','d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readF();refresh(true);});
-$('th').onchange=$('sans').onchange=()=>refresh(false);
+const tri=c=>`<svg width="13" height="12" viewBox="0 0 13 12" style="flex:none"><path d="M6.5 .5L12.5 11.5H.5Z" fill="${c}" stroke="#000"/></svg>`;
+const bar=(a,b)=>`<div class="row" style="margin:4px 0"><button class="s" ${a}>Tout cocher</button><button class="s" ${b}>Tout décocher</button></div>`;
+function legendT(th,cnt){
+ const ks=th==='eg'?[...DA.eg,'—']:DA.s,off=offT[th==='eg'?'eg':'st'];
+ $('leg').innerHTML=bar('data-a="all"','data-a="none"')+ks.filter(k=>cnt[k]||off.has(k)).map(k=>`<label class="chk"><input type="checkbox" data-k="${esc(k)}" ${off.has(k)?'':'checked'}><i style="background:${th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')}"></i>${th==='eg'?'État '+(k==='—'?'non renseigné':esc(k)):esc(SL[k]||k)} (${nf(cnt[k]||0)})</label>`).join('');}
+function legendCl(cC){
+ const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cC[i]||M.off.cl.has(i));
+ $('clp').innerHTML=bar('data-all="cl:1"','data-all="cl:0"')+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(DI.C[i])} (${nf(cC[i]||0)})</label>`).join('')+'</div>';
+ if($('ll'))$('ll').scrollTop=sc;}
+function ckTable(kind,S,rows,colr){
+ const nm=NAMES[kind],ids=nm.map((_,i)=>i).filter(i=>rows[i]||S.off[kind].has(i)).sort((a,b)=>nm[a].localeCompare(nm[b],'fr'));
+ return `<div class="row" style="margin:2px 0 4px"><button class="s" data-all="${kind}:1">Tout cocher</button><button class="s" data-all="${kind}:0">Tout décocher</button></div><table class="ck"><tr><th></th><th></th><th>Interv.</th><th>Arbres</th></tr>`+
+  ids.map(i=>`<tr><td><input type="checkbox" data-t="${kind}" data-v="${i}" ${S.off[kind].has(i)?'':'checked'}></td><td>${colr?tri(colr(i)):''}${esc(nm[i])}</td><td>${nf(rows[i]?.n||0)}</td><td>${nf(rows[i]?.g.size||0)}</td></tr>`).join('')+'</table>';}
+function bindCk(el,S,after){
+ el.addEventListener('change',e=>{const t=e.target.dataset.t;if(!t)return;const v=+e.target.dataset.v;e.target.checked?S.off[t].delete(v):S.off[t].add(v);after();});
+ el.addEventListener('click',e=>{const a=e.target.dataset.all;if(!a)return;const[t,on]=a.split(':');S.off[t]=on==='1'?new Set():new Set(NAMES[t].map((_,i)=>i));after();});}
+const sumC=(S,k,lab)=>{const off=S.off[k];if(!off.size)return'';const nm=NAMES[k],on=nm.map((_,i)=>i).filter(i=>!off.has(i));
+ return `<div>${lab} : <b>${on.length===0?'aucun':on.length<=3?on.map(i=>esc(nm[i])).join(', '):on.length+' sur '+nm.length}</b></div>`;};
+function critHTML(S){
+ return `<div>Territoire : <b>${S.tp===''?'tous':esc(DA.tp[S.tp])}</b></div>`+(S.qu!==''?`<div>Quartier : <b>${esc(DA.qu[S.qu])}</b></div>`:'')+
+  sumC(S,'st','Statut')+sumC(S,'af','Affectation')+sumC(S,'cl','Classification')+
+  (S.d1||S.d2?`<div>Objectif de fin : <b>${fd(S.d1)} → ${fd(S.d2)}</b></div>`:'')+(S.r1||S.r2?`<div>Fin réelle : <b>${fd(S.r1)} → ${fd(S.r2)}</b></div>`:'');}
+function panel(){
+ const a=agg(M);
+ $('rz').innerHTML=critHTML(M);$('rni').textContent=nf(a.ni);$('rna').textContent=nf(a.all.size);$('bilan').textContent=nf(V.length);
+ $('rst').innerHTML=ckTable('st',M,a.k.st);$('raf').innerHTML=ckTable('af',M,a.k.af);}
+$('tp').onchange=()=>{fillQ('tp','qu');readM();refresh(true);};
+$('qu').onchange=()=>{readM();refresh(true);};
+['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
+$('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
+bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh(true));
+$('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
+$('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
+function resetM(){
+ $('tp').value=DEFTP;fillQ('tp','qu');['qu','d1','d2','r1','r2'].forEach(i=>$(i).value='');readM();
+ M.off={st:new Set(),af:new Set(),cl:new Set()};offT.st=new Set(['ELIMINE']);offT.eg=new Set();
+ $('th').value='st';$('lyA').checked=$('lyI').checked=true;sel=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}
+ $('fiche').style.display='none';$('q').value='';refresh(true);}
+$('rsM').onclick=resetM;
 
 /* ---- popup arbre ---- */
 function pop(v){
  const t=v.t,e=DI.TE[t[0]];
- return `<b>${esc(lab(t))}</b> · station ${t[8]||'—'}<br>${e===undefined?'—':esc(DI.E[e])} · ${IC[DA.s[t[3]]]||''} <b>${esc(SL[DA.s[t[3]]]||DA.s[t[3]])}</b> · état ${esc(egk(t))}`+
+ return `<b>${esc(lab(t))}</b> · station ${t[8]||'—'}<br>${e===undefined?'—':esc(DI.E[e])} · ${IC[DA.s[t[3]]]||''} <b>${esc(SL[DA.s[t[3]]]||DA.s[t[3]])}</b> · état ${esc(egk(t))}<br><a href="${GEO}${t[0]}" target="_blank" rel="noopener">Lien Géo</a>`+
  v.m.slice(0,6).map(k=>{const it=I[k];return `<hr style="margin:5px 0"><b>N° ${esc(it[0])}</b> — ${esc(DI.C[it[1]])}<br>Statut : ${esc(DI.S[it[2]])} · <a href="#" onclick="fiche(${k});return false">Fiche</a> · <a href="#" onclick="choisir(${k});return false">Sélectionner</a>`;}).join('')+
  (v.m.length>6?`<br>+ ${v.m.length-6} autre(s) intervention(s)`:'');
 }
@@ -1012,12 +1049,12 @@ function carteHTML(a,k){
  const mine=new Set(I[k][7]),col=CC(I[k][1]);let im='',nb='',iv='',ring='',n=0;
  for(let tx=Math.floor(x0/256);tx<=Math.floor((x0+W)/256);tx++)for(let ty=Math.floor(y0/256);ty<=Math.floor((y0+H)/256);ty++){
   const st=`left:${tx*256-x0}px;top:${ty*256-y0}px`,u=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/${z}/${ty}/${tx}`;
-  im+=`<img style="${st}" src="${u('World_Imagery')}"><img style="${st}" src="${u('Reference/World_Transportation')}"><img style="${st}" src="${u('Reference/World_Boundaries_and_Places')}">`;}
+  im+=`<img style="${st}" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${ty}&TILECOL=${tx}"><img style="${st}" src="${u('Reference/World_Transportation')}"><img style="${st}" src="${u('Reference/World_Boundaries_and_Places')}">`;}
  for(const t of T){
   if(t[1]<lo0||t[1]>lo1||t[2]>la0||t[2]<la1)continue;
   const x=wx(t[1],z)-x0,y=wy(t[2],z)-y0,s=DA.s[t[3]];
   if(mine.has(t[0])){ring+=`<circle cx="${x}" cy="${y}" r="11" fill="none" stroke="#ffd400" stroke-width="3"/>`;
-   iv+=`<circle cx="${x}" cy="${y}" r="7" fill="${col}" stroke="#000" stroke-width="1.2"/><text x="${x+13}" y="${y+4}" font-size="11" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="3">${esc(lab(t))}</text>`;}
+   iv+=`<path d="M${x} ${y-9}L${x+8.5} ${y+6}L${x-8.5} ${y+6}Z" fill="${col}" stroke="#000" stroke-width="1.2"/><text x="${x+13}" y="${y+4}" font-size="11" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="3">${esc(lab(t))}</text>`;}
   else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&n++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${SC[s]}" stroke="#000" stroke-width=".8"/>`;
  }
  return `<div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${ring}${iv}</svg></div>`;
@@ -1046,7 +1083,7 @@ function fiche(k){
  <tr><td class="k">Description</td><td>${esc(it[4])||'—'}</td></tr>
  <tr><td class="k">Description détaillée</td><td>${esc(it[8])||'—'}</td></tr></table>
  <h2>Arbres concernés (${it[7].length})</h2><table class="l"><thead><tr><th></th><th>Carré-numéro</th><th>Espèce</th><th>Statut</th></tr></thead><tbody>${rows}</tbody></table>
- <h2>Situation</h2><p>${['VIVANT','MORT','SOUCHE'].map(s=>`<span><i class="d" style="background:${SC[s]}"></i>${SL[s]}</span>`).join('')}<span><i class="d" style="background:${CC(it[1])};outline:3px solid #ffd400"></i>Arbres de l'intervention (couleur = classification)</span></p>${cartes||'<p>Aucun arbre localisé.</p>'}
+ <h2>Situation</h2><p>${['VIVANT','MORT','SOUCHE'].map(s=>`<span><i class="d" style="background:${SC[s]}"></i>${SL[s]}</span>`).join('')}<span><i class="d" style="background:${CC(it[1])};outline:3px solid #ffd400"></i>Arbres de l'intervention (triangles, couleur = classification)</span></p>${cartes||'<p>Aucun arbre localisé.</p>'}
  <p style="margin-top:14px;color:#666">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
  w.document.close();
 }
@@ -1064,8 +1101,8 @@ $('pvp').onclick=()=>{
  const fmt=pvF,bd=map.getBounds(),st=document.createElement('style');
  st.textContent=`@page{size:${fmt} landscape;margin:6mm}`;document.head.appendChild(st);
  document.body.style.setProperty('--pw',PG[fmt][0]+'mm');document.body.style.setProperty('--ph',PG[fmt][1]+'mm');
- const f=[$('tp'),$('qu'),$('si')].map(s=>s.selectedOptions[0].text.split(' — ')[0]).join(' · ');
- $('imp').innerHTML=`<b>Interventions sur les arbres</b> — ${esc(f)}<br>Thématique : ${esc($('th').selectedOptions[0].text)}`+(sel.size?`<br>Sélection : ${selK>=0?'intervention '+esc(I[selK][0]):esc($('q').value)} (${sel.size} arbres)`:'')+`<br>Édité le ${new Date().toLocaleDateString('fr-FR')}`;
+ const f=critHTML(M);
+ $('imp').innerHTML=`<b>Interventions sur les arbres</b> <br>${f}Thématique : ${esc($('th').selectedOptions[0].text)}`+(sel.size?`<br>Sélection : ${selK>=0?'intervention '+esc(I[selK][0]):esc($('q').value)} (${sel.size} arbres)`:'')+`<br>Édité le ${new Date().toLocaleDateString('fr-FR')}`;
  document.body.dataset.print=fmt;$('map').style.cssText='';map.invalidateSize();map.fitBounds(bd,{animate:false});
  const fin=()=>{delete document.body.dataset.print;st.remove();removeEventListener('afterprint',fin);boxPv();map.fitBounds(bd,{animate:false});};
  addEventListener('afterprint',fin);setTimeout(()=>print(),2500);
@@ -1091,37 +1128,46 @@ $('bi').onclick=()=>{
 };
 
 /* ---- onglet statistiques ---- */
-function showTab(s){$('stats').style.display=s?'block':'none';$('fmap').style.display=s?'none':'flex';
- $('tbC').className=s?'s':'';$('tbS').className=s?'':'s';if(s)stat();else map.invalidateSize();}
+function showTab(s){$('stats').style.display=s?'block':'none';$('fmap').style.display=s?'none':'flex';$('app').classList.toggle('st',!!s);
+ $('tbC').className=s?'s':'';$('tbS').className=s?'':'s';$('rsM').style.display=s?'none':'';if(s)stat();else map.invalidateSize();}
 $('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);
-$('stp').innerHTML=optsS('Tous les territoires',DA.tp);$('stp').value=$('tp').value;fillQ('stp','squ');
-$('scl').innerHTML=optsS('Toutes les classifications',DI.C);$('ssi').innerHTML=optsS('Tous les statuts',DI.S);
-const sIdx=n=>String(DI.S.indexOf(n));
-function sf(){const m=$('sm').value;return{tp:$('stp').value,qu:$('squ').value,cl:$('scl').value,r1:$('sr1').value,r2:$('sr2').value,si:m==='C'?sIdx('CLOTUREE'):m==='I'?sIdx('INITIALISEE'):$('ssi').value};}
-function calc(f){
- const a={},b={},all=new Set();let ni=0;
- I.forEach(it=>{
-  if(f.si!==''&&it[2]!=f.si)return;if(f.cl!==''&&it[1]!=f.cl)return;
-  if(f.r1&&!(it[6]>=f.r1))return;if(f.r2&&!(it[6]&&it[6]<=f.r2))return;
-  const gs=it[7].filter(g=>{const i=tree.get(g);if(i===undefined)return false;const t=T[i];return(f.tp===''||t[4]==f.tp)&&(f.qu===''||t[5]==f.qu);});
-  if(!gs.length)return;ni++;gs.forEach(g=>all.add(g));
-  [[a,it[2]],[b,it[1]]].forEach(([o,k])=>{const e=o[k]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));});
- });return{ni,na:all.size,a,b};
+$('stp').innerHTML=optsS('Tous les territoires',DA.tp);
+const sIdx=n=>DI.S.indexOf(n);
+function readG(){G.tp=$('stp').value;G.qu=$('squ').value;G.d1=$('sd1').value;G.d2=$('sd2').value;G.r1=$('sr1').value;G.r2=$('sr2').value;}
+function presetSt(){const m=$('sm').value,keep=m==='C'?sIdx('CLOTUREE'):m==='I'?sIdx('INITIALISEE'):-1;G.off.st=new Set(keep<0?[]:DI.S.map((_,i)=>i).filter(i=>i!==keep));}
+function donut(ent,colr){
+ const R=70,C=2*Math.PI*R,tot=ent.reduce((s,e)=>s+e.n,0);let o=0;
+ return '<svg width="190" height="190" viewBox="0 0 200 200">'+ent.map((e,i)=>{const l=e.n/tot*C,s=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${colr(i)}" stroke-width="36" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 100 100)"><title>${esc(e.name)} : ${nf(e.n)} (${Math.round(e.n/tot*100)} %)</title></circle>`;o+=l;return s;}).join('')+
+  `<text x="100" y="99" text-anchor="middle" font-size="24" font-weight="600">${nf(tot)}</text><text x="100" y="118" text-anchor="middle" font-size="11" fill="#666">interventions</text></svg>`;}
+function bars(ent,colr){
+ const hd=ent.slice(0,12),rest=ent.slice(12).reduce((s,e)=>s+e.n,0),mx=hd[0].n;
+ return '<div class="bars">'+hd.map((e,i)=>`<div><span class="bl" title="${esc(e.name)}">${esc(e.name)}</span><span class="bb"><i style="width:${e.n/mx*100}%;background:${colr(i)}"></i></span><b>${nf(e.n)}</b></div>`).join('')+
+  (rest?`<div><span class="bl">Autres (${ent.length-12})</span><span class="bb"><i style="width:${rest/mx*100}%;background:#9aa5b1"></i></span><b>${nf(rest)}</b></div>`:'')+'</div>';}
+function resBlock(title,o,names,type){
+ const ent=Object.entries(o).map(([k,e])=>({k:+k,n:e.n,a:e.g.size,name:names[k]})).sort((x,y)=>y.n-x.n);
+ const colr=i=>type==='bars'?CC(ent[i].k):PAL[i%PAL.length];
+ const tb='<table class="rt"><tr><th></th><th>Interv.</th><th>Arbres</th></tr>'+ent.map((e,i)=>`<tr><td><i class="sw" style="background:${colr(i)}"></i>${esc(e.name)}</td><td>${nf(e.n)}</td><td>${nf(e.a)}</td></tr>`).join('')+'</table>';
+ return `<h3>${title}</h3><div class="rb"><div>${tb}</div>${ent.length>1?'<div>'+(type==='donut'?donut(ent,colr):bars(ent,colr))+'</div>':''}</div>`;
 }
-const tbl=(o,names,h)=>`<table><tr><th>${h}</th><th>Interventions</th><th>Arbres</th></tr>`+Object.entries(o).sort((x,y)=>y[1].n-x[1].n).map(([k,e])=>`<tr><td>${esc(names[k])}</td><td>${nf(e.n)}</td><td>${nf(e.g.size)}</td></tr>`).join('')+'</table>';
 function stat(){
- $('wsi').style.display=$('sm').value==='T'?'':'none';
- const r=calc(sf());$('sres').textContent=`${nf(r.ni)} intervention(s) · ${nf(r.na)} arbre(s)`;
- $('tst').innerHTML=tbl(r.a,DI.S,'Statut');$('tcl').innerHTML=tbl(r.b,DI.C,'Classification');
+ readG();const a=agg(G);
+ $('sres').textContent=`${nf(a.ni)} intervention(s) · ${nf(a.all.size)} arbre(s)`;
+ $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);$('skc').innerHTML=ckTable('cl',G,a.k.cl,CC);
+ $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');
 }
 $('stp').onchange=()=>{fillQ('stp','squ');stat();};
-['sm','squ','scl','ssi','sr1','sr2'].forEach(i=>$(i).onchange=stat);
-$('sgo').onclick=()=>{const f=sf();
- $('tp').value=f.tp;fillQ('tp','qu');$('qu').value=f.qu;$('si').value=f.si;$('af').value='';$('d1').value=$('d2').value='';$('r1').value=f.r1;$('r2').value=f.r2;
- if(f.cl!==''){$('th').value='cl';offV.cl=new Set(DI.C.map((_,i)=>String(i)).filter(i=>i!==f.cl));}else offV.cl=new Set();
- sel=new Set();selK=-1;$('fiche').style.display='none';readF();showTab(0);refresh(true);panneau();};
-
-fillQ('tp','qu');$('qu').value='';readF();refresh(true);panneau();
+['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).onchange=stat);
+$('sm').onchange=()=>{presetSt();stat();};
+bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);bindCk($('skc'),G,stat);
+function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};stat();}
+$('rsS').onclick=resetG;
+/* « Afficher cette sélection sur la carte » : recopie tous les critères et met à jour carte et bandeau de droite */
+$('sgo').onclick=()=>{readG();
+ Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
+ $('tp').value=M.tp;fillQ('tp','qu');$('qu').value=M.qu;['d1','d2','r1','r2'].forEach(k=>$(k).value=M[k]);
+ sel=new Set();selK=-1;$('fiche').style.display='none';showTab(0);refresh(true);};
+$('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
+resetM();
 window.fiche=fiche;window.choisir=choisir;
 }
 </script>
