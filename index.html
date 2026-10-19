@@ -667,7 +667,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 </style>
 <style>
-:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#2f6b3f}
+:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#5d8a6b}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font:13px/1.4 "Segoe UI",system-ui,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #app{--lw:350px;--rw:280px;display:grid;grid-template-columns:var(--lw) 1fr var(--rw);height:100%}
@@ -709,20 +709,29 @@ table.rt td+td,table.rt th+th{text-align:right}
 .bars{width:400px}.bars>div{display:flex;align-items:center;gap:6px;margin:3px 0}.bl{width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 .bb{flex:1;background:#eef0ec;border-radius:5px;height:13px}.bb i{display:block;height:100%;border-radius:5px}.bars b{font-size:12px;min-width:44px;text-align:right}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.12}}.blink{animation:blink 1s infinite}
-#fst{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#f6f8f5;padding:18px 24px;font-size:13px;line-height:1.5}
-#fst>.wrap{max-width:1120px;margin:0 auto}#fst .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}
-#fst .hd{background:#fff;border:1px solid #cfe0cf;border-left:6px solid var(--acc);border-radius:10px;padding:12px 18px;margin:12px 0}
-#fst .hd h3{font-size:22px;margin:0 0 4px}#fst .chips span{display:inline-flex;align-items:center;gap:6px;background:#f1f6f1;border-radius:14px;padding:2px 12px;margin:6px 8px 0 0}
-#fst .lt{font-size:15px;margin:16px 0 6px}
-#fst details{background:#fff;border:1px solid var(--line);border-radius:8px;margin:8px 0;box-shadow:0 1px 2px #0001}
-#fst details.sec{border-left:6px solid var(--sc,#999)}#fst details.sec>summary{font-size:15px;padding:9px 14px}
-#fst summary{cursor:pointer;padding:7px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}#fst summary::-webkit-details-marker{margin-right:2px}
-#fst details details{margin:6px 12px;box-shadow:none;background:#fbfcfb}
-#fst .cl{font-weight:700;font-size:13.5px}#fst .no{font-weight:600;color:#33433a}#fst .dt{color:#5d6b62;font-size:12px}#fst .lt2{color:#c1121f;font-weight:600}
-#fst .badge{background:var(--acc);color:#fff;border-radius:11px;padding:1px 10px;font-weight:700;font-size:12px}
-#fst .late{color:#c1121f;font-weight:600}#fst .sn{font-size:14.5px}
-#fst table{border-collapse:collapse;margin:4px 12px 10px;width:calc(100% - 24px)}#fst th{background:#eef2ec;font-weight:600}#fst td,#fst th{border-bottom:1px solid var(--line);padding:4px 10px;text-align:left}#fst tr:nth-child(even) td{background:#f7f9f6}
-#fst a{color:#1c64d1;margin-left:auto;font-size:12px}
+.x{display:none}#bk{display:none;position:fixed;inset:0;z-index:2900;background:#0006}
+.seg{display:flex;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden}.seg button{border:0;border-radius:0;background:#fff;color:var(--ink);font-weight:600;padding:8px 6px}.seg button.on{background:var(--acc);color:#fff}
+#fstat details,#fpat details{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fafbf9}#fstat summary,#fpat summary{cursor:pointer;font-weight:600;padding:3px 0}
+#fst{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#f6f8f5;padding:14px 20px;font-size:12px;line-height:1.45}
+#fst>.wrap{max-width:1150px;margin:0 auto}#fst h2{font-size:17px;margin:0 0 8px}
+#fst details{background:#fff;border:1px solid var(--line);border-radius:7px;margin:5px 0}
+#fst summary{cursor:pointer;padding:5px 10px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#fst details.n1>summary{background:#e9f1ea;font-size:13px;border-radius:7px}#fst details.n2>summary{background:#f1f6f2}
+#fst .ch{margin-left:18px;border-left:3px solid #d8e3da;padding-left:9px}
+#fst .sn{font-size:12px}#fst details.sec{border-left:5px solid var(--sc,#999)}#fst details.sec>summary{font-size:12.5px}
+#fst .hd{background:#fff;border:1px solid #d3e2d6;border-left:5px solid var(--acc);border-radius:8px;padding:7px 12px;margin:6px 0}
+#fst .hd h3{font-size:14px;margin:0 0 2px}#fst .chips span{display:inline-flex;align-items:center;gap:5px;background:#f1f6f1;border-radius:12px;padding:1px 9px;margin:4px 6px 0 0}
+#fst .lt{font-size:12.5px;margin:10px 0 4px}
+#fst .cl{font-weight:700}#fst .no{font-weight:600;color:#33433a}#fst .dt{color:#5d6b62;font-size:11px}#fst .lt2{color:#c1121f;font-weight:600}
+.bd{display:inline-block;border-radius:9px;padding:0 8px;font-weight:600;font-size:11px}.bd.g{background:#e6f2ea;color:#3b6d4f}.bd.b{background:#2f7de1;color:#fff}.bd.r{background:#fde6e6;color:#c1121f}.bd.s{background:#eceff3;color:#4a5568}
+#fst table{border-collapse:collapse;margin:3px 10px 8px;width:calc(100% - 20px)}#fst th{background:#eef2ec;font-weight:600;font-size:11px}#fst td,#fst th{border-bottom:1px solid var(--line);padding:3px 8px;text-align:left}#fst tr:nth-child(even) td{background:#f8faf7}
+#fst tr.hasI td{background:#fff4d6!important}#fst tr.hasI td:nth-child(2){border-left:4px solid #f2a516}
+#fst a{color:#1c64d1;margin-left:auto;font-size:11px}
+.nv{background:#fff;border:1px solid var(--line);border-radius:7px;margin:4px 0}.nv>summary{cursor:pointer;padding:4px 10px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.nv .ch{margin-left:18px;border-left:3px solid #d8e3da;padding-left:9px}.li{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:3px 6px;border-bottom:1px dotted #d6dad2}
+.nv .cl{font-weight:700}.nv .dt{color:#5d6b62;font-size:11px}.nv .lt2{color:#c1121f;font-weight:600}.nv a{color:#1c64d1;margin-left:auto;font-size:11px}
+.ftabs{display:flex;gap:6px;margin:8px 0 0;border-bottom:2px solid var(--acc)}.ftabs button{width:auto;padding:6px 18px;background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;font-weight:600}.ftabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0}
 .kpi{border-radius:14px;padding:12px 14px;color:#fff;box-shadow:0 4px 14px #0002;display:flex;flex-direction:column;gap:2px}
 .kpi b{font-size:32px;line-height:1.1}.kpi .kl{font-weight:600;font-size:13px}.kpi .kp{font-size:15px;font-weight:600}
@@ -754,7 +763,7 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
  select,input,button{font-size:16px;min-height:40px}
  #rsM{left:54px}#stats,#fst{padding:12px}#fst .hd h3{font-size:18px}
  .bars{width:100%}.bl{width:100px}.kpi b{font-size:26px}
- #fst summary{gap:6px}
+ #fst summary{gap:6px}.x{display:block;background:#fff;color:var(--ink);border:1px solid var(--line)}
 }
 .kviz{display:flex;gap:28px;align-items:center;flex-wrap:wrap;margin:6px 0 18px}.kleg div{display:flex;align-items:center;gap:8px;margin:4px 0}.kleg i{width:12px;height:12px;border-radius:4px;flex:none}.kleg b{min-width:56px;text-align:right}
 
@@ -779,8 +788,9 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
 <div id="chg" style="position:fixed;inset:0;background:#fff;z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font:14px 'Segoe UI',sans-serif;text-align:center;padding:20px"><div id="chgm">Chargement des données…</div><pre id="chgd" style="text-align:left;font-size:12px;max-width:90vw;overflow:auto;color:#555;margin:0"></pre><div id="chgf" style="display:none;text-align:left"><label style="display:block;margin:6px 0">Arbres (arbres.csv)<br><input type="file" id="fa" accept=".csv,.txt"></label><label style="display:block;margin:6px 0">Interventions (interventions.csv)<br><input type="file" id="fi" accept=".csv,.txt"></label></div></div>
 <div id="app">
 <aside>
+  <button class="x" id="xL">✕ Fermer le menu</button>
   <h1>Interventions sur les arbres</h1>
-  <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button><button id="tbF" class="s">Fiche station</button></div>
+  <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button><button id="tbF" class="s">Liste du patrimoine</button></div>
   <div id="fmap" style="display:flex;flex-direction:column;gap:8px">
   <div id="sb"><b>Rechercher une intervention</b><div class="row"><input type="search" id="q" placeholder="N° d'intervention ou classification…"><button id="bq" style="flex:none;width:auto">Rechercher</button></div></div>
   <div id="fiche">
@@ -793,54 +803,70 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
   </div>
     <div><h3>Thématique (couleur des arbres)</h3><select id="th"><option value="st">Statut de l'arbre</option><option value="eg">État général</option></select><div id="leg"></div></div>
   <div><h3>Couches</h3><label class="chk"><input type="checkbox" id="lyA" checked> Arbres (ronds)</label><label class="chk"><input type="checkbox" id="lyI" checked> Interventions (épingles)</label></div>
-  <div><h3>Échéances (cônes de chantier)</h3><div id="lgE"></div></div>
-  <div><h3>Classification des interventions</h3><div id="clp"></div></div>
+  <div><h3>Échéances</h3><div id="lgE"></div></div>
+  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur par arbre visible à partir du 1/500 ; en dessous, interventions regroupées.</div><div id="clp"></div></div>
   <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
     <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
+  </div>
+
+  <div id="fstat" style="display:none;flex-direction:column;gap:8px">
+    <button id="rsS" class="s">Réinitialiser les filtres</button>
+    <div class="seg"><button id="sgI" class="on">Indicateurs</button><button id="sgD">Statistiques détaillées</button></div>
+    <div id="fInd" style="display:flex;flex-direction:column;gap:8px">
+      <div><label>Territoire</label><select id="ktp"></select></div>
+      <div><label>Quartier</label><select id="kqu"></select></div>
+      <div><label>Unité</label><select id="kun"></select></div>
+      <div><label>Station (saisie libre)</label><input type="search" id="kqs" placeholder="Nom ou partie du nom…" autocomplete="off"></div>
+    </div>
+    <div id="fDet" style="display:none;flex-direction:column;gap:8px">
+      <div><label>Type (présélection des statuts)</label><select id="sm"><option value="T">Tous les statuts</option><option value="C">Interventions clôturées</option><option value="I">Interventions initialisées</option></select></div>
+      <div><label>Territoire</label><select id="stp"></select></div>
+      <div><label>Quartier</label><select id="squ"></select></div>
+      <div><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="sd1"><input type="date" id="sd2"></div></div>
+      <div><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="sr1"><input type="date" id="sr2"></div></div>
+      <details open><summary>Statut</summary><div id="sks"></div></details>
+      <details><summary>Affectation</summary><div id="ska"></div></details>
+      <details><summary>Classification</summary><div id="skc"></div></details>
+    </div>
+  </div>
+  <div id="fpat" style="display:none;flex-direction:column;gap:8px">
+    <button id="fRst" class="s">Réinitialiser les filtres</button>
+    <h3 style="margin:2px 0">Liste du patrimoine</h3>
+    <div><label>Territoire</label><select id="fTp"></select></div>
+    <div><label>Unité</label><select id="fUn"></select></div>
+    <div><label>Site</label><select id="fSi"></select></div>
+    <div><label>Rechercher une station (« contient », Entrée : toutes)</label><input type="search" id="fQ" placeholder="Nom ou partie du nom…" autocomplete="off"></div>
+    <details open><summary>Interventions</summary>
+      <div class="row" style="margin:4px 0"><label class="chk"><input type="checkbox" id="pOui" checked> Avec intervention</label><label class="chk"><input type="checkbox" id="pNon" checked> Sans</label></div>
+      <label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="pd1"><input type="date" id="pd2"></div>
+      <label style="margin-top:6px">Échéances — « interv.-arbres » (cocher pour filtrer)</label><div id="fRet"></div>
+    </details>
+    <details><summary>Classification</summary><div id="fCl"></div></details>
   </div>
 </aside>
 <div id="mw">
   <div id="map"></div><button id="rsM" class="s">Réinitialiser les filtres</button><button id="hL" class="edge" title="Menu de gauche (masquer / afficher)">☰</button><button id="hR" class="edge" title="Filtres de droite (masquer / afficher)">⚙</button>
   <div id="pv"><span id="pvt"></span><button id="pvp">Imprimer</button><button id="pvc" class="s">Annuler</button></div>
   <div id="stats">
-    <div class="row" style="max-width:260px"><button id="rsS" class="s">Réinitialiser les filtres</button></div>
-    <h2 style="margin:10px 0 4px">Indicateurs</h2>
-    <div class="g">
-      <div><label>Territoire</label><select id="ktp"></select></div>
-      <div><label>Quartier</label><select id="kqu"></select></div>
-      <div><label>Unité</label><select id="kun"></select></div>
-      <div><label>Station (saisie libre)</label><input type="search" id="kqs" placeholder="Nom ou partie du nom…" autocomplete="off"></div>
+    <div id="viewInd">
+      <h2 style="margin:0 0 6px">Indicateurs</h2>
+      <div id="kpi"></div>
+      <div id="lateBox"></div>
     </div>
-    <div id="kpi"></div>
-    <h2 style="margin:18px 0 4px">Statistiques détaillées</h2>
-    <div class="g">
-      <div><label>Type (présélection des statuts)</label><select id="sm"><option value="T">Tous les statuts</option><option value="C">Interventions clôturées</option><option value="I">Interventions initialisées</option></select></div>
-      <div><label>Territoire</label><select id="stp"></select></div>
-      <div><label>Quartier</label><select id="squ"></select></div>
-      <div><label>Objectif de fin : du</label><input type="date" id="sd1"></div>
-      <div><label>Objectif de fin : au</label><input type="date" id="sd2"></div>
-      <div><label>Fin réelle : du</label><input type="date" id="sr1"></div>
-      <div><label>Fin réelle : au</label><input type="date" id="sr2"></div>
+    <div id="viewDet" style="display:none">
+      <h2 style="margin:0 0 6px">Statistiques détaillées</h2>
+      <p><b id="sres"></b></p>
+      <button id="sgo" style="width:auto;padding:6px 14px">Afficher cette sélection sur la carte</button>
+      <div id="sout"></div>
     </div>
-    <div class="cols"><div><h3>Statut</h3><div id="sks"></div></div><div><h3>Affectation</h3><div id="ska"></div></div><div><h3>Classification</h3><div id="skc"></div></div></div>
-    <p><b id="sres"></b></p>
-    <button id="sgo" style="width:auto;padding:6px 14px">Afficher cette sélection sur la carte</button>
-    <div id="sout"></div>
   </div>
 <div id="fst"><div class="wrap">
-  <h2 style="margin:0 0 10px">Fiche station</h2>
-  <div class="g">
-    <div><label>Territoire</label><select id="fTp"></select></div>
-    <div><label>Unité</label><select id="fUn"></select></div>
-    <div><label>Site</label><select id="fSi"></select></div>
-    <div><label>Station</label><select id="fSt"></select></div>
-    <div><label>ou rechercher une station</label><input type="search" id="fQ" placeholder="Nom ou partie du nom… (Entrée : toutes)" autocomplete="off"></div>
-  </div>
-  <div class="row" style="max-width:520px;margin:12px 0"><button id="fMap" class="s">Voir sur la carte</button><button id="fPrn" class="s">Imprimer</button></div>
+  <h2>Liste du patrimoine</h2>
+  <div class="row" style="max-width:420px;margin:0 0 8px"><button id="fMap" class="s">Voir sur la carte</button><button id="fPrn" class="s">Imprimer la station ouverte</button></div>
   <div id="fBody"></div>
 </div></div>
 </div>
-<div id="rp"><h3 style="margin-top:0">Zone filtrée</h3>
+<div id="rp"><button class="x" id="xR">✕ Fermer</button><h3 style="margin-top:0">Zone filtrée</h3>
  <div><label>Territoire</label><select id="tp"></select></div>
  <div style="margin-top:6px"><label>Quartier</label><select id="qu"></select></div>
  <div style="margin-top:8px"><label>Rechercher une station (selon le territoire)</label><input type="search" id="qs" placeholder="Nom ou partie du nom…" autocomplete="off"><div id="qsi" class="mut" style="margin-top:3px"></div></div>
@@ -854,6 +880,7 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
  <div style="margin-top:6px"><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="r1"><input type="date" id="r2"></div></div>
 </div>
 </div>
+<div id="bk"></div>
 <div id="acBox"></div>
 <div id="fm"><div class="bx"><div class="bar"><b>Fiche d'intervention</b><span style="flex:1"></span><button id="fmP">Imprimer</button><button id="fmC" class="s">Fermer</button></div><iframe id="fmF"></iframe></div></div>
 <div id="imp"></div>
@@ -948,10 +975,13 @@ const SC={VIVANT:'#00e640',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PRO
 const SL={VIVANT:'Vivant',MORT:'Mort',SOUCHE:'Souche',ELIMINE:'Éliminé',PROJET:'Projet'};
 const EGC={A:'#1a9850',B:'#91cf60',C:'#ffd54a',D:'#f46d43',E:'#a50026'},EGN='#b8bfb9',GR='#9aa5b1';
 const PAL=['#e6194b','#f58231','#e6c700','#3cb44b','#42d4f4','#4363d8','#911eb4','#f032e6','#9a6324','#808000','#008080','#800000'];
-const sv=b=>`<svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle">${b}</svg>`,trunk='<rect x="6.1" y="8" width="1.8" height="5" fill="#6b4a2b"/>';
-const IC={VIVANT:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="#00c43a" stroke="#064"/>'),MORT:sv('<path d="M7 13V6M7 9L3.5 5M7 7.5L10.5 3.5M7 6V2" stroke="#222" stroke-width="1.4" fill="none"/>'),
- SOUCHE:sv('<rect x="3.5" y="7" width="7" height="5" fill="#8b5a2b" stroke="#4a2f14"/><ellipse cx="7" cy="7" rx="3.5" ry="1.4" fill="#c9a26b" stroke="#4a2f14"/>'),
- ELIMINE:sv(trunk+'<circle cx="7" cy="5.5" r="4.5" fill="none" stroke="#c0392b" stroke-width="1.4"/><path d="M2 12L12 2" stroke="#c0392b" stroke-width="1.6"/>'),PROJET:sv(trunk+'<path d="M7 1L11 8H3Z" fill="#2e6da4"/>')};
+const sv=b=>`<svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align:middle;flex:none">${b}</svg>`;
+const IC={
+ VIVANT:sv('<rect x="7" y="9.5" width="2" height="5.5" rx=".6" fill="#7a5230"/><circle cx="5.2" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="10.8" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="8" cy="4.7" r="3.7" fill="#4fd878" stroke="#177a3a" stroke-width=".6"/>'),
+ MORT:sv('<path d="M8 15V8M8 11.2L4.4 7.6M8 9.6L11.6 6M8 8V3.4M4.4 7.6L3 5.2M11.6 6L13 4" stroke="#4a4a4a" stroke-width="1.5" stroke-linecap="round" fill="none"/>'),
+ SOUCHE:sv('<ellipse cx="8" cy="13" rx="5" ry="1.8" fill="#6b4a2b"/><rect x="3" y="7" width="10" height="6" fill="#9a6b3d"/><ellipse cx="8" cy="7" rx="5" ry="2" fill="#dfba84" stroke="#6b4a2b" stroke-width=".7"/><ellipse cx="8" cy="7" rx="2.6" ry="1" fill="none" stroke="#9a6b3d" stroke-width=".6"/>'),
+ ELIMINE:sv('<circle cx="8" cy="6" r="4.5" fill="#d3d8d4"/><rect x="7.2" y="10" width="1.6" height="5" fill="#a0a0a0"/><path d="M2.6 13.4L13.4 2.6M2.6 2.6L13.4 13.4" stroke="#e03030" stroke-width="2" stroke-linecap="round"/>'),
+ PROJET:sv('<path d="M8 15V8" stroke="#2e6da4" stroke-width="1.6"/><path d="M8 9.5C4 9.5 3 6 3 4.2c3 0 5 1 5 5.300z" fill="#58b0f0"/><path d="M8 7.8c0-3 2-5 5-5 0 3-2 5-5 5z" fill="#2e6da4"/>')};
 /* étiquette "carré-numéro" : champ t[10] quand il existera dans les exports, sinon le gid */
 const GEO='https://geopro.bordeaux-metropole.fr/adws/app/7e191113-a8ee-11f0-8c10-d7297c04ea52/?_r=Arbre&_f.GID=';
 const nmi=(a,i)=>i>=0?a[i]:'';
@@ -993,38 +1023,40 @@ function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?10:z>=16?8:z>=14?6.4:5.4,q=S*1.25,lb=z>=17;
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=17,grp=z<19.5; /* 19,5 ≈ 1/500 */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
- const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.7)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
+ const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
  const pin=(x,y)=>{const R=S*.95,cy=y-S*1.6;g.moveTo(x,y);g.bezierCurveTo(x-R*.15,y-S*.7,x-R,cy+R*.75,x-R,cy);g.arc(x,cy,R,Math.PI,0);g.bezierCurveTo(x+R,cy+R*.75,x+R*.15,y-S*.7,x,y);g.closePath();};
+ const cone=(x,y)=>{g.moveTo(x-q*.36,y-q*1.7);g.lineTo(x+q*.36,y-q*1.7);g.lineTo(x+q*.78,y-q*.28);g.lineTo(x-q*.78,y-q*.28);g.closePath();g.rect(x-q*.92,y-q*.28,q*1.84,q*.26);};
  g.lineJoin='round';
- /* arbres : ronds de la couleur du statut (ou de l'état général) */
  for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){const[x,y]=XY(k);if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();}
- /* interventions : épingles de la couleur de la classification, double contour (blanc + sombre) visible sur tout fond */
- const dots=[];
- for(const c in BKt){g.fillStyle=c;g.beginPath();for(const k of BKt[c]){const[x,y]=XY(k);if(!ins(x,y))continue;pin(x,y);dots.push(x,y);}halo(5.2,3);g.fill();}
- g.fillStyle='#fff';g.beginPath();for(let i=0;i<dots.length;i+=2){g.moveTo(dots[i]+S*.4,dots[i+1]-S*1.6);g.arc(dots[i],dots[i+1]-S*1.6,S*.4,0,6.2832);}g.fill();
- /* cônes de chantier : couleur graduée selon l'échéance */
- const cone=(x,y)=>{g.moveTo(x-q*.38,y-q*1.75);g.lineTo(x+q*.38,y-q*1.75);g.lineTo(x+q*.95,y-q*.3);g.lineTo(x-q*.95,y-q*.3);g.closePath();g.rect(x-q*1.15,y-q*.3,q*2.3,q*.3);};
- for(const c in BKe){g.fillStyle=ECC[c];g.beginPath();for(const k of BKe[c]){const[x,y]=XY(k);if(!ins(x,y))continue;cone(x,y);}halo(5.2,3);g.fill();}
- g.fillStyle='#fff';g.beginPath();
- for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(!ins(x,y))continue;g.moveTo(x-q*.52,y-q*1.4);g.lineTo(x+q*.52,y-q*1.4);g.lineTo(x+q*.7,y-q*.95);g.lineTo(x-q*.7,y-q*.95);g.closePath();}
- g.fill();
- if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=3;g.beginPath();
-  for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=V[k].ti||V[k].cn>=0;
-   if(sel.has(V[k].t[0])){const cy=sym?y-S*1.1:y,rr=sym?S*1.7+2:r+3;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<2500)lbl.push([lab(V[k].t),x+(sym?S*1.2:r)+4,sym?y-S*1.1:y]);}
+ /* interventions : en dessous du 1/500 une seule épingle / un seul cône par zone ; au-delà, la couleur de classification de chaque arbre */
+ const pins=[],cones=[];
+ if(grp){const cell=Math.max(11,S*2.2),A=new Map(),C=new Map();
+  for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=A.get(key);if(e){e.x+=x;e.y+=y;e.n++;}else A.set(key,{x,y,n:1});}
+  A.forEach(e=>pins.push({x:e.x/e.n,y:e.y/e.n,c:'#2457d6'}));
+  for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=C.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cl=Math.max(e.cl,+c);}else C.set(key,{x,y,n:1,cl:+c});}
+  C.forEach(e=>cones.push({x:e.x/e.n,y:e.y/e.n,c:ECC[e.cl]}));}
+ else{for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(ins(x,y))pins.push({x,y,c});}
+  for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(ins(x,y))cones.push({x,y,c:ECC[c]});}}
+ const by=l=>{const o={};l.forEach(p=>(o[p.c]??=[]).push(p));return o;};
+ const bp=by(pins);for(const c in bp){g.fillStyle=c;g.beginPath();bp[c].forEach(p=>pin(p.x,p.y));halo(3.4,1.8);g.fill();}
+ g.fillStyle='#fff';g.beginPath();pins.forEach(p=>{g.moveTo(p.x+S*.3,p.y-S*1.6);g.arc(p.x,p.y-S*1.6,S*.3,0,6.2832);});g.fill();
+ const bc=by(cones);for(const c in bc){g.fillStyle=c;g.beginPath();bc[c].forEach(p=>cone(p.x,p.y));halo(3.4,1.8);g.fill();}
+ g.fillStyle='#fff';g.beginPath();cones.forEach(p=>{g.moveTo(p.x-q*.5,p.y-q*1.38);g.lineTo(p.x+q*.5,p.y-q*1.38);g.lineTo(p.x+q*.64,p.y-q*.95);g.lineTo(p.x-q*.64,p.y-q*.95);g.closePath();});g.fill();
+ if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
+  for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
+   if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
+   if(lb&&lbl.length<2500)lbl.push([lab(V[k].t),x+r+3,y+1]);}
   g.stroke();g.restore();
-  /* numéros : pastille blanche, texte gras foncé */
-  g.font='bold 10.5px "Segoe UI",sans-serif';
-  const occ=new Map(),CS=48;
-  lbl.forEach(([l,x,y])=>{const w=g.measureText(l).width+9,hh=15,bx=x,by=y-hh/2,rd=4;
-   /* anti-chevauchement : un numéro n'est dessiné que s'il ne recouvre pas un numéro déjà posé (zoomer pour tout voir) */
-   let hit=false;const c0=Math.floor(bx/CS),c1=Math.floor((bx+w)/CS),r0=Math.floor(by/CS),r1=Math.floor((by+hh)/CS);
-   for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(bx<q2[0]+q2[2]&&bx+w>q2[0]&&by<q2[1]+q2[3]&&by+hh>q2[1]){hit=true;break;}
-   if(hit)return;for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([bx,by,w,hh]);}
-   g.beginPath();g.moveTo(bx+rd,by);g.arcTo(bx+w,by,bx+w,by+hh,rd);g.arcTo(bx+w,by+hh,bx,by+hh,rd);g.arcTo(bx,by+hh,bx,by,rd);g.arcTo(bx,by,bx+w,by,rd);g.closePath();
-   g.fillStyle='rgba(255,255,255,.93)';g.fill();g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=1;g.stroke();g.fillStyle='#111';g.fillText(l,bx+4.5,by+hh-4);});}
+  /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
+  g.font='bold 8.5px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
+  const occ=new Map(),CS=40;
+  lbl.forEach(([l,x,y])=>{const w=g.measureText(l).width,hh=10,bx=x,by0=y-hh/2;
+   let hit=false;const c0=Math.floor(bx/CS),c1=Math.floor((bx+w)/CS),r0=Math.floor(by0/CS),r1=Math.floor((by0+hh)/CS);
+   for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(bx<q2[0]+q2[2]&&bx+w>q2[0]&&by0<q2[1]+q2[3]&&by0+hh>q2[1]){hit=true;break;}
+   if(hit)return;for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([bx,by0,w,hh]);}
+   g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,x,y);g.fillStyle='#111';g.fillText(l,x,y);});}
 }
 map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
 
@@ -1069,7 +1101,7 @@ function refresh(fit){
   if(cb||ti||cn>=0)V.push({t,m,c:cb,ti,cn});
  });
  BKc={};BKt={};BKe={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);if(v.cn>=0)(BKe[v.cn]??=[]).push(i);});
- legendT(th,cnt);legendE(cE);legendCl(cC);panel();proj();draw();
+ const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();proj();draw();
  if(fit===true)homeView();else if(fit)fitV();
 }
 const tri=c=>`<svg width="13" height="17" viewBox="0 0 13 17" style="flex:none"><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="${c}" stroke="#2b2b2b" stroke-width="1.8"/><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="none" stroke="#fff" stroke-width=".8"/><circle cx="6.5" cy="6" r="2" fill="#fff"/></svg>`;
@@ -1078,10 +1110,16 @@ const bar=(a,b)=>`<div class="row" style="margin:4px 0"><button class="s" ${a}>T
 function legendT(th,cnt){
  const ks=th==='eg'?[...DA.eg,'—']:DA.s,off=offT[th==='eg'?'eg':'st'];
  $('leg').innerHTML=bar('data-a="all"','data-a="none"')+ks.filter(k=>cnt[k]||off.has(k)).map(k=>`<label class="chk"><input type="checkbox" data-k="${esc(k)}" ${off.has(k)?'':'checked'}><i style="background:${th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')}"></i>${th==='eg'?'État '+(k==='—'?'non renseigné':esc(k)):esc(SL[k]||k)} (${nf(cnt[k]||0)})</label>`).join('');}
-function legendE(cE){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} (${nf(cE[i]||0)})</label>`).join('');}
-function legendCl(cC){
- const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cC[i]||M.off.cl.has(i));
- $('clp').innerHTML=bar('data-all="cl:1"','data-all="cl:0"')+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(DI.C[i])} (${nf(cC[i]||0)})</label>`).join('')+'</div>';
+function aggLeg(S){
+ const GG=geoG(S),cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
+ I.forEach((it,x)=>{const gs=GG[x];if(!gs.length||!dOK(it,S)||S.off.st.has(it[2])||S.off.af.has(it[9]))return;
+  add(cl,it[1],gs);if(!S.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
+ return{cl,ec};}
+const cntTxt=e=>`(${nf(e?e.n:0)}-${nf(e?e.g.size:0)})`;
+function legendE(ec){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
+function legendCl(cl){
+ const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cl[i]||M.off.cl.has(i));
+ $('clp').innerHTML=bar('data-all="cl:1"','data-all="cl:0"')+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(DI.C[i])} ${cntTxt(cl[i])}</label>`).join('')+'</div>';
  if($('ll'))$('ll').scrollTop=sc;}
 function ckTable(kind,S,rows,colr){
  const nm=NAMES[kind],ids=nm.map((_,i)=>i).filter(i=>rows[i]||S.off[kind].has(i)).sort((a,b)=>nm[a].localeCompare(nm[b],'fr'));
@@ -1128,9 +1166,10 @@ map.on('click',e=>{if(PZ!==map.getZoom())proj();const p=map.project(e.latlng);le
 
 /* ---- recherche et sélection ---- */
 const pts=gs=>gs.filter(g=>tree.has(g)).map(g=>{const t=T[tree.get(g)];return[t[2],t[1]];});
+function zoomTo(p,maxZ){map.invalidateSize();if(!p.length)return;if(p.length===1){map.setView(p[0],Math.min(18,maxZ||18),{animate:false});return;}map.fitBounds(L.latLngBounds(p).pad(.15),{maxZoom:maxZ||19,animate:false});}
 function montrer(gs,txt){closeDr();
  sel=new Set(gs.filter(g=>tree.has(g)));refresh(false);
- const p=pts(gs);if(p.length)map.fitBounds(L.latLngBounds(p).pad(.3),{maxZoom:18});
+ zoomTo(pts(gs),19);
  $('fiche').style.display='flex';$('ft').innerHTML=txt+`<br>${sel.size} arbre(s) localisé(s) sur ${gs.length}`;
  $('bf').style.display=$('bl').style.display=selK>=0?'':'none';$('iti').textContent='';
 }
@@ -1167,7 +1206,7 @@ function stFind(v,tp,un){v=(v||'').trim();if(!v)return null;const ok=e=>(tp===un
  const n=v.toLowerCase();for(const[l,e]of STL)if(ok(e)&&l.toLowerCase().includes(n))return e;return null;}
 function selStation(e){closeDr();
  selSt=new Set(e.gids);refresh(false);
- const p=pts(e.gids);if(p.length)map.fitBounds(L.latLngBounds(p).pad(.3),{maxZoom:19});
+ zoomTo(pts(e.gids),19);
  $('qsi').innerHTML=`${esc(stLab(e))} — ${e.gids.length} arbre(s) en bleu · <a href="#" onclick="ficheStation('${e.k}');return false">Fiche station</a> · <a href="#" onclick="clrSt();return false">Effacer</a>`;}
 function pickStation(v){const e=stFind(v,M.tp);if(!e){$('qsi').textContent='Station introuvable dans ce territoire.';return;}selStation(e);}
 function clrSt(){selSt=new Set();$('qs').value='';$('qsi').textContent='';refresh(false);}
@@ -1195,66 +1234,104 @@ function autocomplete(inp,filt,onOne,onMany){
 $('acBox').addEventListener('mousedown',e=>{const d=e.target.closest('div[data-i]');if(!d||!acCur)return;e.preventDefault();const x=acCur._items[+d.dataset.i];if(!x)return;$('acBox').style.display='none';acCur.value=x.l;acCur._one(x.e);});
 let lastMulti=[];
 function selStations(list){closeDr();lastMulti=list;selSt=new Set(list.flatMap(e=>e.gids));refresh(false);
- const p=pts([...selSt]);if(p.length)map.fitBounds(L.latLngBounds(p).pad(.2),{maxZoom:19});
+ zoomTo(pts([...selSt]),19);
  $('qsi').innerHTML=`${list.length} station(s) — ${selSt.size} arbre(s) en bleu · <a href="#" onclick="fstMultiOpen();return false">Voir la liste (fiche station)</a> · <a href="#" onclick="clrSt();return false">Effacer</a>`;}
-function fstMultiOpen(){fstMulti=lastMulti;curSt=null;$('fQ').value=$('qs').value;showTab(2);}
+function fstMultiOpen(){pMulti=lastMulti;$('fQ').value=$('qs').value;$('fTp').value=M.tp;fstUn();$('fUn').value='';fstSi();$('fSi').value='';showTab(2);}
 autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length){$('qsi').textContent='Aucune station trouvée dans ce territoire.';return;}selStations(l);});
 
-/* ---- fiche d'intervention (avec cartes de situation) ---- */
-function groupes(ts){const out=[];(function r(a){
- if(a.length<2){out.push(a);return;}
- const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),h=(Math.max(...la)-Math.min(...la))*110540,w=(Math.max(...lo)-Math.min(...lo))*78000;
- if(a.length<=30&&Math.max(h,w)<450){out.push(a);return;}
- const ax=w>=h?1:2;a=[...a].sort((x,y)=>x[ax]-y[ax]);const m=a.length>>1;r(a.slice(0,m));r(a.slice(m));})(ts);return out;}
-function carteHTML(a,k){
- const W=718,H=430,N=256*2**0,wx=(lo,z)=>(lo+180)/360*256*2**z,wy=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
- const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
- let z=19;while(z>12&&(wx(x2,z)-wx(x1,z)>W-90||wy(y2,z)-wy(y1,z)>H-70))z--;
- const x0=(wx(x1,z)+wx(x2,z))/2-W/2,y0=(wy(y1,z)+wy(y2,z))/2-H/2,sc=256*2**z;
- const mer=y=>{const n=Math.PI-2*Math.PI*y/sc;return 180/Math.PI*Math.atan(.5*(Math.exp(n)-Math.exp(-n)));},
-  lo0=x0/sc*360-180,lo1=(x0+W)/sc*360-180,la0=mer(y0),la1=mer(y0+H);
- const mine=new Set(I[k][7]),col=CC(I[k][1]);let im='',nb='',iv='',ring='',n=0;
- for(let tx=Math.floor(x0/256);tx<=Math.floor((x0+W)/256);tx++)for(let ty=Math.floor(y0/256);ty<=Math.floor((y0+H)/256);ty++){
-  const st=`left:${tx*256-x0}px;top:${ty*256-y0}px`,u=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/${z}/${ty}/${tx}`;
-  im+=`<img style="${st}" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${ty}&TILECOL=${tx}">`;}
+/* ---- fiche d'intervention : orientation automatique, cartes pleine largeur découpées, pictos et échéances ---- */
+const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
+function fitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
+ let z=20;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
+function overlaps(a,W,H,pad){
+ const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
+ const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
+ /* on ne compare que des arbres différents (l'épingle d'un arbre touche toujours son propre numéro) */
+ for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
+ return false;}
+/* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
+function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
+ const bad=a=>a.length>1&&(a.length>40||fitZ(a,W,H,pad)<16.5||overlaps(a,W,H,pad));
+ for(let n=0;n<400&&G.length<MAXM;n++){
+  let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
+  const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
+  const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
+ G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
+function mapHTML(a,all,W,H,i,n,col,ec){
+ const zf=fitZ(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+ const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
+ const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
+ for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
+  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
+ const mine=new Set(all.map(t=>t[0])),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
+ const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
+ let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
+ const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
+ const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
  for(const t of T){
-  if(t[1]<lo0||t[1]>lo1||t[2]>la0||t[2]<la1)continue;
-  const x=wx(t[1],z)-x0,y=wy(t[2],z)-y0,s=DA.s[t[3]];
-  if(mine.has(t[0])){ring+=`<circle cx="${x}" cy="${y}" r="11" fill="none" stroke="#ffd400" stroke-width="3"/>`;
-   iv+=`<path d="M${x} ${y-9}L${x+8.5} ${y+6}L${x-8.5} ${y+6}Z" fill="${col}" stroke="#000" stroke-width="1.2"/><text x="${x+13}" y="${y+4}" font-size="11" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="3">${esc(lab(t))}</text>`;}
-  else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&n++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${SC[s]}" stroke="#000" stroke-width=".8"/>`;
+  if(t[1]<lonA||t[1]>lonB||t[2]>latA||t[2]<latB)continue;
+  const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
+  if(mine.has(t[0])){
+   sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;
+   const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
+   sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
+   sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
+   lbl+=`<text x="${x+6}" y="${y+3}" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
+  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
  }
- return `<div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${ring}${iv}</svg></div>`;
+ const r0=lab(a[0]),r1=lab(a[a.length-1]);
+ return `<div class="mt">Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div>`;
 }
 function fiche(k){
- const it=I[k],ts=it[7].map(g=>T[tree.get(g)]).filter(Boolean);
- const dl=f=>{const a=[...new Set(ts.map(f).filter(Boolean))];return a.length?esc(a.slice(0,12).join(', '))+(a.length>12?' … (+'+(a.length-12)+')':''):'—';};
- const locU=dl(t=>nmi(DA.un,t[6])),locS=dl(t=>nmi(DA.si,t[7])),locT=dl(t=>nmi(DA.sta,t[8]));
- const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],e=DI.TE[g],s=t?DA.s[t[3]]:'';
-  return `<tr><td>${IC[s]||''}</td><td>${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td>${esc(SL[s]||s||'non localisé')}</td></tr>`;}).join('');
- const gr=groupes(ts),cartes=gr.slice(0,12).map((a,i)=>`<h3>Carte ${i+1}/${Math.min(gr.length,12)} — ${a.length} arbre(s)</h3>`+carteHTML(a,k)).join('')+(gr.length>12?`<p>${gr.slice(12).reduce((n,a)=>n+a.length,0)} arbre(s) non cartographié(s) (limite de 12 cartes).</p>`:'');
+ if(!I[k])return;
+ const it=I[k],ts=it[7].map(g=>T[tree.get(g)]).filter(Boolean).sort(cmpT),ec=ecl(it),nm=DI.S[it[2]],col=CC(it[1]),sc=SCOL[nm]||'#6c757d';
+ const sts=new Map();ts.forEach(t=>{if(t[8]>=0){const key=t[6]+'|'+t[7]+'|'+t[8];if(!sts.has(key))sts.set(key,STN.get(key));}});
+ const nbOK=e=>e.gids.filter(g=>DA.s[T[tree.get(g)][3]]!=='ELIMINE').length;
+ const lim=(a,n)=>a.length?esc(a.slice(0,n).join(', '))+(a.length>n?' … (+'+(a.length-n)+')':''):'—';
+ const U=[...new Set(ts.map(t=>nmi(DA.un,t[6])).filter(Boolean))],Si=[...new Set(ts.map(t=>nmi(DA.si,t[7])).filter(Boolean))];
+ const stl=[...sts.values()].filter(Boolean).sort((a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr')),
+  stTxt=stl.length?stl.slice(0,8).map(e=>`${esc(DA.sta[e.sta])} <span class="cnt">${nbOK(e)} arbres</span>`).join(' · ')+(stl.length>8?' … (+'+(stl.length-8)+')':''):'—';
+ const ech=ec>=0?`<span class="ech" style="background:${ECC[ec]};${ec===0?'color:#3a2e00':''}">${coneSvg(ECC[ec],false,'#fff')}<span class="bang">${'!'.repeat(ec+1)}</span> ${esc(ECL[ec])}</span>`:'';
+ const lons=ts.map(t=>t[1]),lats=ts.map(t=>t[2]),wM=ts.length?(Math.max(...lons)-Math.min(...lons))*78000:0,hM=ts.length?(Math.max(...lats)-Math.min(...lats))*110540:0;
+ const land=wM>=hM*1.15,W=land?1047:718,H=land?560:540;
+ const mp=ts.length?splitMaps(ts,W,H):[],maps=mp.map((a,i)=>mapHTML(a,ts,W,H,i+1,mp.length,col,ec)).join('');
+ const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
+  return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${esc(SL[s]||s||'non localisé')}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
+ const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
  const buf=[],w={document:{write:s=>buf.push(s),close:()=>ficheShow(buf.join(''))}};
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
- @page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}h1{font-size:20px;margin:0 0 10px}
- .bar{position:sticky;top:0;background:#fff;padding:6px 0;display:flex;gap:8px}.bar button{padding:6px 16px;font:inherit;cursor:pointer}
- table{border-collapse:collapse;width:100%}td,th{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top}
- .k{width:32%;background:#f1f3ef;font-weight:600}.l td:first-child{width:24px;text-align:center}thead{display:table-header-group}h2{font-size:14px;margin:16px 0 6px}h3{font-size:12px;margin:12px 0 4px}.d{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #000;margin:0 4px 0 14px;vertical-align:middle}
- .m{position:relative;overflow:hidden;border:1px solid #888;break-inside:avoid}.m img{position:absolute;width:256px;height:256px}.m svg{position:absolute;left:0;top:0}
- @media print{.bar{display:none}}</style></head><body>
- <div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>
- <h1>Fiche d'intervention n° ${esc(it[0])}</h1><table>
- <tr><td class="k">Classification</td><td>${esc(DI.C[it[1]])}</td></tr>
- <tr><td class="k">Unité</td><td>${locU}</td></tr>
- <tr><td class="k">Site</td><td>${locS}</td></tr>
- <tr><td class="k">Station</td><td>${locT}</td></tr>
- <tr><td class="k">Statut</td><td>${esc(DI.S[it[2]])}</td></tr>
- <tr><td class="k">Date objectif de fin</td><td>${fd(it[5])}</td></tr>
- <tr><td class="k">Date de fin réelle</td><td>${fd(it[6])}</td></tr>
- <tr><td class="k">Description</td><td>${esc(it[4])||'—'}</td></tr>
- <tr><td class="k">Description détaillée</td><td>${esc(it[8])||'—'}</td></tr></table>
- <h2>Arbres concernés (${it[7].length})</h2><table class="l"><thead><tr><th></th><th>Carré-numéro</th><th>Espèce</th><th>Statut</th></tr></thead><tbody>${rows}</tbody></table>
- <h2>Situation</h2><p>${['VIVANT','MORT','SOUCHE'].map(s=>`<span><i class="d" style="background:${SC[s]}"></i>${SL[s]}</span>`).join('')}<span><i class="d" style="background:${CC(it[1])};outline:3px solid #ffd400"></i>Arbres de l'intervention (triangles, couleur = classification)</span></p>${cartes||'<p>Aucun arbre localisé.</p>'}
- <p style="margin-top:14px;color:#666">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
+ @page{size:A4 ${land?'landscape':'portrait'};margin:10mm}
+ *{box-sizing:border-box}body{margin:0;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .hero{background:linear-gradient(135deg,#2c6e5c 0%,#4a9877 55%,#86c4a0 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
+ .hero:after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:#ffffff1c}
+ .hero small{opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-size:10.5px}.hero h1{margin:1px 0 5px;font-size:23px}.hero .cl{font-size:17px;font-weight:800;text-shadow:0 1px 2px #0003}
+ .badge{display:inline-block;padding:2px 12px;border-radius:12px;font-weight:700;color:#fff;margin-right:8px;box-shadow:0 1px 3px #0003}
+ .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0}.card{background:linear-gradient(#fff,#f3f8f4);border:1px solid #d3e3d8;border-radius:10px;padding:7px 12px;box-shadow:0 2px 5px #0001}
+ .card .k{font-size:10px;text-transform:uppercase;color:#5b7062;letter-spacing:.07em}.card .v{font-size:13px;font-weight:600}.card.w{grid-column:1/-1}
+ .cnt{background:#e2f1e7;color:#2c6a45;border-radius:9px;padding:0 7px;font-weight:700;font-size:10.5px;margin-left:2px}
+ .ech{display:inline-flex;align-items:center;gap:5px;padding:1px 10px;border-radius:12px;color:#fff;font-weight:700;margin-left:6px;box-shadow:0 1px 3px #0003}.bang{letter-spacing:1px;font-size:14px}
+ h2{font-size:14px;margin:14px 0 6px;color:#2c6e5c;border-bottom:2px solid #cfe3d6;padding-bottom:3px}
+ table{border-collapse:collapse;width:100%;table-layout:fixed;box-shadow:0 2px 6px #0001;border-radius:8px;overflow:hidden}
+ th{background:#2c6e5c;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
+ td.c{text-align:center}td.num{font-weight:700;font-size:12.5px}td.st{font-size:11px;color:#3d5546}.box{display:inline-block;width:15px;height:15px;border:1.6px solid #3b5646;border-radius:3px;background:#fff}.ink{height:16px;border-bottom:1.3px dotted #7d948a}
+ .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
+ .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}
+ </style></head><body>
+ <div class="hero"><small>Fiche d'intervention</small><h1>N° ${esc(it[0])}</h1><div class="cl">${esc(DI.C[it[1]])}</div><div style="margin-top:7px"><span class="badge" style="background:${sc}">${esc(nm)}</span>${ech}</div></div>
+ <div class="grid">
+  <div class="card"><div class="k">Unité</div><div class="v">${lim(U,8)}</div></div><div class="card"><div class="k">Site</div><div class="v">${lim(Si,8)}</div></div>
+  <div class="card w"><div class="k">Station (arbres hors éliminés)</div><div class="v">${stTxt}</div></div>
+  ${dts}
+  <div class="card w"><div class="k">Description</div><div class="v">${esc(it[4])||'—'}</div></div>
+  <div class="card w"><div class="k">Description détaillée</div><div class="v">${esc(it[8])||'—'}</div></div>
+ </div>
+ <h2>Arbres concernés (${it[7].length})</h2>
+ <table><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
+ <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table>
+ <h2>Situation</h2>
+ <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${IC[s]} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
+ ${maps||'<p>Aucun arbre localisé.</p>'}
+ <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
  w.document.close();
 }
 
@@ -1297,24 +1374,28 @@ $('bi').onclick=()=>{
  },()=>$('iti').textContent='Position refusée ou indisponible (HTTPS requis sur certains navigateurs).',{enableHighAccuracy:true,timeout:15000});
 };
 
-/* ---- onglet statistiques ---- */
-function showTab(s){$('stats').style.display=s===1?'block':'none';$('fst').style.display=s===2?'block':'none';$('fmap').style.display=s?'none':'flex';$('app').classList.toggle('st',!!s);
- $('tbC').className=s===0?'':'s';$('tbS').className=s===1?'':'s';$('tbF').className=s===2?'':'s';$('rsM').style.display=s?'none':'';
- closeDr();if(s===1){stat();kpiRender();}else if(s===2)fstBody();else map.invalidateSize();}
-$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);$('tbF').onclick=()=>showTab(2);
+/* ---- onglets, tiroirs (responsive) ---- */
 const mq=window.matchMedia?matchMedia('(max-width:1000px)'):{matches:false,addEventListener(){}};
-function side(s){const a=$('app'),c=mq.matches?(s==='L'?'ol':'or'):(s==='L'?'hl':'hr');if(mq.matches)a.classList.remove(s==='L'?'or':'ol');a.classList.toggle(c);setTimeout(()=>map.invalidateSize(),280);}
-function closeDr(){if(mq.matches)$('app').classList.remove('ol','or');}
-$('hL').onclick=()=>side('L');$('hR').onclick=()=>side('R');
-mq.addEventListener('change',()=>{$('app').classList.remove('ol','or','hl','hr');setTimeout(()=>map.invalidateSize(),50);});
-$('stp').innerHTML=optsS('Tous les territoires',DA.tp);
+function syncBk(){$('bk').style.display=mq.matches&&($('app').classList.contains('ol')||$('app').classList.contains('or'))?'block':'none';}
+function closeDr(){if(mq.matches)$('app').classList.remove('ol','or');syncBk();}
+function side(s){const a=$('app'),c=mq.matches?(s==='L'?'ol':'or'):(s==='L'?'hl':'hr');if(mq.matches)a.classList.remove(s==='L'?'or':'ol');a.classList.toggle(c);syncBk();setTimeout(()=>map.invalidateSize(),280);}
+$('hL').onclick=()=>side('L');$('hR').onclick=()=>side('R');$('xL').onclick=closeDr;$('xR').onclick=closeDr;$('bk').onclick=closeDr;
+mq.addEventListener('change',()=>{$('app').classList.remove('ol','or','hl','hr');syncBk();setTimeout(()=>map.invalidateSize(),50);});
+function showTab(s){
+ $('stats').style.display=s===1?'block':'none';$('fst').style.display=s===2?'block':'none';
+ $('fmap').style.display=s===0?'flex':'none';$('fstat').style.display=s===1?'flex':'none';$('fpat').style.display=s===2?'flex':'none';
+ $('app').classList.toggle('st',!!s);$('tbC').className=s===0?'':'s';$('tbS').className=s===1?'':'s';$('tbF').className=s===2?'':'s';$('rsM').style.display=s?'none':'';
+ closeDr();if(s===1)statRender();else if(s===2)patRender();else map.invalidateSize();}
+$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);$('tbF').onclick=()=>showTab(2);
+
+/* ---- statistiques détaillées ---- */
 const sIdx=n=>DI.S.indexOf(n);
 function readG(){G.tp=$('stp').value;G.qu=$('squ').value;G.d1=$('sd1').value;G.d2=$('sd2').value;G.r1=$('sr1').value;G.r2=$('sr2').value;}
 function presetSt(){const m=$('sm').value,keep=m==='C'?sIdx('CLOTUREE'):m==='I'?sIdx('INITIALISEE'):-1;G.off.st=new Set(keep<0?[]:DI.S.map((_,i)=>i).filter(i=>i!==keep));}
-function donut(ent,colr){
+function donut(ent,colr,label){
  const R=70,C=2*Math.PI*R,tot=ent.reduce((s,e)=>s+e.n,0);let o=0;
- return '<svg width="190" height="190" viewBox="0 0 200 200">'+ent.map((e,i)=>{const l=e.n/tot*C,s=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${colr(i)}" stroke-width="36" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 100 100)"><title>${esc(e.name)} : ${nf(e.n)} (${Math.round(e.n/tot*100)} %)</title></circle>`;o+=l;return s;}).join('')+
-  `<text x="100" y="99" text-anchor="middle" font-size="24" font-weight="600">${nf(tot)}</text><text x="100" y="118" text-anchor="middle" font-size="11" fill="#666">interventions</text></svg>`;}
+ return '<svg width="170" height="170" viewBox="0 0 200 200">'+ent.map((e,i)=>{const l=e.n/tot*C,s=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${colr(i)}" stroke-width="36" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 100 100)"><title>${esc(e.name)} : ${nf(e.n)} (${Math.round(e.n/tot*100)} %)</title></circle>`;o+=l;return s;}).join('')+
+  `<text x="100" y="99" text-anchor="middle" font-size="24" font-weight="600">${nf(tot)}</text><text x="100" y="118" text-anchor="middle" font-size="11" fill="#666">${label||'interventions'}</text></svg>`;}
 function bars(ent,colr){
  const hd=ent.slice(0,12),rest=ent.slice(12).reduce((s,e)=>s+e.n,0),mx=hd[0].n;
  return '<div class="bars">'+hd.map((e,i)=>`<div><span class="bl" title="${esc(e.name)}">${esc(e.name)}</span><span class="bb"><i style="width:${e.n/mx*100}%;background:${colr(i)}"></i></span><b>${nf(e.n)}</b></div>`).join('')+
@@ -1323,38 +1404,96 @@ function resBlock(title,o,names,type){
  const ent=Object.entries(o).map(([k,e])=>({k:+k,n:e.n,a:e.g.size,name:names[k]})).sort((x,y)=>y.n-x.n);
  const colr=i=>type==='bars'?CC(ent[i].k):PAL[i%PAL.length];
  const tb='<table class="rt"><tr><th></th><th>Interv.</th><th>Arbres</th></tr>'+ent.map((e,i)=>`<tr><td><i class="sw" style="background:${colr(i)}"></i>${esc(e.name)}</td><td>${nf(e.n)}</td><td>${nf(e.a)}</td></tr>`).join('')+'</table>';
- return `<h3>${title}</h3><div class="rb"><div>${tb}</div>${ent.length>1?'<div>'+(type==='donut'?donut(ent,colr):bars(ent,colr))+'</div>':''}</div>`;
-}
+ return `<h3>${title}</h3><div class="rb"><div>${tb}</div>${ent.length>1?'<div>'+(type==='donut'?donut(ent,colr):bars(ent,colr))+'</div>':''}</div>`;}
 function stat(){
  readG();const a=agg(G);
  $('sres').textContent=`${nf(a.ni)} intervention(s) · ${nf(a.all.size)} arbre(s)`;
  $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);$('skc').innerHTML=ckTable('cl',G,a.k.cl,CC);
- $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');
-}
+ $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');}
+$('stp').innerHTML=optsS('Tous les territoires',DA.tp);
 $('stp').onchange=()=>{fillQ('stp','squ');stat();};
 ['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).onchange=stat);
 $('sm').onchange=()=>{presetSt();stat();};
 bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);bindCk($('skc'),G,stat);
-function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};stat();}
-$('rsS').onclick=resetG;
-/* « Afficher cette sélection sur la carte » : recopie tous les critères et met à jour carte et bandeau de droite */
+function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};}
 $('sgo').onclick=()=>{readG();
  Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
  $('tp').value=M.tp;fillQ('tp','qu');$('qu').value=M.qu;dlMap();['d1','d2','r1','r2'].forEach(k=>$(k).value=M[k]);
  sel=new Set();selSt=new Set();selK=-1;$('fiche').style.display='none';showTab(0);refresh(true);};
-/* ---- fiche station : sections par statut, interventions dépliables avec leurs arbres ---- */
+
+/* ---- indicateurs ---- */
+const fmtP=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
+let kFilt={tp:'',qu:'',un:'',sg:null},kpiLate=[],lateOpen=false,lateClSel='';
+const kOK=(t,g)=>(kFilt.tp===''||t[4]==kFilt.tp)&&(kFilt.qu===''||t[5]==kFilt.qu)&&(kFilt.un===''||t[6]==kFilt.un)&&(!kFilt.sg||kFilt.sg.has(g));
+function kUn(){const tp=$('ktp').value,us=[...new Set(stList().filter(e=>tp===''||e.tp==tp).map(e=>e.un).filter(u=>u>=0))].sort((a,b)=>DA.un[a].localeCompare(DA.un[b],'fr'));
+ $('kun').innerHTML='<option value="">Toutes les unités</option>'+us.map(u=>`<option value="${u}">${esc(DA.un[u])}</option>`).join('');}
+function kpiRender(){
+ const tp=$('ktp').value,qu=$('kqu').value,un=$('kun').value,qv=($('kqs').value||'').trim();
+ const ms=qv?stMatch(qv,e=>(tp===''||e.tp==tp)&&(!un||String(e.un)===un)).map(x=>x.e):[],st=ms.length===1?ms[0]:null,sg=qv?new Set(ms.flatMap(e=>e.gids)):null;
+ kFilt={tp,qu,un,sg};
+ let n=0,late=0,act=0,clo=0,ter=0,abd=0,ontime=0,oth=0;kpiLate=[];
+ I.forEach((it,k)=>{let ok=false;for(const g of it[7]){const i=tree.get(g);if(i===undefined)continue;if(kOK(T[i],g)){ok=true;break;}}
+  if(!ok)return;n++;const s=DI.S[it[2]];
+  if(isAct(it)){act++;if(lateOf(it)){late++;kpiLate.push(k);}else ontime++;}
+  else if(s==='CLOTUREE')clo++;else if(s==='TERMINEE')ter++;else if(s==='ABANDONNEE')abd++;else oth++;});
+ const ts={};let nT=0;T.forEach(t=>{if(!kOK(t,t[0]))return;nT++;const s=DA.s[t[3]];ts[s]=(ts[s]||0)+1;});
+ const pc=v=>n?Math.round(v/n*1000)/10:0,tile=(c,ico,l,v,sub,extra)=>`<div class="kpi ${c}" ${extra||''}><span class="kl">${ico} ${l}</span><b>${nf(v)}</b><span class="kp">${fmtP(pc(v))} %</span><div class="kb"><u style="width:${pc(v)}%"></u></div>${sub?`<span class="ks">${sub}</span>`:''}</div>`;
+ const parts=[{name:'En retard',n:late,c:'#e5383b'},{name:'Initialisées ou en cours, dans les délais',n:ontime,c:'#4dabf7'},{name:'Terminées',n:ter,c:'#12b886'},{name:'Clôturées',n:clo,c:'#2f9e44'},{name:'Abandonnées',n:abd,c:'#868e96'},{name:'Autres',n:oth,c:'#ced4da'}].filter(x=>x.n>0);
+ const tparts=Object.entries(ts).map(([s,c])=>({name:SL[s]||s,n:c,c:SC[s]||'#777'})).sort((a,b)=>b.n-a.n);
+ const leg=(l,tot)=>`<div class="kleg">${l.map(x=>`<div><i style="background:${x.c}"></i><span>${esc(x.name)}</span><b>${fmtP(tot?x.n/tot*100:0)} %</b><span class="dt">${nf(x.n)}</span></div>`).join('')}</div>`;
+ $('kpi').innerHTML=`<div class="mut">${nf(n)} intervention(s) dans la sélection${ms.length>1?' · '+ms.length+' stations':st?' · station '+esc(stLab(st)):(qv?' · station introuvable':'')}</div><div class="kpis">`+
+  tile('late','<span class="blink">⚠</span>','En retard',late,'initialisées ou en cours, objectif dépassé · <u>cliquer pour la liste</u>','id="kLate" style="cursor:pointer"')+
+  tile('ini','●','Initialisées ou en cours',act,late?`dont ${nf(late)} en retard`:'')+tile('clo','✔','Clôturées',clo)+tile('ter','✔','Terminées',ter)+tile('abd','✖','Abandonnées',abd)+'</div>'+
+  (n?`<div class="kviz"><div><b>Interventions</b><br>${parts.length>1?donut(parts,i=>parts[i].c,'interventions'):''}</div>${leg(parts,n)}<div><b>Arbres par statut</b><br>${tparts.length>1?donut(tparts,i=>tparts[i].c,'arbres'):''}</div>${leg(tparts,nT)}</div>`:'');
+ $('kLate').onclick=()=>{lateOpen=!lateOpen;lateRender();if(lateOpen&&$('lateBox').scrollIntoView)$('lateBox').scrollIntoView({behavior:'smooth',block:'start'});};
+ lateRender();
+}
+const nmU=i=>i<0?'(sans unité)':DA.un[i],nmS=i=>i<0?'(sans site)':DA.si[i],nmT=i=>i<0?'(sans station)':DA.sta[i];
+function lateList(){
+ const cl=lateClSel,Y=new Map();let total=0;
+ const ins=(yr,u,s,st,rec)=>{const a=Y.get(yr)??new Map();Y.set(yr,a);const b=a.get(u)??new Map();a.set(u,b);const c=b.get(s)??new Map();b.set(s,c);const d=c.get(st)??[];c.set(st,d);d.push(rec);};
+ kpiLate.forEach(k=>{const it=I[k];if(cl!==''&&it[1]!=cl)return;const per=new Map();
+  it[7].forEach(g=>{const i=tree.get(g);if(i===undefined)return;const t=T[i];if(!kOK(t,g))return;const key=t[6]+'|'+t[7]+'|'+t[8];per.set(key,(per.get(key)||0)+1);});
+  if(!per.size)return;total++;per.forEach((n,key)=>{const[u,s,st]=key.split('|').map(Number);ins(it[5].slice(0,4),u,s,st,{k,n});});});
+ const cnt=m=>m instanceof Array?m.length:[...m.values()].reduce((s,x)=>s+cnt(x),0),srt=(keys,nm)=>[...keys].sort((a,b)=>(a<0?'~':nm(a)).localeCompare(b<0?'~':nm(b),'fr'));
+ return `<div class="mut">${total} intervention(s) en retard${cl!==''?' pour cette classification':''} — triées par année d'objectif, puis unité, site, station (cliquer pour déplier)</div>`+
+  [...Y.keys()].sort().map(yr=>`<details class="nv"><summary><b>${yr}</b><span class="bd r">${cnt(Y.get(yr))} interv.</span></summary><div class="ch">`+
+   srt(Y.get(yr).keys(),nmU).map(u=>{const U=Y.get(yr).get(u);return `<details class="nv"><summary>Unité <b>${esc(nmU(u))}</b><span class="bd s">${cnt(U)}</span></summary><div class="ch">`+
+    srt(U.keys(),nmS).map(s=>{const S=U.get(s);return `<details class="nv"><summary>Site <b>${esc(nmS(s))}</b><span class="bd s">${cnt(S)}</span></summary><div class="ch">`+
+     srt(S.keys(),nmT).map(st=>{const L=S.get(st);return `<details class="nv"><summary>Station <b>${esc(nmT(st))}</b><span class="bd s">${L.length}</span></summary><div class="ch">`+
+      L.sort((a,b)=>I[a.k][5].localeCompare(I[b.k][5])).map(r=>{const it=I[r.k],ec=ecl(it);return `<div class="li">${coneSvg(ECC[ec>=0?ec:4],true)}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b> <span class="lt2">(${esc(ECL[ec]||'')})</span></span><span class="bd g">${r.n} arbre(s)</span><a href="#" onclick="fiche(${r.k});return false">Fiche</a></div>`;}).join('')+'</div></details>';}).join('')+'</div></details>';}).join('')+'</div></details>';}).join('')+'</div></details>').join('');
+}
+function lateRender(){const b=$('lateBox');if(!lateOpen){b.innerHTML='';return;}
+ const cls=[...new Set(kpiLate.map(k=>I[k][1]))].sort((a,c)=>DI.C[a].localeCompare(DI.C[c],'fr'));if(!cls.includes(+lateClSel))lateClSel='';
+ b.innerHTML=`<div style="margin:14px 0 6px"><h3 style="margin:0 0 4px">Interventions en retard</h3><label>Filtrer par classification</label><select id="lateCl" style="max-width:420px"><option value="">Toutes les classifications</option>${cls.map(i=>`<option value="${i}">${esc(DI.C[i])}</option>`).join('')}</select></div><div id="lateList">${lateList()}</div>`;
+ $('lateCl').value=lateClSel;$('lateCl').onchange=()=>{lateClSel=$('lateCl').value;$('lateList').innerHTML=lateList();};}
+function kpiReset(){$('ktp').value=DEFTP;fillQ('ktp','kqu');$('kqu').value='';kUn();$('kun').value='';$('kqs').value='';lateOpen=false;lateClSel='';}
+$('ktp').innerHTML=optsS('Tous les territoires',DA.tp);$('ktp').value=DEFTP;fillQ('ktp','kqu');
+$('ktp').onchange=()=>{fillQ('ktp','kqu');kUn();kpiRender();};['kqu','kun'].forEach(i=>$(i).onchange=kpiRender);
+let kT;autocomplete($('kqs'),e=>{const tp=$('ktp').value,un=$('kun').value;return(tp===''||e.tp==tp)&&(!un||String(e.un)===un);},e=>{kpiRender();},()=>kpiRender());
+$('kqs').addEventListener('input',()=>{clearTimeout(kT);kT=setTimeout(kpiRender,250);});
+let statMode='I';
+function statRender(){const I_=statMode==='I';$('fInd').style.display=I_?'flex':'none';$('fDet').style.display=I_?'none':'flex';$('viewInd').style.display=I_?'block':'none';$('viewDet').style.display=I_?'none':'block';
+ $('sgI').classList.toggle('on',I_);$('sgD').classList.toggle('on',!I_);if(I_)kpiRender();else stat();}
+$('sgI').onclick=()=>{statMode='I';statRender();};$('sgD').onclick=()=>{statMode='D';statRender();};
+$('rsS').onclick=()=>{resetG();kpiReset();statRender();};
+
+/* ---- liste du patrimoine : unités > sites > stations (tout replié), onglets Interventions / Arbres ---- */
 const ORD=['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION','TERMINEE','CLOTUREE','ABANDONNEE'];
 const SCOL={INITIALISEE:'#2f7de1','EN COURS DE PREPARATION':'#7b61ff','EN COURS DE REALISATION':'#7b61ff',TERMINEE:'#12b886',CLOTUREE:'#2f9e44',ABANDONNEE:'#868e96'};
-const stList=()=>[...STN.values()];
-function stFiltered(){const tp=$('fTp').value,u=$('fUn').value,s=$('fSi').value;return stList().filter(e=>(tp===''||e.tp==tp)&&(u===''||String(e.un)===u)&&(s===''||String(e.si)===s));}
+const PF={off:{st:new Set(),af:new Set(),cl:new Set()},ret:new Set(),oui:true,non:true,d1:'',d2:''};
+let curSt=null,pMulti=null,pFocus=null;
+const stList=()=>[...STN.values()],byName=(a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr');
+const inSel=e=>{const tp=$('fTp').value,u=$('fUn').value,s=$('fSi').value;return(tp===''||e.tp==tp)&&(u===''||String(e.un)===u)&&(s===''||String(e.si)===s);};
+function scope(){let l=stList().filter(inSel);if(pMulti){const ks=new Set(pMulti.map(e=>e.k));l=l.filter(e=>ks.has(e.k));}return l;}
+const dOKp=it=>(!PF.d1||it[5]>=PF.d1)&&(!PF.d2||(it[5]&&it[5]<=PF.d2));
+const pOK=it=>dOKp(it)&&!PF.off.cl.has(it[1])&&(PF.ret.size===0||PF.ret.has(ecl(it)));
 function fstUn(){const tp=$('fTp').value,us=[...new Set(stList().filter(e=>tp===''||e.tp==tp).map(e=>e.un))].sort((a,b)=>(a<0?'~':DA.un[a]).localeCompare(b<0?'~':DA.un[b],'fr'));
  $('fUn').innerHTML='<option value="">— Toutes les unités —</option>'+us.map(u=>`<option value="${u}">${u<0?'(sans unité)':esc(DA.un[u])}</option>`).join('');}
 function fstSi(){const tp=$('fTp').value,u=$('fUn').value,ss=[...new Set(stList().filter(e=>(tp===''||e.tp==tp)&&(u===''||String(e.un)===u)).map(e=>e.si))].sort((a,b)=>(a<0?'':DA.si[a]).localeCompare(b<0?'':DA.si[b],'fr'));
  $('fSi').innerHTML='<option value="">— Tous les sites —</option>'+ss.map(s=>`<option value="${s}">${s<0?'(sans site)':esc(DA.si[s])}</option>`).join('');}
-function fstSt(){const s=$('fSi').value,l=stFiltered().sort((a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr'));
- $('fSt').innerHTML='<option value="">— Toutes les stations —</option>'+l.map(e=>`<option value="${esc(e.k)}">${esc(DA.sta[e.sta])}${s===''&&e.si>=0?' ('+esc(DA.si[e.si])+')':''}</option>`).join('');
- fillDl('dlStation2',$('fTp').value,$('fUn').value);}
-function stStats(e){const its=new Set();e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>its.add(k)));let late=0;its.forEach(k=>{if(lateOf(I[k]))late++;});return{its,n:its.size,late};}
+function stStats(e){const its=new Set();e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>{if(pOK(I[k]))its.add(k);}));let late=0;its.forEach(k=>{if(lateOf(I[k]))late++;});return{its,n:its.size,late};}
+const miT=t=>(tInt.get(t[0])||[]).filter(k=>pOK(I[k])).length;
 function fstHead(e){
  const ts=e.gids.map(g=>T[tree.get(g)]),sc={};ts.forEach(t=>{const s=DA.s[t[3]];sc[s]=(sc[s]||0)+1;});const t0=ts[0];
  return `<div class="hd"><h3>${esc(DA.sta[e.sta])}</h3><div>Unité : <b>${e.un>=0?esc(DA.un[e.un]):'—'}</b> · Site : <b>${e.si>=0?esc(DA.si[e.si]):'—'}</b> · Territoire : <b>${esc(DA.tp[t0[4]])}</b> · Quartier : <b>${esc(DA.qu[t0[5]])}</b></div>`+
@@ -1365,86 +1504,74 @@ function fstSections(e,all){
  const cmpAsc=(a,b)=>(I[a][5]||'9999').localeCompare(I[b][5]||'9999')||I[a][0].localeCompare(I[b][0]),cmpDesc=(a,b)=>(I[b][5]||'').localeCompare(I[a][5]||'')||I[a][0].localeCompare(I[b][0]);
  const sec=order.map(si=>{
   const nm=DI.S[si],act=ACT.has(nm),ks=by[si].sort(act?cmpAsc:cmpDesc),closed=['CLOTUREE','TERMINEE','ABANDONNEE'].includes(nm);
-  return `<details class="sec" style="--sc:${SCOL[nm]||'#999'}" ${all||!closed?'open':''}><summary><b>${esc(nm)}</b> — <b>${ks.length}</b> intervention(s)${act?' <span class="dt">(du plus proche objectif au plus lointain)</span>':''}</summary>`+ks.map(k=>{
+  return `<details class="sec" style="--sc:${SCOL[nm]||'#999'}" ${all||!closed?'open':''}><summary><b>${esc(nm)}</b> — <b>${ks.length}</b> intervention(s)${act?' <span class="dt">(objectif le plus proche en premier)</span>':''}</summary><div class="ch">`+ks.map(k=>{
    const it=I[k],tr=it[7].filter(g=>gs.has(g)).sort(cmpG),ec=ecl(it),late=lateOf(it);
-   const icon=ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]));
-   return `<details ${all?'open':''}><summary>${icon}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="badge">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
-    (it[4]?`<div class="dt" style="padding:0 14px 4px">${esc(it[4])}</div>`:'')+
-    '<table><tr><th></th><th>Carré-numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</details>';}).join('');
- return `<h3 class="lt">Interventions de la station (<b>${its.size}</b>)</h3>`+(sec||'<p class="mut">Aucune intervention sur cette station.</p>');
+   return `<details ${all?'open':''}><summary>${ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]))}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="bd g">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
+    (it[4]?`<div class="dt" style="padding:0 12px 3px">${esc(it[4])}</div>`:'')+
+    '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
+ return `<h3 class="lt">Interventions de la station (<b>${its.size}</b>)</h3>`+(sec||'<p class="mut">Aucune intervention ne correspond aux filtres.</p>');
 }
-/* onglet « Arbres » : tous les arbres triés par numéro, les éliminés regroupés à part */
 function fstArbres(e,all){
- const ts=e.gids.map(g=>T[tree.get(g)]).sort(cmpT),nbI=t=>(tInt.get(t[0])||[]).length;
- const row=t=>{const s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td>${esc(egk(t))}</td><td>${nbI(t)}</td></tr>`;};
- const hd='<tr><th></th><th>Carré-numéro</th><th>Espèce</th><th>Statut</th><th>État</th><th>Interv.</th></tr>';
+ const keep=t=>{const n=miT(t);return(n>0&&PF.oui)||(n===0&&PF.non);};
+ const ts=e.gids.map(g=>T[tree.get(g)]).filter(keep).sort(cmpT);
+ const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
+ const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>État</th><th>Interv.</th></tr>';
  const ok=ts.filter(t=>DA.s[t[3]]!=='ELIMINE'),el=ts.filter(t=>DA.s[t[3]]==='ELIMINE');
- return `<h3 class="lt">Arbres de la station (<b>${ok.length}</b>)</h3><table>${hd}${ok.map(row).join('')}</table>`+
-  (el.length?`<details class="sec" style="--sc:#e03030" ${all?'open':''}><summary><b>Éliminés</b> — <b>${el.length}</b> arbre(s)</summary><table>${hd}${el.map(row).join('')}</table></details>`:'');
-}
+ return `<h3 class="lt">Arbres de la station (<b>${ok.length}</b>) <span class="dt">— en jaune : arbres avec intervention</span></h3><table>${hd}${ok.map(row).join('')}</table>`+
+  (el.length?`<details class="sec" style="--sc:#e03030" ${all?'open':''}><summary><b>Éliminés</b> — <b>${el.length}</b> arbre(s)</summary><table>${hd}${el.map(row).join('')}</table></details>`:'');}
 function fstPanel(e,all){const s=stStats(e);
  return `<div class="fpanel"><div class="ftabs"><button class="on" data-tab="iv">Interventions (${s.n})</button><button data-tab="ar">Arbres (${e.gids.length})</button></div><div class="fp iv">${fstSections(e,all)}</div><div class="fp ar" style="display:none">${fstArbres(e,all)}</div></div>`;}
 $('fBody').addEventListener('click',ev=>{const b=ev.target.closest('.ftabs button');if(!b)return;const p=b.closest('.fpanel');
  p.querySelectorAll('.ftabs button').forEach(x=>x.classList.toggle('on',x===b));p.querySelector('.fp.iv').style.display=b.dataset.tab==='iv'?'':'none';p.querySelector('.fp.ar').style.display=b.dataset.tab==='ar'?'':'none';});
-let curSt=null,fstMulti=null;
-function stListHTML(l,title){
- return `<h3 class="lt">${title} (<b>${l.length}</b>) — cliquer pour déplier</h3>`+l.map(e=>{const s=stStats(e);
-  return `<details data-k="${esc(e.k)}"><summary><b class="sn">${esc(DA.sta[e.sta])}</b><span class="dt">${e.un>=0?esc(DA.un[e.un]):''}${e.si>=0?' / '+esc(DA.si[e.si]):''}</span><span class="badge">${e.gids.length} arbres</span><span class="dt">${s.n} intervention(s)</span>${s.late?`<span class="late"><span class="blink">⚠</span> ${s.late} en retard</span>`:''}<a href="#" onclick="ficheStation('${e.k}');return false">Ouvrir la fiche</a></summary><div class="lz"></div></details>`;}).join('');}
-function fstBody(){
- const b=$('fBody'),byN=(a,c)=>DA.sta[a.sta].localeCompare(DA.sta[c.sta],'fr');
- if(curSt){b.innerHTML=fstHead(curSt)+fstPanel(curSt,false);return;}
- if(fstMulti){b.innerHTML=stListHTML(fstMulti.slice().sort(byN),`Stations correspondant à « ${esc($('fQ').value)} »`);return;}
- if($('fUn').value===''&&$('fSi').value===''){b.innerHTML='<p class="mut">Choisissez une unité ou un site pour lister ses stations (dépliables), ou saisissez une partie du nom d\'une station (Entrée : toutes les stations trouvées).</p>';return;}
- b.innerHTML=stListHTML(stFiltered().sort(byN),'Stations');
+function patBody(){
+ const b=$('fBody'),l=scope().map(e=>({e,s:stStats(e)})).filter(x=>(x.s.n>0&&PF.oui)||(x.s.n===0&&PF.non));
+ if(!l.length){b.innerHTML='<p class="mut">Aucune station ne correspond aux filtres.</p>';return;}
+ const U=new Map();
+ l.forEach(x=>{const a=U.get(x.e.un)??{si:new Map(),direct:[]};U.set(x.e.un,a);if(x.e.si<0)a.direct.push(x);else{const c=a.si.get(x.e.si)??[];a.si.set(x.e.si,c);c.push(x);}});
+ const sum=xs=>xs.reduce((r,x)=>({st:r.st+1,a:r.a+x.e.gids.length,i:r.i+x.s.n,l:r.l+x.s.late}),{st:0,a:0,i:0,l:0});
+ const bds=r=>`<span class="bd s">${nf(r.st)} stations</span><span class="bd g">${nf(r.a)} arbres</span><span class="bd b">${nf(r.i)} interv.</span>${r.l?`<span class="bd r"><span class="blink">⚠</span> ${nf(r.l)} en retard</span>`:''}`;
+ const stH=x=>`<details class="n3" data-k="${esc(x.e.k)}"><summary><b class="sn">${esc(DA.sta[x.e.sta])}</b><span class="bd g">${x.e.gids.length} arbres</span><span class="bd b">${x.s.n} interv.</span>${x.s.late?`<span class="bd r"><span class="blink">⚠</span> ${x.s.late}</span>`:''}<a href="#" onclick="stCarte('${x.e.k}');return false">Carte</a></summary><div class="lz"></div></details>`;
+ const us=[...U.keys()].sort((a,c)=>(a<0?'~':DA.un[a]).localeCompare(c<0?'~':DA.un[c],'fr'));
+ b.innerHTML=`<div class="dt" style="margin-bottom:4px">${nf(l.length)} station(s)</div>`+us.map(u=>{const a=U.get(u),all=[...a.direct,...[...a.si.values()].flat()];
+  const ss=[...a.si.keys()].sort((x,y)=>DA.si[x].localeCompare(DA.si[y],'fr'));
+  return `<details class="n1"><summary><b>${esc(u<0?'(sans unité)':DA.un[u])}</b>${bds(sum(all))}</summary><div class="ch">`+
+   ss.map(s=>`<details class="n2"><summary>Site <b>${esc(DA.si[s])}</b>${bds(sum(a.si.get(s)))}</summary><div class="ch">${a.si.get(s).sort((x,y)=>byName(x.e,y.e)).map(stH).join('')}</div></details>`).join('')+
+   a.direct.sort((x,y)=>byName(x.e,y.e)).map(stH).join('')+'</div></details>';}).join('');
 }
-$('fBody').addEventListener('toggle',ev=>{const d=ev.target;if(d.dataset&&d.dataset.k&&d.open&&!d.dataset.done){d.dataset.done='1';const e=STN.get(d.dataset.k);d.querySelector('.lz').innerHTML=fstHead(e)+fstPanel(e,false);}},true);
-function ficheStation(k){curSt=STN.get(k)||null;fstMulti=null;showTab(2);
- if(curSt){$('fTp').value=String(curSt.tp);fstUn();$('fUn').value=String(curSt.un);fstSi();$('fSi').value=String(curSt.si);fstSt();$('fSt').value=curSt.k;}
- fstBody();}
-$('fTp').onchange=()=>{fstUn();fstSi();fstSt();curSt=null;fstMulti=null;fstBody();};
-$('fUn').onchange=()=>{fstSi();fstSt();curSt=null;fstMulti=null;fstBody();};
-$('fSi').onchange=()=>{fstSt();curSt=null;fstMulti=null;fstBody();};
-$('fSt').onchange=()=>{curSt=STN.get($('fSt').value)||null;fstMulti=null;fstBody();};
-autocomplete($('fQ'),e=>{const tp=$('fTp').value,u=$('fUn').value,s=$('fSi').value;return(tp===''||e.tp==tp)&&(u===''||String(e.un)===u)&&(s===''||String(e.si)===s);},
- e=>ficheStation(e.k),l=>{curSt=null;fstMulti=l;fstBody();});
-$('fMap').onclick=()=>{if(curSt){showTab(0);$('qs').value=lblOf(curSt);selStation(curSt);}else if(fstMulti&&fstMulti.length){showTab(0);selStations(fstMulti);}};
-$('fPrn').onclick=()=>{if(!curSt)return;const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
- w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #2f6b3f;padding:6px 12px;margin:8px 0}.hd h3{font-size:18px;margin:0}.badge{background:#2f6b3f;color:#fff;border-radius:10px;padding:0 8px;font-weight:700}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
-$('fTp').innerHTML=optsS('Tous les territoires',DA.tp);$('fTp').value=DEFTP;fstUn();fstSi();fstSt();
+$('fBody').addEventListener('toggle',ev=>{const d=ev.target;if(d.dataset&&d.dataset.k&&d.classList.contains('n3')&&d.open&&!d.dataset.done){d.dataset.done='1';const e=STN.get(d.dataset.k);curSt=e;d.querySelector('.lz').innerHTML=fstHead(e)+fstPanel(e,false);}},true);
+function openFocus(){if(!pFocus)return;const d=$('fBody').querySelector(`details.n3[data-k="${pFocus}"]`);pFocus=null;if(!d)return;let p=d;while(p&&p!==$('fBody')){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}if(d.scrollIntoView)d.scrollIntoView({block:'center'});}
+function pLegend(){
+ const ik=new Map();scope().forEach(e=>e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>{let s=ik.get(k);if(!s)ik.set(k,s=new Set());s.add(g);})));
+ const cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
+ ik.forEach((gs,k)=>{const it=I[k];if(!dOKp(it))return;add(cl,it[1],gs);if(!PF.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
+ $('fCl').innerHTML=ckTable('cl',PF,cl,CC);
+ $('fRet').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-r="${i}" ${PF.ret.has(i)?'checked':''}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
+function patRender(){pLegend();patBody();openFocus();}
+bindCk($('fCl'),PF,patRender);
+$('fRet').onchange=e=>{const i=e.target.dataset.r;if(i===undefined)return;e.target.checked?PF.ret.add(+i):PF.ret.delete(+i);patRender();};
+$('pOui').onchange=()=>{PF.oui=$('pOui').checked;patRender();};$('pNon').onchange=()=>{PF.non=$('pNon').checked;patRender();};
+$('pd1').onchange=()=>{PF.d1=$('pd1').value;patRender();};$('pd2').onchange=()=>{PF.d2=$('pd2').value;patRender();};
+$('fTp').onchange=()=>{fstUn();fstSi();pMulti=null;patRender();};$('fUn').onchange=()=>{fstSi();pMulti=null;patRender();};$('fSi').onchange=()=>{pMulti=null;patRender();};
+autocomplete($('fQ'),inSel,e=>{pMulti=null;pFocus=e.k;patRender();},l=>{pMulti=l;pFocus=null;patRender();});
+$('fQ').addEventListener('input',()=>{if(!$('fQ').value.trim()&&pMulti){pMulti=null;patRender();}});
+function ficheStation(k){const e=STN.get(k);if(!e)return;showTab(2);$('fTp').value=String(e.tp);fstUn();$('fUn').value='';fstSi();$('fSi').value='';pMulti=null;pFocus=k;patRender();}
+function stCarte(k){const e=STN.get(k);if(!e)return;showTab(0);$('qs').value=lblOf(e);selStation(e);}
+$('fMap').onclick=()=>{if(curSt){showTab(0);$('qs').value=lblOf(curSt);selStation(curSt);return;}const l=scope();if(l.length&&l.length<=600){showTab(0);selStations(l);}};
+$('fRst').onclick=()=>{PF.off={st:new Set(),af:new Set(),cl:new Set()};PF.ret=new Set();PF.oui=PF.non=true;PF.d1=PF.d2='';$('pOui').checked=$('pNon').checked=true;$('pd1').value=$('pd2').value='';
+ $('fTp').value=DEFTP;fstUn();$('fUn').value='';fstSi();$('fSi').value='';$('fQ').value='';pMulti=null;pFocus=null;curSt=null;patRender();};
+$('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans la liste.');const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
+ w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
 
-/* ---- indicateurs (en tête des statistiques) ---- */
-const fmtP=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
-function kUn(){const tp=$('ktp').value,us=[...new Set(stList().filter(e=>tp===''||e.tp==tp).map(e=>e.un).filter(u=>u>=0))].sort((a,b)=>DA.un[a].localeCompare(DA.un[b],'fr'));
- $('kun').innerHTML='<option value="">Toutes les unités</option>'+us.map(u=>`<option value="${u}">${esc(DA.un[u])}</option>`).join('');}
-function kpiRender(){
- const tp=$('ktp').value,qu=$('kqu').value,un=$('kun').value;fillDl('dlStation3',tp,un);
- const qv=($('kqs').value||'').trim(),ms=qv?stMatch(qv,e=>(tp===''||e.tp==tp)&&(!un||String(e.un)===un)).map(x=>x.e):[],st=ms.length===1?ms[0]:null,sg=qv?new Set(ms.flatMap(e=>e.gids)):null;
- let n=0,late=0,iniLate=0,ini=0,clo=0,ter=0,abd=0,ontime=0,oth=0;
- I.forEach(it=>{let ok=false;for(const g of it[7]){const i=tree.get(g);if(i===undefined)continue;const t=T[i];
-   if((tp===''||t[4]==tp)&&(qu===''||t[5]==qu)&&(un===''||t[6]==un)&&(!sg||sg.has(g))){ok=true;break;}}
-  if(!ok)return;n++;const s=DI.S[it[2]],lt=lateOf(it);
-  if(lt)late++;else if(isAct(it))ontime++;
-  if(s==='INITIALISEE'){ini++;if(lt)iniLate++;}else if(s==='CLOTUREE')clo++;else if(s==='TERMINEE')ter++;else if(s==='ABANDONNEE')abd++;
-  if(!isAct(it)&&s!=='CLOTUREE'&&s!=='TERMINEE'&&s!=='ABANDONNEE')oth++;});
- const pc=v=>n?Math.round(v/n*1000)/10:0,tile=(c,ico,l,v,sub)=>`<div class="kpi ${c}"><span class="kl">${ico} ${l}</span><b>${nf(v)}</b><span class="kp">${fmtP(pc(v))} %</span><div class="kb"><u style="width:${pc(v)}%"></u></div>${sub?`<span class="ks">${sub}</span>`:''}</div>`;
- const parts=[{name:'En retard',n:late,c:'#e5383b'},{name:'Actives dans les délais',n:ontime,c:'#4dabf7'},{name:'Terminées',n:ter,c:'#12b886'},{name:'Clôturées',n:clo,c:'#2f9e44'},{name:'Abandonnées',n:abd,c:'#868e96'},{name:'Autres',n:oth,c:'#ced4da'}].filter(x=>x.n>0);
- $('kpi').innerHTML=`<div class="mut">${nf(n)} intervention(s) dans la sélection${ms.length>1?' · '+ms.length+' stations':st?' · station '+esc(stLab(st)):(qv?' · station introuvable':'')}</div><div class="kpis">`+
-  tile('late','<span class="blink">⚠</span>','En retard',late,'non terminées, objectif dépassé')+tile('ini','●','Initialisées',ini,iniLate?`dont ${nf(iniLate)} en retard`:'')+
-  tile('clo','✔','Clôturées',clo)+tile('ter','✔','Terminées',ter)+tile('abd','✖','Abandonnées',abd)+'</div>'+
-  (n?`<div class="kviz"><div>${parts.length>1?donut(parts,i=>parts[i].c):''}</div><div class="kleg">${parts.map(x=>`<div><i style="background:${x.c}"></i><span>${x.name}</span><b>${fmtP(pc(x.n))} %</b><span class="dt">${nf(x.n)}</span></div>`).join('')}</div></div>`:'');
-}
-$('ktp').innerHTML=optsS('Tous les territoires',DA.tp);$('ktp').value=DEFTP;fillQ('ktp','kqu');kUn();
-$('ktp').onchange=()=>{fillQ('ktp','kqu');kUn();kpiRender();};
-['kqu','kun'].forEach(i=>$(i).onchange=kpiRender);let kT;autocomplete($('kqs'),e=>{const tp=$('ktp').value,un=$('kun').value;return(tp===''||e.tp==tp)&&(!un||String(e.un)===un);},e=>{kpiRender();},()=>kpiRender());$('kqs').addEventListener('input',()=>{clearTimeout(kT);kT=setTimeout(kpiRender,250);});
-const _rsS=$('rsS').onclick;$('rsS').onclick=()=>{_rsS();$('ktp').value=DEFTP;fillQ('ktp','kqu');$('kqu').value='';kUn();$('kqs').value='';kpiRender();};
+/* ---- initialisation ---- */
 $('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
+$('fTp').innerHTML=optsS('Tous les territoires',DA.tp);$('fTp').value=DEFTP;fstUn();fstSi();kUn();
 resetM();
 (function(){const qp=new URLSearchParams(location.search),qi=(qp.get('inter')||'').trim(),qst=(qp.get('station')||'').trim();
  if(qi){const k=I.findIndex(i=>i[0]===qi);
   if(k<0){$('fiche').style.display='flex';$('ft').textContent='Intervention '+qi+' introuvable dans les données.';$('bf').style.display=$('bl').style.display='none';}
   else{choisir(k);if(qp.get('fiche')!=='0')fiche(k);}}
  else if(qst){const e=stFind(qst,'');if(e){$('qs').value=lblOf(e);selStation(e);}}})();
-window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.ficheStation=ficheStation;window.clrSt=clrSt;
+window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 </script>
 </body>
