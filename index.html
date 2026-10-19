@@ -804,7 +804,7 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
     <div><h3>Thématique (couleur des arbres)</h3><select id="th"><option value="st">Statut de l'arbre</option><option value="eg">État général</option></select><div id="leg"></div></div>
   <div><h3>Couches</h3><label class="chk"><input type="checkbox" id="lyA" checked> Arbres (ronds)</label><label class="chk"><input type="checkbox" id="lyI" checked> Interventions (épingles)</label></div>
   <div><h3>Échéances</h3><div id="lgE"></div></div>
-  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur par arbre visible à partir du 1/500 ; en dessous, interventions regroupées.</div><div id="clp"></div></div>
+  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clp"></div></div>
   <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
     <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
   </div>
@@ -894,31 +894,33 @@ if(typeof L==='undefined'||typeof proj4==='undefined')throw new Error('biblioth�
 proj4.defs('CC45',CC45);
 const NORM=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_+|_+$/g,'');
 const decode=b=>{try{return new TextDecoder('utf-8',{fatal:true}).decode(b);}catch(e){return new TextDecoder('windows-1252').decode(b);}};
+function splitQ(s,d){const r=[];let f='',q=false;for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'){if(s[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else if(c==='"')q=true;else if(c===d){r.push(f);f='';}else f+=c;}r.push(f);return r;}
 function parseCSV(t){
  t=t.replace(/^\uFEFF/,'');const k=t.indexOf('\n'),l1=k>0?t.slice(0,k):t,c=ch=>l1.split(ch).length-1,d=c(';')>c(',')?';':',';
- const rows=[],n=t.length;let r=[],f='',q=false;
- for(let i=0;i<n;i++){const ch=t[i];
-  if(q){if(ch==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=ch;}
-  else if(ch==='"')q=true;else if(ch===d){r.push(f);f='';}
-  else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(f);f='';rows.push(r);r=[];}else f+=ch;}
- if(f!==''||r.length){r.push(f);rows.push(r);}
- const h=rows.shift().map(NORM);
- return rows.filter(x=>x.length>1||x[0]).map(x=>{const o={};for(let j=0;j<h.length;j++)o[h[j]]=(x[j]||'').trim();return o;});
+ const lines=t.split(/\r?\n/),rows=[];let hd=null,nh=0;
+ for(let i=0;i<lines.length;i++){let ln=lines[i];if(!ln)continue;let r;
+  if(ln.indexOf('"')<0)r=ln.split(d);
+  else{while(((ln.match(/"/g)||[]).length&1)&&i+1<lines.length)ln+='\n'+lines[++i];r=splitQ(ln,d);}
+  if(!hd){hd=r.map(NORM);nh=hd.length;continue;}
+  if(r.length<2&&!r[0])continue;
+  const o={};for(let j=0;j<nh;j++)o[hd[j]]=r[j]===undefined?'':r[j];rows.push(o);}
+ return rows;
 }
 const ixl=(l,v)=>{let i=l.indexOf(v);if(i<0)i=l.push(v)-1;return i;};
+const mkIx=()=>{const m=new Map(),a=[];return{a,ix:v=>{let i=m.get(v);if(i===undefined){i=a.length;a.push(v);m.set(v,i);}return i;}};};
 function bDA(rows){
- const s=[],tp=[],qu=[],eg=[],un=[],si=[],sta=[],sp=[],T=[],r0=rows[0]||{},P=[['X','Y'],['LON','LAT'],['LONGITUDE','LATITUDE']].find(p=>p[0] in r0&&p[1] in r0);
+ const S=mkIx(),TP=mkIx(),QU=mkIx(),EG=mkIx(),UN=mkIx(),SI=mkIx(),ST=mkIx(),SP=mkIx(),T=[],r0=rows[0]||{},P=[['X','Y'],['LON','LAT'],['LONGITUDE','LATITUDE']].find(p=>p[0] in r0&&p[1] in r0);
  if(!P)throw new Error('Colonnes de coordonnées introuvables (X/Y ou LON/LAT) dans le fichier des arbres.');
- const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),ix2=(l,v)=>v?ixl(l,v):-1;
- rows.forEach(r=>{let x=nb(r[P[0]]),y=nb(r[P[1]]);if(isNaN(x)||isNaN(y))return;
+ const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),tr=v=>v?v.trim():'',i2=(m,v)=>{v=tr(v);return v?m.ix(v):-1;};
+ for(const r of rows){let x=nb(r[P[0]]),y=nb(r[P[1]]);if(isNaN(x)||isNaN(y))continue;
   if(Math.abs(x)>180){const c=proj4('CC45','WGS84',[x,y]);x=c[0];y=c[1];}
-  const e=r.ETAT_GEN,cn=r.EMPL_CARRE_NUM||r.CARRE_NUMERO||r.CARRE_NUM;
+  const e=tr(r.ETAT_GEN),cn=tr(r.EMPL_CARRE_NUM||r.CARRE_NUMERO||r.CARRE_NUM);
   /* t = [gid, lon, lat, statut, territoire, quartier, unité, site, station, état général, carré-numéro, espèce] */
-  T.push([parseInt(r.GID),+x.toFixed(6),+y.toFixed(6),ixl(s,r.STATUT||'INCONNU'),ixl(tp,r.TERRIT_P||'—'),ixl(qu,r.QUARTIER||'—'),
-   ix2(un,r.EMPL_UNITE_UNITE),ix2(si,r.EMPL_SITE_SITE),ix2(sta,r.EMPL_STATION_STATION),e?ixl(eg,e):-1,cn&&cn!=='0'?cn:null,ix2(sp,r.ESPECES_NOM_LATIN)]);});
- const o=eg.map((_,i)=>i).sort((a,b)=>eg[a].localeCompare(eg[b])),rm={};o.forEach((i,k)=>rm[i]=k);
+  T.push([parseInt(r.GID),Math.round(x*1e6)/1e6,Math.round(y*1e6)/1e6,S.ix(tr(r.STATUT)||'INCONNU'),TP.ix(tr(r.TERRIT_P)||'—'),QU.ix(tr(r.QUARTIER)||'—'),
+   i2(UN,r.EMPL_UNITE_UNITE),i2(SI,r.EMPL_SITE_SITE),i2(ST,r.EMPL_STATION_STATION),e?EG.ix(e):-1,cn&&cn!=='0'?cn:null,i2(SP,r.ESPECES_NOM_LATIN)]);}
+ const eg=EG.a,o=eg.map((_,i)=>i).sort((a,b)=>eg[a].localeCompare(eg[b])),rm={};o.forEach((i,k)=>rm[i]=k);
  T.forEach(t=>{if(t[9]>=0)t[9]=rm[t[9]];});
- return{s,tp,qu,eg:o.map(i=>eg[i]),T,un,si,sta,sp};
+ return{s:S.a,tp:TP.a,qu:QU.a,eg:o.map(i=>eg[i]),T,un:UN.a,si:SI.a,sta:ST.a,sp:SP.a};
 }
 function bDI(rows){
  const C=[],S=[],AF=[],E=[],TE={},I={},txt=v=>(v||'').trim();
@@ -944,7 +946,7 @@ const TEST={arbres:t=>/TERRIT_P|QUARTIER|ETAT_GEN|RS_EV/.test(entete(t)),interve
 const tries=[];
 async function essayer(liste,test){
  for(const u of liste){
-  try{const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now());
+  try{const r=await fetch(u,{cache:'no-cache'});
    if(!r.ok){tries.push(u+'  →  erreur '+r.status);continue;}
    const t=decode(await r.arrayBuffer());if(test(t))return t;tries.push(u+'  →  fichier trouvé mais colonnes inattendues');}
   catch(e){tries.push(u+'  →  '+(e.message||'échec'));}
@@ -957,6 +959,7 @@ async function decouvrir(){
   return (j.tree||[]).filter(x=>/\.csv$/i.test(x.path)).map(x=>location.origin+(rp===location.hostname?'':'/'+rp)+'/'+x.path.split('/').map(encodeURIComponent).join('/'));
  }catch(e){tries.push('liste des fichiers du dépôt GitHub  →  '+(e.message||'échec'));return [];}}
 (async()=>{
+ {const q0=new URLSearchParams(location.search).get('inter');if(q0)$c('chgm').textContent='Ouverture de la fiche d\'intervention N° '+q0+'…';}
  let a=await essayer(FICHIERS.arbres,TEST.arbres),i=await essayer(FICHIERS.interventions,TEST.interventions);
  if(!a||!i){const f=await decouvrir();if(f.length){if(!a)a=await essayer(f,TEST.arbres);if(!i)i=await essayer(f,TEST.interventions);}}
  if(a&&i)return lancer(a,i);
@@ -1023,7 +1026,7 @@ function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=17,grp=z<19.5; /* 19,5 ≈ 1/500 */
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=17,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
  const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
  const pin=(x,y)=>{const R=S*.95,cy=y-S*1.6;g.moveTo(x,y);g.bezierCurveTo(x-R*.15,y-S*.7,x-R,cy+R*.75,x-R,cy);g.arc(x,cy,R,Math.PI,0);g.bezierCurveTo(x+R,cy+R*.75,x+R*.15,y-S*.7,x,y);g.closePath();};
@@ -1033,8 +1036,8 @@ function draw(){
  /* interventions : en dessous du 1/500 une seule épingle / un seul cône par zone ; au-delà, la couleur de classification de chaque arbre */
  const pins=[],cones=[];
  if(grp){const cell=Math.max(11,S*2.2),A=new Map(),C=new Map();
-  for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=A.get(key);if(e){e.x+=x;e.y+=y;e.n++;}else A.set(key,{x,y,n:1});}
-  A.forEach(e=>pins.push({x:e.x/e.n,y:e.y/e.n,c:'#2457d6'}));
+  for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=A.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cc[c]=(e.cc[c]||0)+1;}else A.set(key,{x,y,n:1,cc:{[c]:1}});}
+  A.forEach(e=>{let bc=null,bn=-1;for(const c in e.cc)if(e.cc[c]>bn){bn=e.cc[c];bc=c;}pins.push({x:e.x/e.n,y:e.y/e.n,c:bc});});  /* couleur = classification dominante de la zone */
   for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=C.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cl=Math.max(e.cl,+c);}else C.set(key,{x,y,n:1,cl:+c});}
   C.forEach(e=>cones.push({x:e.x/e.n,y:e.y/e.n,c:ECC[e.cl]}));}
  else{for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(ins(x,y))pins.push({x,y,c});}
@@ -1565,12 +1568,13 @@ $('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans 
 /* ---- initialisation ---- */
 $('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
 $('fTp').innerHTML=optsS('Tous les territoires',DA.tp);$('fTp').value=DEFTP;fstUn();fstSi();kUn();
-resetM();
-(function(){const qp=new URLSearchParams(location.search),qi=(qp.get('inter')||'').trim(),qst=(qp.get('station')||'').trim();
- if(qi){const k=I.findIndex(i=>i[0]===qi);
-  if(k<0){$('fiche').style.display='flex';$('ft').textContent='Intervention '+qi+' introuvable dans les données.';$('bf').style.display=$('bl').style.display='none';}
-  else{choisir(k);if(qp.get('fiche')!=='0')fiche(k);}}
- else if(qst){const e=stFind(qst,'');if(e){$('qs').value=lblOf(e);selStation(e);}}})();
+const qp=new URLSearchParams(location.search),hp=new URLSearchParams(location.hash.replace(/^#/,''));
+const qi=String(qp.get('inter')||qp.get('intervention')||qp.get('num')||hp.get('inter')||hp.get('intervention')||'').trim().replace(/\.0+$/,''),qst=String(qp.get('station')||hp.get('station')||'').trim();
+const noFiche=qp.get('fiche')==='0'||hp.get('fiche')==='0',kd=qi?I.findIndex(i=>i[0]===qi):-1;
+if(kd>=0&&!noFiche){fiche(kd);setTimeout(()=>{resetM();choisir(kd);},60);}  /* la fiche s'affiche d'abord, la carte se prépare derrière */
+else{resetM();
+ if(qi){if(kd>=0)choisir(kd);else{$('fiche').style.display='flex';$('ft').textContent='Intervention '+qi+' introuvable dans les données.';$('bf').style.display=$('bl').style.display='none';}}
+ else if(qst){const e=stFind(qst,'');if(e){$('qs').value=lblOf(e);selStation(e);}}}
 window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 </script>
