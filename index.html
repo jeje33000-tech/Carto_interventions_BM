@@ -678,7 +678,7 @@ select,input[type=search],input[type=date],button{width:100%;padding:6px;border:
 button{cursor:pointer;background:var(--acc);color:#fff;border-color:var(--acc)}
 button.s{background:#fff;color:var(--ink);border-color:var(--line)}
 .row{display:flex;gap:6px}.row>*{flex:1}
-.chk{display:flex;gap:6px;align-items:center;color:var(--ink);margin:1px 0}.chk input{margin:0;width:auto}
+.chk{display:flex;gap:6px;align-items:center;color:var(--ink);margin:1px 0}.chk input{margin:0;width:auto}.clchild{padding-left:18px}
 .chk i{width:12px;height:12px;border-radius:50%;border:1px solid #000;flex:none}
 #ll{max-height:55vh;overflow:auto;border:1px solid var(--line);padding:4px 6px;margin-top:4px}
 #fiche{display:none;border:1px solid var(--line);border-radius:4px;padding:8px;gap:6px;flex-direction:column}
@@ -1129,10 +1129,18 @@ function aggLeg(S){
 const cntTxt=e=>`(${nf(e?e.n:0)} / ${nf(e?e.g.size:0)})`;
 function legendE(ec){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
 let clOpen=new Set(),clAllOpen=false;
+function syncClOpenFromDom(){
+ const host=$('clp');if(!host)return;
+ host.querySelectorAll('details.clfam[data-fam-details]').forEach(d=>{
+  const key=d.dataset.famDetails;
+  if(d.open)clOpen.add(key);else clOpen.delete(key);
+ });
+}
 function legendCl(cl){
+ syncClOpenFromDom();
  const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
  let html='';for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;const isOpen=clAllOpen||clOpen.has(key);html+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><label class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
-  html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
+  html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
  $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;$('clToggle').textContent=clAllOpen?'Tout replier':'Tout déplier';}
 /* Les compteurs de famille sont l'union des enfants, donc sans double comptage d'arbres. */
 let famStats={};function famStatsFor(g,key,cl){const e=famStats[key];return e||{n:g.items.reduce((n,i)=>n+(cl[i]?.n||0),0),g:new Set(g.items.flatMap(i=>[...(cl[i]?.g||[])]))};}function clFamilyFallback(g,cl){return famStatsFor(g,g.code,cl);}
