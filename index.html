@@ -667,7 +667,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 </style>
 <style>
-:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#4f7662}
+:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#5d8a6b}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font:13px/1.4 "Segoe UI",system-ui,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #app{--lw:350px;--rw:280px;display:grid;grid-template-columns:var(--lw) 1fr var(--rw);height:100%}
@@ -678,7 +678,7 @@ select,input[type=search],input[type=date],button{width:100%;padding:6px;border:
 button{cursor:pointer;background:var(--acc);color:#fff;border-color:var(--acc)}
 button.s{background:#fff;color:var(--ink);border-color:var(--line)}
 .row{display:flex;gap:6px}.row>*{flex:1}
-.chk{display:flex;gap:6px;align-items:center;color:var(--ink);margin:1px 0}.chk input{margin:0;width:auto}.clchild{padding-left:18px}
+.chk{display:flex;gap:6px;align-items:center;color:var(--ink);margin:1px 0}.chk input{margin:0;width:auto}
 .chk i{width:12px;height:12px;border-radius:50%;border:1px solid #000;flex:none}
 #ll{max-height:55vh;overflow:auto;border:1px solid var(--line);padding:4px 6px;margin-top:4px}
 #fiche{display:none;border:1px solid var(--line);border-radius:4px;padding:8px;gap:6px;flex-direction:column}
@@ -796,7 +796,6 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
   <div id="fiche">
     <div id="ft"></div>
     <button id="bf">Imprimer la fiche d'intervention</button>
-     <label class="chk" style="display:inline-flex;margin:3px 0"><input type="checkbox" id="printMaps" checked> Imprimer les cartes</label>
     <button id="bl" class="s">Copier le lien de cette intervention</button>
     <button id="bi" class="s">Itinéraire depuis ma position</button>
     <button id="bx" class="s">Effacer la sélection</button>
@@ -805,9 +804,8 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
     <div><h3>Thématique (couleur des arbres)</h3><select id="th"><option value="st">Statut de l'arbre</option><option value="eg">État général</option></select><div id="leg"></div></div>
   <div><h3>Couches</h3><label class="chk"><input type="checkbox" id="lyA" checked> Arbres (ronds)</label><label class="chk"><input type="checkbox" id="lyI" checked> Interventions (épingles)</label></div>
   <div><h3>Échéances</h3><div id="lgE"></div></div>
-  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clTools" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><label class="mut" for="clPreset">Présélection</label><select id="clPreset" style="max-width:210px"><option value="Tout">Tout</option><option value="Aucun">Aucun</option></select><button id="clToggle" type="button" class="s">Tout déplier</button></div><div id="clp"></div></div>
-  <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
-    <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
+  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clp"></div></div>
+
   </div>
 
   <div id="fstat" style="display:none;flex-direction:column;gap:8px">
@@ -889,12 +887,11 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
 
 /* ===== Fichiers de données (CSV) : adaptez les chemins si besoin ===== */
 const FICHIERS={arbres:['data/arbres.csv','arbres.csv','data/EV_ARBRE_P_2.csv','EV_ARBRE_P_2.csv','data/EV_ARBRE_P.csv','EV_ARBRE_P.csv'],
- interventions:['data/interventions.csv','interventions.csv','data/data_1.csv','data_1.csv','data/data.csv','data.csv'],
- classifications:['data/classifications.csv','classifications.csv']};
+ interventions:['data/interventions.csv','interventions.csv','data/data_1.csv','data_1.csv','data/data.csv','data.csv']};
 const CC45='+proj=lcc +lat_1=44.25 +lat_2=45.75 +lat_0=45 +lon_0=3 +x_0=1700000 +y_0=4200000 +ellps=GRS80 +units=m +no_defs';
 if(typeof L==='undefined'||typeof proj4==='undefined')throw new Error('bibliothèques manquantes');
 proj4.defs('CC45',CC45);
-const NORM=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+const NORM=s=>String(s??'').replace(/[\u0000-\u001f\u007f\ufeff\u200b-\u200d\u2060]/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_+|_+$/g,''); const CLEAN=s=>String(s??'').replace(/[\u0000-\u001f\u007f\ufeff\u200b-\u200d\u2060]/g,'').trim(); const firstField=(r,names)=>{for(const n of names){const k=NORM(n);if(Object.prototype.hasOwnProperty.call(r,k))return CLEAN(r[k]);}return '';};
 const decode=b=>{try{return new TextDecoder('utf-8',{fatal:true}).decode(b);}catch(e){return new TextDecoder('windows-1252').decode(b);}};
 function splitQ(s,d){const r=[];let f='',q=false;for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'){if(s[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else if(c==='"')q=true;else if(c===d){r.push(f);f='';}else f+=c;}r.push(f);return r;}
 function parseCSV(t){
@@ -913,12 +910,12 @@ const mkIx=()=>{const m=new Map(),a=[];return{a,ix:v=>{let i=m.get(v);if(i===und
 function bDA(rows){
  const S=mkIx(),TP=mkIx(),QU=mkIx(),EG=mkIx(),UN=mkIx(),SI=mkIx(),ST=mkIx(),SP=mkIx(),T=[],r0=rows[0]||{},P=[['X','Y'],['LON','LAT'],['LONGITUDE','LATITUDE']].find(p=>p[0] in r0&&p[1] in r0);
  if(!P)throw new Error('Colonnes de coordonnées introuvables (X/Y ou LON/LAT) dans le fichier des arbres.');
- const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),tr=v=>v?v.trim():'',i2=(m,v)=>{v=tr(v);return v?m.ix(v):-1;};
+ const nb=v=>parseFloat(CLEAN(v).replace(/\s/g,'').replace(',','.')),tr=v=>CLEAN(v),i2=(m,v)=>{v=tr(v);return v?m.ix(v):-1;};
  for(const r of rows){let x=nb(r[P[0]]),y=nb(r[P[1]]);if(isNaN(x)||isNaN(y))continue;
   if(Math.abs(x)>180){const c=proj4('CC45','WGS84',[x,y]);x=c[0];y=c[1];}
-  const e=tr(r.ETAT_GEN),cn=tr(r.EMPL_CARRE_NUM||r.CARRE_NUMERO||r.CARRE_NUM);
+  const gid=firstField(r,['GID','GID_ARBRE','ID_ARBRE','IDENTIFIANT_ARBRE','NUMERO_ARBRE','ID']); const e=firstField(r,['ETAT_GEN','ETAT_GENERAL','ETAT','ETATGEN','ETAT_GENE','ETAT_ARBRE']),cn=firstField(r,['EMPL_CARRE_NUM','CARRE_NUMERO','CARRE_NUM','NUMERO_CARRE']);
   /* t = [gid, lon, lat, statut, territoire, quartier, unité, site, station, état général, carré-numéro, espèce] */
-  T.push([parseInt(r.GID),Math.round(x*1e6)/1e6,Math.round(y*1e6)/1e6,S.ix(tr(r.STATUT)||'INCONNU'),TP.ix(tr(r.TERRIT_P)||'—'),QU.ix(tr(r.QUARTIER)||'—'),
+  T.push([parseInt(gid),Math.round(x*1e6)/1e6,Math.round(y*1e6)/1e6,S.ix(tr(r.STATUT)||'INCONNU'),TP.ix(tr(r.TERRIT_P)||'—'),QU.ix(tr(r.QUARTIER)||'—'),
    i2(UN,r.EMPL_UNITE_UNITE),i2(SI,r.EMPL_SITE_SITE),i2(ST,r.EMPL_STATION_STATION),e?EG.ix(e):-1,cn&&cn!=='0'?cn:null,i2(SP,r.ESPECES_NOM_LATIN)]);}
  const eg=EG.a,o=eg.map((_,i)=>i).sort((a,b)=>eg[a].localeCompare(eg[b])),rm={};o.forEach((i,k)=>rm[i]=k);
  T.forEach(t=>{if(t[9]>=0)t[9]=rm[t[9]];});
@@ -928,7 +925,7 @@ function bDI(rows){
  const C=[],S=[],AF=[],E=[],TE={},I={},txt=v=>(v||'').trim();
  const iso=v=>{v=txt(v);let m;if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);if(m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(v))return m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');return '';};
  rows.forEach(r=>{
-  const n=txt(r.NUMERO).replace(/\.0+$/,''),g=parseInt(r.GID_ARBRE);if(!n||isNaN(g))return;
+  const n=txt(firstField(r,['NUMERO','NUM_INTERVENTION','ID_INTERVENTION'])).replace(/\.0+$/,''),g=parseInt(firstField(r,['GID_ARBRE','GID','ID_ARBRE','IDENTIFIANT_ARBRE','NUMERO_ARBRE','ID']));if(!n||isNaN(g))return;
   const e=txt(r.DESCRIPTION_ARBRE);if(e&&!(g in TE)){const k=e.lastIndexOf(' - ');TE[g]=ixl(E,e.slice(0,k<0?e.length:k));}
   let it=I[n];if(!it)it=I[n]=[n,ixl(C,txt(r.CLASSIFICATION)||'Non renseigné'),ixl(S,txt(r.STATUT)||'Non renseigné'),parseInt(r.PRIORITE)||0,txt(r.DESCRIPTION),iso(r.OBJECTIF_FIN),iso(r.FIN_REELLE),[],txt(r.DESCRIPTION_DETAILLEE),ixl(AF,txt(r.AFFECTATION)||'Non renseigné')];
   if(!it[7].includes(g))it[7].push(g);
@@ -936,15 +933,15 @@ function bDI(rows){
  return{C,S,AF,E,TE,I:Object.values(I)};
 }
 const $c=id=>document.getElementById(id);
-async function lancer(ta,ti,tc){
+async function lancer(ta,ti){
  $c('chgf').style.display='none';$c('chgm').textContent='Traitement des données…';
  await new Promise(r=>setTimeout(r,30));
- try{const A=parseCSV(ta),B=parseCSV(ti),C=tc?parseCSV(tc):[];demarrer(bDA(A),bDI(B),C);$c('chg').remove();}
+ try{const A=parseCSV(ta),B=parseCSV(ti);demarrer(bDA(A),bDI(B));$c('chg').remove();}
  catch(e){$c('chgm').textContent='Erreur : '+e.message;console.error(e);}
 }
 const lire=f=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(decode(r.result));r.onerror=ko;r.readAsArrayBuffer(f);});
 const entete=t=>NORM(t.slice(0,Math.max(0,t.indexOf('\n'))||2000));
-const TEST={arbres:t=>/TERRIT_P|QUARTIER|ETAT_GEN|RS_EV/.test(entete(t)),interventions:t=>/NUMERO/.test(entete(t))&&/GID_ARBRE/.test(entete(t)),classifications:t=>/CODE/.test(entete(t))&&/FAMILLE_CODE/.test(entete(t))};
+const TEST={arbres:t=>/TERRIT_P|QUARTIER|ETAT_GEN|RS_EV/.test(entete(t)),interventions:t=>/NUMERO/.test(entete(t))&&/GID_ARBRE/.test(entete(t))};
 const tries=[];
 async function essayer(liste,test){
  for(const u of liste){
@@ -962,9 +959,9 @@ async function decouvrir(){
  }catch(e){tries.push('liste des fichiers du dépôt GitHub  →  '+(e.message||'échec'));return [];}}
 (async()=>{
  {const q0=new URLSearchParams(location.search).get('inter');if(q0)$c('chgm').textContent='Ouverture de la fiche d\'intervention N° '+q0+'…';}
- let a=await essayer(FICHIERS.arbres,TEST.arbres),i=await essayer(FICHIERS.interventions,TEST.interventions),c=await essayer(FICHIERS.classifications,TEST.classifications);
- if(!a||!i||!c){const f=await decouvrir();if(f.length){if(!a)a=await essayer(f,TEST.arbres);if(!i)i=await essayer(f,TEST.interventions);if(!c)c=await essayer(f,TEST.classifications);}}
- if(a&&i)return lancer(a,i,c);
+ let a=await essayer(FICHIERS.arbres,TEST.arbres),i=await essayer(FICHIERS.interventions,TEST.interventions);
+ if(!a||!i){const f=await decouvrir();if(f.length){if(!a)a=await essayer(f,TEST.arbres);if(!i)i=await essayer(f,TEST.interventions);}}
+ if(a&&i)return lancer(a,i);
  const local=location.protocol==='file:';
  $c('chgm').textContent=(a?'':'Fichier des arbres introuvable. ')+(i?'':'Fichier des interventions introuvable. ')+(local?'La page est ouverte en double-clic : le navigateur bloque la lecture automatique (utilisez Ouvrir_carte.bat, ou sélectionnez les fichiers ci-dessous).':'Vérifiez que les CSV sont bien dans le dépôt, à côté de index.html ou dans un dossier data, ou sélectionnez-les ci-dessous.');
  $c('chgd').textContent=tries.join('\n');
@@ -972,18 +969,10 @@ async function decouvrir(){
  $c('fa').onchange=async e=>{a=await lire(e.target.files[0]);if(a&&i)lancer(a,i);};
  $c('fi').onchange=async e=>{i=await lire(e.target.files[0]);if(a&&i)lancer(a,i);};
 })();
-function demarrer(DA,DI,DC){
+function demarrer(DA,DI){
 const T=DA.T,I=DI.I,$=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fd=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'—',nf=n=>n.toLocaleString('fr-FR');
-/* Classification hiérarchique : le fichier est facultatif pour préserver le mode dégradé. */
-const CLMETA=(()=>{const m=new Map(),fam=new Map();(DC||[]).forEach(r=>{const code=String(r.CODE||'').trim(),label=String(r.LIBELLE||'').trim();if(!label)return;const x={code,label,famCode:String(r.FAMILLE_CODE||'').trim(),famLabel:String(r.FAMILLE_LIBELLE||'').trim(),sub:String(r.SOUS_FAMILLE_LIBELLE||'').trim(),color:String(r.COULEUR||'').trim()};m.set(NORM(label),x);if(x.famCode&&!fam.has(x.famCode))fam.set(x.famCode,{code:x.famCode,label:x.famLabel,children:[]});if(x.famCode)fam.get(x.famCode).children.push(x);});return{m,fam};})();
-/* Les groupes sont pilotés par GROUPE quand la colonne existe ; sinon ce fallback reste facile à éditer. */
-const PRESETS={Gestion:/abattage|dessouchage|taille|haubanage|intervention technique|protection biologique/i,Diagnostic:/expertise|suivi|contr[oô]le/i};
-const presetIds=name=>{if(name==='Tout')return new Set(ord);if(name==='Aucun')return new Set();const byData=new Set();(DC||[]).forEach(r=>{if(String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).includes(name)){const i=DI.C.findIndex(c=>NORM(c)===NORM(r.LIBELLE||''));if(i>=0)byData.add(i);}});if(byData.size)return byData;const re=PRESETS[name];return new Set(ord.filter(i=>re&&re.test(clMeta(i)?.famLabel||clLabel(i))));};
-
-const clMeta=i=>CLMETA.m.get(NORM(DI.C[i]))||null;
-const clLabel=i=>clMeta(i)?.label||DI.C[i];
 const SC={VIVANT:'#00e640',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PROJET:'#2e6da4'};
 const SL={VIVANT:'Vivant',MORT:'Mort',SOUCHE:'Souche',ELIMINE:'Éliminé',PROJET:'Projet'};
 const EGC={A:'#1a9850',B:'#91cf60',C:'#ffd54a',D:'#f46d43',E:'#a50026'},EGN='#b8bfb9',GR='#9aa5b1';
@@ -1003,14 +992,12 @@ const lab=t=>t[10]||('gid '+t[0]);
 const cmpT=(a,b)=>{const x=a[10],y=b[10];if(x&&y)return x.localeCompare(y,'fr',{numeric:true});if(x)return -1;if(y)return 1;return a[0]-b[0];};
 const cmpG=(a,b)=>{const i=tree.get(a),j=tree.get(b);if(i===undefined||j===undefined)return i===undefined?(j===undefined?a-b:1):-1;return cmpT(T[i],T[j]);};
 const egk=t=>t[9]<0?'—':DA.eg[t[9]];
-const egBox=(s)=>{const c=EGC[s]||EGN;return `<span class="egbox" style="background:${c};color:${s==='C'?'#332600':'#fff'}">${esc(s||'—')}</span>`;};
-const icInner={VIVANT:'<rect x="7" y="9.5" width="2" height="5.5" rx=".6" fill="#7a5230"/><circle cx="5.2" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="10.8" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="8" cy="4.7" r="3.7" fill="#4fd878" stroke="#177a3a" stroke-width=".6"/>',MORT:'<path d="M8 15V8M8 11.2L4.4 7.6M8 9.6L11.6 6M8 8V3.4M4.4 7.6L3 5.2M11.6 6L13 4" stroke="#4a4a4a" stroke-width="1.5" stroke-linecap="round" fill="none"/>',SOUCHE:'<ellipse cx="8" cy="13" rx="5" ry="1.8" fill="#6b4a2b"/><rect x="3" y="7" width="10" height="6" fill="#9a6b3d"/><ellipse cx="8" cy="7" rx="5" ry="2" fill="#dfba84" stroke="#6b4a2b" stroke-width=".7"/><ellipse cx="8" cy="7" rx="2.6" ry="1" fill="none" stroke="#9a6b3d" stroke-width=".6"/>'};
-const mapIcon=(s,x,y,scale=1)=>`<g transform="translate(${x-8*scale},${y-8*scale}) scale(${scale})">${icInner[s]||''}</g>`;
 
 const tree=new Map(T.map((t,i)=>[t[0],i])),tInt=new Map();
 I.forEach((it,i)=>it[7].forEach(g=>{let a=tInt.get(g);if(!a)tInt.set(g,a=[]);a.push(i);}));
-const ord=DI.C.map((_,i)=>i).sort((a,b)=>{const A=clMeta(a),B=clMeta(b);return (A?.code||'\uffff').localeCompare(B?.code||'\uffff','fr',{numeric:true})||a-b;}),CCOL={};
-ord.forEach((i,k)=>{const meta=clMeta(i);CCOL[i]=meta&&/^#[0-9a-f]{6}$/i.test(meta.color)?meta.color:`hsl(${Math.round((160+(k*0.61803398875)%1*270)%360)},90%,58%)`;});
+const ord=DI.C.map((_,i)=>i).sort((a,b)=>DI.C[a].localeCompare(DI.C[b],'fr')),CCOL={};
+/* couleurs vives, hors verts (peu visibles sur la végétation) : cyan, bleu, violet, rose, rouge, orange, jaune */
+ord.forEach((i,k)=>{const f=(k*0.61803398875)%1,hu=(160+f*270)%360;CCOL[i]=`hsl(${Math.round(hu)},${88+(k%2)*8}%,${48+(k%3)*7}%)`;});
 const CC=i=>CCOL[i];
 /* échéances des interventions non terminées */
 const ACT=new Set(['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION']),isAct=it=>ACT.has(DI.S[it[2]]);
@@ -1126,45 +1113,16 @@ function legendT(th,cnt){
  const ks=th==='eg'?[...DA.eg,'—']:DA.s,off=offT[th==='eg'?'eg':'st'];
  $('leg').innerHTML=bar('data-a="all"','data-a="none"')+ks.filter(k=>cnt[k]||off.has(k)).map(k=>`<label class="chk"><input type="checkbox" data-k="${esc(k)}" ${off.has(k)?'':'checked'}><i style="background:${th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')}"></i>${th==='eg'?'État '+(k==='—'?'non renseigné':esc(k)):esc(SL[k]||k)} (${nf(cnt[k]||0)})</label>`).join('');}
 function aggLeg(S){
- const GG=geoG(S),cl={},ec={},fam={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
+ const GG=geoG(S),cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
  I.forEach((it,x)=>{const gs=GG[x];if(!gs.length||!dOK(it,S)||S.off.st.has(it[2])||S.off.af.has(it[9]))return;
-  add(cl,it[1],gs);const meta=clMeta(it[1]),fk=meta?.famCode||('__'+it[1]);add(fam,fk,gs);if(!S.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
- famStats=fam;return{cl,ec,fam};}
-const cntTxt=e=>`(${nf(e?e.n:0)} / ${nf(e?e.g.size:0)})`;
+  add(cl,it[1],gs);if(!S.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
+ return{cl,ec};}
+const cntTxt=e=>`(${nf(e?e.n:0)}-${nf(e?e.g.size:0)})`;
 function legendE(ec){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
-let clOpen=new Set(),clAllOpen=false;
-function syncClOpenFromDom(){
- const host=$('clp');if(!host)return;
- host.querySelectorAll('details.clfam[data-fam-details]').forEach(d=>{
-  const key=d.dataset.famDetails;
-  if(d.open)clOpen.add(key);else clOpen.delete(key);
- });
-}
 function legendCl(cl){
- syncClOpenFromDom();
- const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
- let html='';for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;const isOpen=clAllOpen||clOpen.has(key);html+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><span class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
-  html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
- $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;$('clToggle').textContent=clAllOpen?'Tout replier':'Tout déplier';}
-/* Rendu partagé des classifications pour les différents filtres. */
-const clStates={G:{open:new Set(),all:false},P:{open:new Set(),all:false}};
-function renderClassificationFilter(host,S,cl,after,stateId,prefix){
- const st=clStates[stateId], groups=new Map();
- ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
- const preset=prefix+'Preset',toggle=prefix+'Toggle';
- let h=`<div class="clTools" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><label class="mut" for="${preset}">Présélection</label><select id="${preset}" style="max-width:210px"><option value="Tout">Tout</option><option value="Aucun">Aucun</option><option value="Gestion">Gestion</option><option value="Diagnostic">Diagnostic</option></select><button id="${toggle}" type="button" class="s">${st.all?'Tout replier':'Tout déplier'}</button></div>`;
- for(const [key,g] of groups){const active=g.items.filter(i=>!S.off.cl.has(i)).length,isOpen=st.all||st.open.has(key);h+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><span class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
-  h+=g.items.filter(i=>cl[i]||S.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${S.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('')+'</div></details>';}
- const el=$(host);el.innerHTML=h;
- el.querySelectorAll('details[data-fam-details]').forEach(d=>d.addEventListener('toggle',()=>{d.open?st.open.add(d.dataset.famDetails):st.open.delete(d.dataset.famDetails);}));
- el.onclick=e=>{if(e.target.matches('input[data-fam],input[data-t="cl"]'))e.stopPropagation();};
- el.onchange=e=>{if(e.target.matches('input[data-fam]')){const key=e.target.dataset.fam,ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?S.off.cl.delete(i):S.off.cl.add(i));after();}else if(e.target.matches('input[data-t="cl"]')){const i=+e.target.dataset.v;e.target.checked?S.off.cl.delete(i):S.off.cl.add(i);after();}};
- $(toggle).onclick=()=>{st.all=!st.all;st.open=st.all?new Set(groups.keys()):new Set();after();};
- const sel=$(preset);if(sel){sel.onchange=()=>{const keep=presetIds(sel.value);S.off.cl=new Set(ord.filter(i=>!keep.has(i)));after();};}
-}
-/* Les compteurs de famille sont l'union des enfants, donc sans double comptage d'arbres. */
-let famStats={};function famStatsFor(g,key,cl){const e=famStats[key];return e||{n:g.items.reduce((n,i)=>n+(cl[i]?.n||0),0),g:new Set(g.items.flatMap(i=>[...(cl[i]?.g||[])]))};}function clFamilyFallback(g,cl){return famStatsFor(g,g.code,cl);}
-
+ const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cl[i]||M.off.cl.has(i));
+ $('clp').innerHTML=bar('data-all="cl:1"','data-all="cl:0"')+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(DI.C[i])} ${cntTxt(cl[i])}</label>`).join('')+'</div>';
+ if($('ll'))$('ll').scrollTop=sc;}
 function ckTable(kind,S,rows,colr){
  const nm=NAMES[kind],ids=nm.map((_,i)=>i).filter(i=>rows[i]||S.off[kind].has(i)).sort((a,b)=>nm[a].localeCompare(nm[b],'fr'));
  return `<div class="row" style="margin:2px 0 4px"><button class="s" data-all="${kind}:1">Tout cocher</button><button class="s" data-all="${kind}:0">Tout décocher</button></div><table class="ck"><tr><th></th><th></th><th>Interv.</th><th>Arbres</th></tr>`+
@@ -1186,12 +1144,7 @@ $('tp').onchange=()=>{fillQ('tp','qu');readM();dlMap();refresh(true);};
 $('qu').onchange=()=>{readM();refresh(true);};
 ['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
 $('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
-bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh(true));
-$('clp').addEventListener('click',e=>{if(e.target.matches('input[data-fam],input[data-t=\"cl\"]'))e.stopPropagation();});
-$('clp').addEventListener('toggle',e=>{if(!e.target.dataset.famDetails)return;if(e.target.open)clOpen.add(e.target.dataset.famDetails);else clOpen.delete(e.target.dataset.famDetails);});
-$('clToggle').onclick=()=>{clAllOpen=!clAllOpen;clOpen=clAllOpen?new Set([...new Set(ord.map(i=>clMeta(i)?.famCode||('__'+i))) ]):new Set();refresh(true);};
-const presetSel=$('clPreset');const presetNames=[...new Set(['Gestion','Diagnostic',...(DC||[]).flatMap(r=>String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).filter(Boolean))])];presetNames.forEach(n=>{if(![...presetSel.options].some(o=>o.value===n))presetSel.add(new Option(n,n));});presetSel.onchange=()=>{const keep=presetIds(presetSel.value);M.off.cl=new Set(ord.filter(i=>!keep.has(i)));refresh(true)};
-$('clp').addEventListener('change',e=>{const key=e.target.dataset.fam;if(key===undefined)return;const ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?M.off.cl.delete(i):M.off.cl.add(i));refresh(true);});
+bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh('f'));
 $('lgE').onchange=e=>{const i=e.target.dataset.e;if(i===undefined)return;e.target.checked?offE.delete(+i):offE.add(+i);refresh(false);};
 $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
 $('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
@@ -1299,17 +1252,14 @@ function overlaps(a,W,H,pad){
  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
-function splitMaps(ts,W,H){const pad=34,MAXM=18;let G=[ts];
- const bad=a=>a.length>1&&(a.length>60||fitZ(a,W,H,pad)<15.8||overlaps(a,W,H,pad));
+function splitMaps(ts,W,H){const pad=44,MAXM=40,MAXTREES=120,MINZOOM=15.5;let G=[ts];
+ const bad=a=>a.length>1&&(a.length>MAXTREES||fitZ(a,W,H,pad)<MINZOOM||overlaps(a,W,H,pad));
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
   const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
 function mapHTML(a,all,W,H,i,n,col,ec){
- const ala=a.map(t=>t[2]),alo=a.map(t=>t[1]);
- const isLand=(Math.max(...alo)-Math.min(...alo))*78000 >= (Math.max(...ala)-Math.min(...ala))*110540*1.15;
- if((W>=H)!==isLand)[W,H]=[H,W];
  const zf=fitZ(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
@@ -1329,12 +1279,10 @@ function mapHTML(a,all,W,H,i,n,col,ec){
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
    lbl+=`<text x="${x+6}" y="${y+3}" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
-  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=mapIcon(s,x,y,.58)+`<text x="${x+4}" y="${y+2}" font-size="6.5" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(lab(t))}</text>`;}
+  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
  }
- const shown=a.filter(t=>t[1]>=lonA&&t[1]<=lonB&&t[2]<=latA&&t[2]>=latB), nums=shown.map(lab), r0=nums[0]||lab(a[0]),r1=nums[nums.length-1]||r0;
- const metersPerPx=156543.03392*Math.cos(((latA+latB)/2)*Math.PI/180)/2**zf, denom=Math.max(1,Math.round(1/(metersPerPx*(25.4/96))));
- const orient=W>=H?'land':'port';
- return `<div class="mt" style="page:map-${orient}">Carte ${i}/${n} — arbres ${esc(r0)}${nums.length>1?' → '+esc(r1):''} (${nums.length})</div><div class="m" style="width:${W}px;height:${H}px;page:map-${orient}">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}<g><path d="M${W-35} 55V18M${W-35} 18l-6 10h12z" fill="#222"/><text x="${W-42}" y="70" font-size="11" font-weight="700">N</text><text x="12" y="${H-12}" font-size="10">Échelle 1/${denom}</text></g></svg></div>`;
+ const r0=lab(a[0]),r1=lab(a[a.length-1]);
+ return `<div class="mt">Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div>`;
 }
 function fiche(k){
  if(!I[k])return;
@@ -1350,13 +1298,13 @@ function fiche(k){
  const land=wM>=hM*1.15,W=land?1047:718,H=land?560:540;
  const mp=ts.length?splitMaps(ts,W,H):[],maps=mp.map((a,i)=>mapHTML(a,ts,W,H,i+1,mp.length,col,ec)).join('');
  const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
-  return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${egBox(s)}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
+  return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t))+(egk(t)!=='—'?' · état général '+esc(egk(t)):''):'—'}</td><td class="st">${esc(SL[s]||s||'non localisé')}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
  const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
  const buf=[],w={document:{write:s=>buf.push(s),close:()=>ficheShow(buf.join(''))}};
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
  @page{size:A4 ${land?'landscape':'portrait'};margin:10mm}
- *{box-sizing:border-box}body{margin:0 12mm;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
- .hero{background:linear-gradient(135deg,#466f5d 0%,#6e9880 55%,#a0bdaa 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
+ *{box-sizing:border-box}body{margin:0;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .hero{background:linear-gradient(135deg,#2c6e5c 0%,#4a9877 55%,#86c4a0 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
  .hero:after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:#ffffff1c}
  .hero small{opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-size:10.5px}.hero h1{margin:1px 0 5px;font-size:23px}.hero .cl{font-size:17px;font-weight:800;text-shadow:0 1px 2px #0003}
  .badge{display:inline-block;padding:2px 12px;border-radius:12px;font-weight:700;color:#fff;margin-right:8px;box-shadow:0 1px 3px #0003}
@@ -1364,16 +1312,11 @@ function fiche(k){
  .card .k{font-size:10px;text-transform:uppercase;color:#5b7062;letter-spacing:.07em}.card .v{font-size:13px;font-weight:600}.card.w{grid-column:1/-1}
  .cnt{background:#e2f1e7;color:#2c6a45;border-radius:9px;padding:0 7px;font-weight:700;font-size:10.5px;margin-left:2px}
  .ech{display:inline-flex;align-items:center;gap:5px;padding:1px 10px;border-radius:12px;color:#fff;font-weight:700;margin-left:6px;box-shadow:0 1px 3px #0003}.bang{letter-spacing:1px;font-size:14px}
- h2{font-size:14px;margin:14px 0 6px;color:#466f5d;border-bottom:2px solid #cfe3d6;padding-bottom:3px}
+ h2{font-size:14px;margin:14px 0 6px;color:#2c6e5c;border-bottom:2px solid #cfe3d6;padding-bottom:3px}
  table{border-collapse:collapse;width:100%;table-layout:fixed;box-shadow:0 2px 6px #0001;border-radius:8px;overflow:hidden}
- th{background:#466f5d;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
+ th{background:#2c6e5c;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
  td.c{text-align:center}td.num{font-weight:700;font-size:12.5px}td.st{font-size:11px;color:#3d5546}.box{display:inline-block;width:15px;height:15px;border:1.6px solid #3b5646;border-radius:3px;background:#fff}.ink{height:16px;border-bottom:1.3px dotted #7d948a}
  .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
- @page tree-list{size:A4 portrait;margin:10mm}
- @page map-land{size:A4 landscape;margin:10mm}
- @page map-port{size:A4 portrait;margin:10mm}
- .tree-list{page:tree-list}
- .egbox{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:2px;font-weight:800;font-size:12px}
  .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}
  </style></head><body>
  <div class="hero"><small>Fiche d'intervention</small><h1>N° ${esc(it[0])}</h1><div class="cl">${esc(DI.C[it[1]])}</div><div style="margin-top:7px"><span class="badge" style="background:${sc}">${esc(nm)}</span>${ech}</div></div>
@@ -1384,12 +1327,12 @@ function fiche(k){
   <div class="card w"><div class="k">Description</div><div class="v">${esc(it[4])||'—'}</div></div>
   <div class="card w"><div class="k">Description détaillée</div><div class="v">${esc(it[8])||'—'}</div></div>
  </div>
- <div class="tree-list"><h2>Arbres concernés (${it[7].length})</h2>
- <table class="tree-list"><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
- <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table></div>
- <h2>Situation</h2>
+ <h2>Arbres concernés (${it[7].length})</h2>
+ <table><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
+ <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table>
+ <h2 class="situation-title">Situation <button class="print-atlas" type="button" onclick="window.print()">Imprimer les cartes</button></h2>
  <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${IC[s]} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
- ${$('printMaps')?.checked===false?'':(maps||'<p>Aucun arbre localisé.</p>')}
+ ${maps||'<p>Aucun arbre localisé.</p>'}
  <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
  w.document.close();
 }
@@ -1467,13 +1410,13 @@ function resBlock(title,o,names,type){
 function stat(){
  readG();const a=agg(G);
  $('sres').textContent=`${nf(a.ni)} intervention(s) · ${nf(a.all.size)} arbre(s)`;
- $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);renderClassificationFilter('skc',G,a.k.cl,stat,'G','s');
+ $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);$('skc').innerHTML=ckTable('cl',G,a.k.cl,CC);
  $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');}
 $('stp').innerHTML=optsS('Tous les territoires',DA.tp);
 $('stp').onchange=()=>{fillQ('stp','squ');stat();};
 ['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).onchange=stat);
 $('sm').onchange=()=>{presetSt();stat();};
-bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);
+bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);bindCk($('skc'),G,stat);
 function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};}
 $('sgo').onclick=()=>{readG();
  Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
@@ -1567,14 +1510,14 @@ function fstSections(e,all){
    const it=I[k],tr=it[7].filter(g=>gs.has(g)).sort(cmpG),ec=ecl(it),late=lateOf(it);
    return `<details ${all?'open':''}><summary>${ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]))}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="bd g">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
     (it[4]?`<div class="dt" style="padding:0 12px 3px">${esc(it[4])}</div>`:'')+
-    '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${egBox(s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
+    '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
  return `<h3 class="lt">Interventions de la station (<b>${its.size}</b>)</h3>`+(sec||'<p class="mut">Aucune intervention ne correspond aux filtres.</p>');
 }
 function fstArbres(e,all){
  const keep=t=>{const n=miT(t);return(n>0&&PF.oui)||(n===0&&PF.non);};
  const ts=e.gids.map(g=>T[tree.get(g)]).filter(keep).sort(cmpT);
- const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${egBox(s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
- const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th><th>État</th><th>Interv.</th></tr>';
+ const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
+ const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>État</th><th>Interv.</th></tr>';
  const ok=ts.filter(t=>DA.s[t[3]]!=='ELIMINE'),el=ts.filter(t=>DA.s[t[3]]==='ELIMINE');
  return `<h3 class="lt">Arbres de la station (<b>${ok.length}</b>) <span class="dt">— en jaune : arbres avec intervention</span></h3><table>${hd}${ok.map(row).join('')}</table>`+
   (el.length?`<details class="sec" style="--sc:#e03030" ${all?'open':''}><summary><b>Éliminés</b> — <b>${el.length}</b> arbre(s)</summary><table>${hd}${el.map(row).join('')}</table></details>`:'');}
@@ -1603,10 +1546,10 @@ function pLegend(){
  const ik=new Map();scope().forEach(e=>e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>{let s=ik.get(k);if(!s)ik.set(k,s=new Set());s.add(g);})));
  const cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
  ik.forEach((gs,k)=>{const it=I[k];if(!dOKp(it))return;add(cl,it[1],gs);if(!PF.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
- renderClassificationFilter('fCl',PF,cl,patRender,'P','p');
+ $('fCl').innerHTML=ckTable('cl',PF,cl,CC);
  $('fRet').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-r="${i}" ${PF.ret.has(i)?'checked':''}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
 function patRender(){pLegend();patBody();openFocus();}
-
+bindCk($('fCl'),PF,patRender);
 $('fRet').onchange=e=>{const i=e.target.dataset.r;if(i===undefined)return;e.target.checked?PF.ret.add(+i):PF.ret.delete(+i);patRender();};
 $('pOui').onchange=()=>{PF.oui=$('pOui').checked;patRender();};$('pNon').onchange=()=>{PF.non=$('pNon').checked;patRender();};
 $('pd1').onchange=()=>{PF.d1=$('pd1').value;patRender();};$('pd2').onchange=()=>{PF.d2=$('pd2').value;patRender();};
@@ -1619,7 +1562,7 @@ $('fMap').onclick=()=>{if(curSt){showTab(0);$('qs').value=lblOf(curSt);selStatio
 $('fRst').onclick=()=>{PF.off={st:new Set(),af:new Set(),cl:new Set()};PF.ret=new Set();PF.oui=PF.non=true;PF.d1=PF.d2='';$('pOui').checked=$('pNon').checked=true;$('pd1').value=$('pd2').value='';
  $('fTp').value=DEFTP;fstUn();$('fUn').value='';fstSi();$('fSi').value='';$('fQ').value='';pMulti=null;pFocus=null;curSt=null;patRender();};
 $('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans la liste.');const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
- w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page stationA4{size:A4 portrait;margin:10mm}body{page:stationA4;font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
+ w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
 
 /* ---- initialisation ---- */
 $('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
