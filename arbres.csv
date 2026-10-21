@@ -7696,7 +7696,7 @@
 -0.582894657873341,44.8576577042183,46296.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,MORT,A_REMPLACER,A,E,E,10.0,6.0,JEUNE,SEMI_LIBRE,EN_GESTION,Magnolia grandiflora,Stade Grand Parc 3,Grand Parc-Chartrons,,23
 -0.584435716845147,44.8358388030152,18351.0,PT_BORDEAUX,Bordeaux centre,33063,VIVANT,11_15_ANS,A,B,B,17.0,9.0,ADULTE,SEMI_LIBRE,EN_GESTION,Tilia tomentosa,du 8 Mai 1945 (terrasse),Hypercentre Métropolitain,,5
 -0.577518181817165,44.8778811414832,50061.0,PT_BORDEAUX,Tasta-Petit Bruges,33075,VIVANT,SUP_20_ANS,A,A,A,41.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus palustris,Berges du Lac,Réserves écologiques des Barails,,310
--0.545045572999948,44.846412402,48707.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,10.0,6.0,,,EN_GESTION,Quercus castaneifolia,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,38
+-0.545045572999948,44.846412402,48707.0,PT_BORDEAUX,La Bastide,33063,MORT,,,,,10.0,6.0,,,EN_GESTION,Quercus castaneifolia,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,38
 -0.668333977976011,44.8725758864061,31026.0,PT_BORDEAUX,,33200,SOUCHE,A_REMPLACER,B,D,D,23.0,4.0,ADULTE,SEMI_LIBRE,EN_GESTION,Prunus sp.,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,49
 -0.577396394879572,44.878037950547,50067.0,PT_BORDEAUX,Tasta-Petit Bruges,33075,VIVANT,SUP_20_ANS,A,A,A,35.0,18.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus palustris,Berges du Lac,Réserves écologiques des Barails,,317
 -0.669398354713708,44.8726206873326,31126.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,A,A,A,4.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Malus sp.,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,133
@@ -7794,7 +7794,7 @@
 -0.551718735999986,44.838857415,48693.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,10.0,4.0,JEUNE,SEMI_LIBRE,EN_GESTION,Lagerstroemia indica,Salle Promis,Bastide-Bordeaux Maritime,,29
 -0.668938609229975,44.870245003452,31299.0,PT_BORDEAUX,,33200,VIVANT,11_15_ANS,C,B,C,96.0,23.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus robur,Centre de culture,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,19
 -0.551711115000039,44.838741422,48696.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,10.0,4.0,JEUNE,SEMI_LIBRE,EN_GESTION,Calocedrus decurrens 'Pillar',Salle Promis,Bastide-Bordeaux Maritime,,32
--0.545354756999953,44.8464400349999,48702.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,10.0,6.0,,,EN_GESTION,Quercus castaneifolia,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,33
+-0.545354756999953,44.8464400349999,48702.0,PT_BORDEAUX,La Bastide,33063,MORT,,,,,10.0,6.0,,,EN_GESTION,Quercus castaneifolia,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,33
 -0.553317374462727,44.8682493017959,43939.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,,,,12.0,7.0,,,EN_GESTION,Magnolia kobus,Daniel Iffla-Osiris (rue),Bastide-Bordeaux Maritime,,6
 -0.552497667394756,44.8675857714309,44037.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,,,,8.0,6.0,,SEMI_LIBRE_UNILATERAL,EN_GESTION,Acer rubrum,Delbos (rue),Bastide-Bordeaux Maritime,,1
 -0.545313332000017,44.8464658489999,48703.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,6.0,6.0,,,EN_GESTION,Acer campestre,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,34
@@ -7832,7 +7832,7 @@
 -0.484606464809731,44.8685470165901,234231.0,CIMETIERE_BM,,33013,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,Boisement 5,Parc Cimetière Rive Droite,,5
 -0.48463790098088,44.8684933634422,234232.0,CIMETIERE_BM,,33013,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,Boisement 5,Parc Cimetière Rive Droite,,4
 -0.577499640339725,44.877928525646,50063.0,PT_BORDEAUX,Tasta-Petit Bruges,33075,VIVANT,SUP_20_ANS,A,B,B,18.0,14.0,ADULTE,SEMI_LIBRE,EN_GESTION,Liquidambar styraciflua,Berges du Lac,Réserves écologiques des Barails,,312
--0.668967984317362,44.8722070110979,31069.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,B,B,B,43.0,14.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,105
+-0.668967984317362,44.8722070110979,31069.0,PT_BORDEAUX,,33200,VIVANT,16_20_ANS,B,B,B,50.0,14.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,105
 -0.686725096788604,44.8028612587478,233591.0,PT_SUD,3M-Bourgailh,33318,VIVANT,SUP_20_ANS,A,A,A,17.0,9.0,ADULTE,SEMI_LIBRE,,Quercus robur,Forêt du Bourgailh_Pumptrack_jeux,Pessac Extra-rocade,Forêt du Bourgailh,258
 -0.577746876193368,44.8779559384196,50091.0,PT_BORDEAUX,Tasta-Petit Bruges,33075,VIVANT,SUP_20_ANS,A,B,B,36.0,18.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus palustris,Berges du Lac,Réserves écologiques des Barails,,336
 -0.563514286838168,44.8264273858179,31340.0,PT_BORDEAUX,Bordeaux Sud,33063,VIVANT,SUP_20_ANS,A,A,A,22.0,10.0,ADULTE,MIXTE,EN_GESTION,Tilia tomentosa,Centre d'animation Barbey,Bordeaux Sud-Nansouty Saint Genès,,1
@@ -7990,7 +7990,7 @@
 -0.545385364026964,44.8452173799616,48904.0,PT_BORDEAUX,La Bastide,33063,SOUCHE,,,,,20.0,8.0,,,EN_GESTION,Salix alba,Parc Pinçon,Bastide-Bordeaux Maritime,,E31
 -0.54583525957908,44.8442267914358,48916.0,PT_BORDEAUX,La Bastide,33063,VIVANT,16_20_ANS,A,B,B,35.0,15.0,ADULTE,SEMI_LIBRE,EN_GESTION,Pinus sylvestris,Parc Pinçon,Bastide-Bordeaux Maritime,,E35
 -0.551397510821915,44.8761765383107,1883.0,PT_BORDEAUX,Bordeaux maritime,33063,ELIMINE,16_20_ANS,B,A,B,61.0,9.0,ADULTE,ARCHITECTURE_SUR_TETE_DE_CHAT,EN_GESTION,Platanus x hispanica,Mareilhac (place),Bastide-Bordeaux Maritime,,1
--0.622492187238377,44.8577484235532,28804.0,PT_BORDEAUX,Caudéran,33063,VIVANT,,B,A,B,51.0,16.0,ADULTE,MUTILEE,EN_GESTION,Aesculus hippocastanum,Square de la piscine Stéhélin,Caudéran-Saint Augustin,,4
+-0.622492187238377,44.8577484235532,28804.0,PT_BORDEAUX,Caudéran,33063,VIVANT,16_20_ANS,B,A,B,55.0,16.0,ADULTE,MUTILEE,EN_GESTION,Aesculus hippocastanum,Square de la piscine Stéhélin,Caudéran-Saint Augustin,,4
 -0.576881118268862,44.8246304504733,28819.0,PT_BORDEAUX,Nansouty / Saint-Genès,33063,ELIMINE,,,,,9.0,,,,EN_GESTION,Indéterminé,Square du professeur Jacques Lasserre,Bordeaux Sud-Nansouty Saint Genès,,12
 -0.555597894000028,44.836769876,48718.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,3.0,3.0,,,EN_GESTION,Ostrya carpinifolia,Deschamps (quai),Bastide-Bordeaux Maritime,,20
 -0.573385239511422,44.8770603591073,45480.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,,,,6.0,5.0,,,SOUS_FINALISATION,Quercus ilex,Parc Denis et Eugène Bühler,Bastide-Bordeaux Maritime,,A451
@@ -10306,7 +10306,9 @@
 -0.528616167669486,44.8463821964696,240184.0,PT_RIVE_DROITE,Palmer-Gravières-Cavailles,33119,VIVANT,,,,,,,,,EN_GESTION,Cupressus sempervirens,Parc du Cypressat,secteur 1,,0
 -0.527887996647349,44.8467552974352,240185.0,PT_RIVE_DROITE,Palmer-Gravières-Cavailles,33119,VIVANT,,,,,,,,,EN_GESTION,Pinus pinea,,secteur 1,,0
 -0.475710653310879,44.9233036510288,240186.0,PT_RIVE_DROITE,,33003,VIVANT,,,,,,,,,EN_GESTION,Fraxinus sp.,,,,0
--0.693552115794714,44.9097796378886,240212.0,PT_OUEST,,33519,VIVANT,,,,,,,,,EN_GESTION,Catalpa bignonioides,,,,0
+-0.693552115794714,44.9097796378886,240212.0,PT_OUEST,Stade,33519,VIVANT,,,,,,,,,EN_GESTION,Catalpa bignonioides,,Stade,,0
+-0.568469954574625,44.8673729625364,240213.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,,,,,,,,SOUS_FINALISATION,Cephalotaxus harringtonia,Pôle Technique Municipal Latule-Hameau,Bastide-Bordeaux Maritime,,0
+-0.568469685011568,44.867372700744,240214.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,,,,,,,,SOUS_FINALISATION,Quercus imbricaria,Pôle Technique Municipal Latule-Hameau,Bastide-Bordeaux Maritime,,0
 -0.618876342677961,44.8443943280391,5591.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,A,A,A,43.0,13.0,ADULTE,ARCHITECTURE_SUR_TETE_DE_CHAT,EN_GESTION,Platanus x hispanica,Ecole Elémentaire Raymond Poincaré,Caudéran-Saint Augustin,,37
 -0.629524071195733,44.8440684289795,5594.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,B,B,B,19.0,6.0,ADULTE,MIXTE,EN_GESTION,Tilia cordata,de Caudéran (avenue),Caudéran-Saint Augustin,,11
 -0.623288649054825,44.8578139710265,5611.0,PT_BORDEAUX,Caudéran,33063,SOUCHE,A_REMPLACER,B,E,E,27.0,7.0,ADULTE,,EN_GESTION,Quercus ilex,Eugène Gauthier (place),Caudéran-Saint Augustin,,22
@@ -10355,17 +10357,17 @@
 -0.559655307474041,44.8443189972046,7267.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,B,B,33.0,8.0,ADULTE,MIXTE,EN_GESTION,Fraxinus excelsior 'Westhof's Glorie',Jean Giono_A (allée),Bastide-Bordeaux Maritime,,43
 -0.56456251787811,44.8461152058621,7268.0,PT_BORDEAUX,La Bastide,33063,VIVANT,11_15_ANS,A,B,B,27.0,8.0,JEUNE,SEMI_LIBRE,EN_GESTION,Fraxinus excelsior 'Westhof's Glorie',Jean Giono_A (allée),Bastide-Bordeaux Maritime,,1
 -0.563473198235831,44.8453192260758,7272.0,PT_BORDEAUX,La Bastide,33063,VIVANT,16_20_ANS,A,B,B,8.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Fraxinus sp.,Maison polyvalente de Quartier cœur de Bastide,Bastide-Bordeaux Maritime,,7
--0.630346535217594,44.9233015468104,240201.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.630356253848599,44.9232781367032,240202.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.630137740468046,44.9231879181395,240203.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.630090124329491,44.923176066874,240204.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629962097416153,44.9231433728608,240205.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629692641043902,44.9230580434751,240206.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629666075685684,44.9230446631346,240207.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629604424603299,44.9230009980202,240208.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629621499464999,44.9230028721774,240209.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629355945151448,44.9228063901531,240210.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
--0.629858990084076,44.9231120255738,240211.0,PT_OUEST,,33056,VIVANT,,,,,,,,,,Indéterminé,,,,0
+-0.630346535217594,44.9233015468104,240201.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.630356253848599,44.9232781367032,240202.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.630137740468046,44.9231879181395,240203.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.630090124329491,44.923176066874,240204.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629962097416153,44.9231433728608,240205.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629692641043902,44.9230580434751,240206.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629666075685684,44.9230446631346,240207.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629604424603299,44.9230009980202,240208.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629621499464999,44.9230028721774,240209.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629355945151448,44.9228063901531,240210.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
+-0.629858990084076,44.9231120255738,240211.0,PT_OUEST,Caychac,33056,VIVANT,,,,,,,,,,Indéterminé,Rue  de Tujean,Secteur Nord,,0
 -0.563070320507595,44.8451887012034,7274.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,10.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Gleditsia triacanthos,Maison polyvalente de Quartier cœur de Bastide,Bastide-Bordeaux Maritime,,4
 -0.578825360340363,44.8605918721443,5028.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,SUP_20_ANS,A,B,B,42.0,12.0,ADULTE,SEMI_LIBRE,EN_GESTION,Pinus pinaster,Parc du Grand Parc,Grand Parc-Chartrons,,A68
 -0.558981846421796,44.8441902545333,7229.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,28.0,7.0,ADULTE,SEMI_LIBRE,EN_GESTION,Fraxinus excelsior 'Westhof's Glorie',Jean Giono_A (allée),Bastide-Bordeaux Maritime,,67
@@ -16566,7 +16568,7 @@
 -0.718429431216102,44.7690429862999,238901.0,PT_SUD,Toctoucau,33318,VIVANT,SUP_20_ANS,A,B,B,70.0,20.0,ADULTE,MIXTE,EN_GESTION,Platanus x hispanica,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,29
 -0.718398767136594,44.7690734484657,238902.0,PT_SUD,Toctoucau,33318,VIVANT,16_20_ANS,D,C,D,82.0,20.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus robur 'Fastigiata' (Syn. 'Pyramidalis'),Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,30
 -0.718559532874792,44.768981703849,238903.0,PT_SUD,Toctoucau,33318,VIVANT,SUP_20_ANS,A,A,A,73.0,20.0,ADULTE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,28
--0.707602370734079,44.7745151185389,238904.0,PT_SUD,Magonty,33318,MORT,1_5_ANS,,,,50.0,6.0,ADULTE,FORME_REDUITE_SECURITE,EN_GESTION,Quercus robur,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,34
+-0.707602370734079,44.7745151185389,238904.0,PT_SUD,Magonty,33318,MORT,1_5_ANS,B,E,E,50.0,6.0,ADULTE,CHANDELLE_NICHE_ECOLOGIQUE,EN_GESTION,Quercus robur,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,34
 -0.706420284310392,44.7749808648675,238905.0,PT_SUD,Magonty,33318,VIVANT,SUP_20_ANS,A,A,A,71.0,17.0,ADULTE,MIXTE,EN_GESTION,Quercus robur,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,39
 -0.707270455753614,44.7746443195576,238906.0,PT_SUD,Magonty,33318,VIVANT,SUP_20_ANS,A,A,A,75.0,22.0,MATURE,SEMI_LIBRE,EN_GESTION,Quercus robur,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,35
 -0.706644410244088,44.7748885138131,238907.0,PT_SUD,Magonty,33318,VIVANT,SUP_20_ANS,A,B,B,89.0,17.0,ADULTE,MIXTE,EN_GESTION,Quercus robur,Avenue du Maréchal de Lattre de Tassigny,Pessac Extra-rocade,,38
@@ -19861,7 +19863,7 @@
 -0.595828858417126,44.8752177186858,30947.0,PT_BORDEAUX,Ausone,33075,VIVANT,16_20_ANS,B,B,B,39.0,10.0,ADULTE,SEMI_LIBRE,EN_GESTION,Zelkova serrata,Cimetière Nord,Caudéran-Saint Augustin,,W6
 -0.59127066828758,44.8771728178112,30959.0,PT_BORDEAUX,Ausone,33075,VIVANT,16_20_ANS,B,B,B,18.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Acer campestre,Cimetière Nord,Caudéran-Saint Augustin,,Li39
 -0.669999822525855,44.872695442852,31119.0,PT_BORDEAUX,,33200,SOUCHE,A_REMPLACER,D,D,D,48.0,18.0,ADULTE,SEMI_LIBRE,EN_GESTION,Aesculus hippocastanum,Centre de culture,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,130
--0.668786948424826,44.8721970791675,31073.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,B,A,B,47.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,107
+-0.668786948424826,44.8721970791675,31073.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,B,A,B,54.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,107
 -0.668310243506157,44.8723604469021,31015.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,A,A,A,3.0,2.0,JEUNE,SEMI_LIBRE,EN_GESTION,Prunus serrulata 'Kanzan',Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,44
 -0.670168493731653,44.8728631501669,31127.0,PT_BORDEAUX,,33200,ELIMINE,SUP_20_ANS,B,B,B,83.0,35.0,ADULTE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,134
 -0.67019324529407,44.8728937020261,31130.0,PT_BORDEAUX,,33200,ELIMINE,SUP_20_ANS,B,A,B,90.0,35.0,ADULTE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,135
@@ -21427,11 +21429,11 @@
 -0.579031827273448,44.8498395518729,34080.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,SUP_20_ANS,A,A,A,11.0,6.0,JEUNE,LIBRE,EN_GESTION,Tetradium sp.,JP_Lac,Jardin Public,,L40
 -0.57883546281889,44.8504170186362,34084.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,16_20_ANS,A,B,B,11.0,6.0,JEUNE,SEMI_LIBRE,EN_GESTION,Tilia monticola,JP_Lisière,Jardin Public,,B24
 -0.57658159416589,44.8479505532944,34087.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,SUP_20_ANS,A,A,A,29.0,12.0,ADULTE,SEMI_LIBRE,EN_GESTION,Tilia sp.,JP_Lisière,Jardin Public,,I44
--0.572089060840187,44.8713571462012,31937.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,1_5_ANS,C,C,C,60.0,24.0,ADULTE,MUTILEE,EN_GESTION,Populus nigra 'Italica',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C53
+-0.572089060840187,44.8713571462012,31937.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,1_5_ANS,C,C,C,60.0,24.0,ADULTE,MUTILEE,EN_GESTION,Populus nigra 'Italica',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C53
 -0.573669615753046,44.8716691368979,31941.0,PT_BORDEAUX,Bordeaux maritime,33063,ELIMINE,SUP_20_ANS,A,C,C,7.0,4.0,JEUNE,SEMI_LIBRE,EN_GESTION,Pinus nigra,Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,A19
 -0.569587030201841,44.8712693174937,31945.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,A,B,B,22.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Acer saccharinum 'Laciniatum',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,B10
 -0.5696808877373,44.8711117977223,31948.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,A_REMPLACER,D,B,D,76.0,28.0,ADULTE,MUTILEE,EN_GESTION,Populus nigra 'Italica',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C14
--0.571478830058639,44.8712955751446,31955.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,A_REMPLACER,D,B,D,45.0,23.0,ADULTE,MUTILEE,EN_GESTION,Populus nigra 'Italica',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C41
+-0.571478830058639,44.8712955751446,31955.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,A_REMPLACER,D,B,D,45.0,23.0,ADULTE,MUTILEE,EN_GESTION,Populus nigra 'Italica',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C41
 -0.572164968482536,44.8714698876048,31958.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,11_15_ANS,B,B,B,52.0,20.0,ADULTE,MUTILEE,EN_GESTION,Populus simonii,Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,C119
 -0.572039836064946,44.8719522292248,31961.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,B,A,B,34.0,12.0,ADULTE,SEMI_LIBRE,EN_GESTION,Liquidambar styraciflua,Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,A8
 -0.569778511608163,44.8712459294358,31964.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,1_5_ANS,C,C,C,28.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Acer saccharinum 'Laciniatum',Grande pelouse des Aubiers,Bastide-Bordeaux Maritime,,B20
@@ -38089,7 +38091,7 @@
 -0.660757254626035,44.8424208762643,95214.0,PT_OUEST,Centre ville,33281,VIVANT,,,,,,,,,EN_GESTION,Tilia tomentosa,,Nouveau Secteur,,
 -0.655714806750462,44.831467002117,95083.0,PT_OUEST,Chemin Long,33281,ELIMINE,,,,,,,,,EN_GESTION,Fagus sylvatica 'Dawyck Purple',,Secteur Sud,,
 -0.64494896717066,44.8249402791262,95765.0,PT_OUEST,Les Eyquems,33281,SOUCHE,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Sud,,
--0.698455937293233,44.8127523337959,95767.0,PT_OUEST,Beutre,33281,SOUCHE,,,,,,,,,EN_GESTION,Prunus serrulata 'Kanzan',,Secteur Nord,,
+-0.698455937293233,44.8127523337959,95767.0,PT_OUEST,Beutre,33281,ELIMINE,,,,,,,,,EN_GESTION,Prunus serrulata 'Kanzan',,Secteur Nord,,
 -0.688278750419233,44.8191436223043,95771.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Pyrus calleryana 'Chanticleer',,Secteur Nord,,
 -0.64310761144386,44.8367080899024,96301.0,PT_OUEST,Centre ville,33281,VIVANT,,,,,,,,,EN_GESTION,Magnolia grandiflora,,Secteur Centre Ville Vivier,,
 -0.64967676377638,44.8214723292476,96305.0,PT_OUEST,Le Burck,33281,SOUCHE,,,,,,,,,EN_GESTION,Tilia sp.,,Secteur Sud,,
@@ -38253,7 +38255,7 @@
 -0.689041779024789,44.818974180635,95779.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Pyrus calleryana 'Chanticleer',,Secteur Nord,,
 -0.698378954976125,44.8170622181966,95783.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
 -0.699672236724437,44.8119656155855,95786.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus petraea,,Secteur Nord,,
--0.69811950373926,44.812789090725,95790.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus rubra,,Secteur Nord,,
+-0.69811950373926,44.812789090725,95790.0,PT_OUEST,Beutre,33281,ELIMINE,,,,,,,,,EN_GESTION,Quercus rubra,,Secteur Nord,,
 -0.698519310155874,44.8171985235996,95793.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
 -0.698272561670441,44.8127791091045,95797.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus rubra,,Secteur Nord,,
 -0.69716418174889,44.8137603158774,95801.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Secteur Nord,,
@@ -39231,7 +39233,6 @@
 -0.679533658103322,44.8479315533729,95472.0,PT_OUEST,Beaudésert,33281,VIVANT,,,,,,,,,EN_GESTION,Cupressus sempervirens,Rond-point avenue Marcel Dassault - 3,Nouveau Secteur,,6
 -0.699792450379871,44.8125275499964,95477.0,PT_OUEST,Beutre,33281,SOUCHE,,,,,,,,,EN_GESTION,Acer davidii,,Secteur Nord,,
 -0.699759746626918,44.8124771286947,95480.0,PT_OUEST,Beutre,33281,SOUCHE,,,,,,,,,EN_GESTION,Acer davidii,,Secteur Nord,,
--0.699334357410389,44.8130655894286,95483.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Secteur Nord,,
 -0.63453679233676,44.8191499363783,97679.0,PT_OUEST,Arlac,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Parc du Bourran,,
 -0.634298602792041,44.8182604890847,97682.0,PT_OUEST,Arlac,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Parc du Bourran,,
 -0.634128730769634,44.8194710632649,97685.0,PT_OUEST,Arlac,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Parc du Bourran,,
@@ -45933,7 +45934,7 @@
 -0.577611914377493,44.8498988712438,4746.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,ELIMINE,SUP_20_ANS,A,B,B,33.0,11.0,JEUNE,LIBRE,EN_GESTION,Aesculus x carnea,JP_Espaces centraux,Jardin Public,,R3
 -0.577526648208079,44.849873716127,4748.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,SUP_20_ANS,A,A,A,115.0,28.0,ADULTE,LIBRE,EN_GESTION,Celtis australis,JP_Espaces centraux,Jardin Public,,R4
 -0.637382234346136,44.8603788283219,3112.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,C,B,C,107.0,12.0,ADULTE,FORME_REDUITE_SECURITE,EN_GESTION,Quercus robur,Square des Jasmins,Caudéran-Saint Augustin,,1
--0.637158947039253,44.8603629907036,3114.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,C,B,C,84.0,24.0,ADULTE,SEMI_LIBRE_ISSU_D_UNE_CONVERSION,EN_GESTION,Platanus x hispanica,Square des Jasmins,Caudéran-Saint Augustin,,ADJ3
+-0.637158947039253,44.8603629907036,3114.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,C,B,C,86.0,24.0,ADULTE,SEMI_LIBRE_ISSU_D_UNE_CONVERSION,EN_GESTION,Platanus x hispanica,Square des Jasmins,Caudéran-Saint Augustin,,ADJ3
 -0.63698335522177,44.8602760844242,3117.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,B,B,B,56.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Aesculus hippocastanum,Square des Jasmins,Caudéran-Saint Augustin,,ADJ6
 -0.636972159012095,44.8603194119855,3118.0,PT_BORDEAUX,Caudéran,33063,VIVANT,SUP_20_ANS,A,A,A,42.0,21.0,ADULTE,SEMI_LIBRE,EN_GESTION,Aesculus hippocastanum,Square des Jasmins,Caudéran-Saint Augustin,,ADJ7
 -0.605704083505916,44.8533118194471,3325.0,PT_BORDEAUX,Caudéran,33063,SOUCHE,11_15_ANS,D,B,D,59.0,17.0,ADULTE,FORME_REDUITE_SECURITE,EN_GESTION,Quercus bicolor,PB_Lisière,Parc Bordelais,Parc Bordelais,z35
@@ -55010,7 +55011,7 @@
 -0.599356970942773,44.8199820815601,20776.0,PT_BORDEAUX,Saint-Augustin / Tauzin / Alphonse Dupeux,33063,VIVANT,SUP_20_ANS,B,B,B,20.0,7.0,ADULTE,SEMI_LIBRE,EN_GESTION,Juglans nigra,Jardin Saint Julien,Caudéran-Saint Augustin,,18
 -0.581808495752163,44.8470293343277,20777.0,PT_BORDEAUX,Bordeaux centre,33063,VIVANT,,,,,20.0,4.0,,,EN_GESTION,Trachycarpus fortunei,Galiène (place),Hypercentre Métropolitain,,1
 -0.608354548130399,44.8364342281085,20780.0,PT_BORDEAUX,Saint-Augustin / Tauzin / Alphonse Dupeux,33063,SOUCHE,1_5_ANS,E,E,E,27.0,4.0,ADULTE,MUTILEE,EN_GESTION,Ligustrum vulgare,Square Emile Combes-Jean Gautier,Caudéran-Saint Augustin,,48
--0.570437223032916,44.8739259714203,19373.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,A_REMPLACER,C,D,D,42.0,16.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus palustris,Pelouse de façade des Aubiers,Bastide-Bordeaux Maritime,,3
+-0.570437223032916,44.8739259714203,19373.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,A_REMPLACER,C,D,D,42.0,16.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus palustris,Pelouse de façade des Aubiers,Bastide-Bordeaux Maritime,,3
 -0.574620789522898,44.8744146587029,19374.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,,,,,35.0,,,,EN_GESTION,Indéterminé,Pelouse de façade du Lauzun,Bastide-Bordeaux Maritime,,4
 -0.574663602233913,44.8744125040876,19376.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,A,A,A,28.0,17.0,ADULTE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,Pelouse de façade du Lauzun,Bastide-Bordeaux Maritime,,3
 -0.571679558187918,44.8739924071526,19378.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,16_20_ANS,B,A,B,45.0,21.0,ADULTE,LIBRE,EN_GESTION,Acer saccharinum 'Laciniatum',Pelouse de façade des Aubiers,Bastide-Bordeaux Maritime,,10
@@ -61550,7 +61551,7 @@
 -0.567507430142558,44.87183082935,31404.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,A,B,B,23.0,11.0,JEUNE,SEMI_LIBRE,EN_GESTION,Acer negundo,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,56
 -0.569246118515612,44.8712873902138,31496.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,,C,B,C,43.0,20.0,,,EN_GESTION,Populus nigra,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,5
 -0.568284229204344,44.8706676980891,31497.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,,C,B,C,50.0,22.0,,,EN_GESTION,Populus nigra 'Italica',Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,102
--0.569032417413022,44.8711934688214,31498.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,A_REMPLACER,C,C,C,32.0,15.0,ADULTE,SEMI_LIBRE,EN_GESTION,Salix alba,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,8
+-0.569032417413022,44.8711934688214,31498.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,A_REMPLACER,C,C,C,32.0,15.0,ADULTE,SEMI_LIBRE,EN_GESTION,Salix alba,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,8
 -0.59931532548791,44.8532172728681,31588.0,PT_BORDEAUX,Caudéran,33063,SOUCHE,,A,A,A,8.0,5.0,JEUNE,LIBRE,EN_GESTION,Koelreuteria paniculata,PB_Lisière,Parc Bordelais,Parc Bordelais,H188
 -0.602044231059999,44.8517012645665,31590.0,PT_BORDEAUX,Caudéran,33063,VIVANT,,A,A,A,4.0,4.0,JEUNE,LIBRE,EN_GESTION,Sassafras albidum,PB_Lac,Parc Bordelais,Parc Bordelais,Pp39
 -0.60289948173321,44.8513176535134,31593.0,PT_BORDEAUX,Caudéran,33063,VIVANT,,A,A,A,6.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Juglans nigra,PB_Espaces centraux,Parc Bordelais,Parc Bordelais,Cc123
@@ -61656,7 +61657,7 @@
 -0.567569146661835,44.8719641059844,31415.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,A,A,A,23.0,8.0,ADULTE,SEMI_LIBRE,EN_GESTION,Celtis australis,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,52
 -0.567621501840024,44.8709444710314,31416.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,6_10_ANS,A,C,C,41.0,11.0,ADULTE,SEMI_LIBRE,EN_GESTION,Robinia pseudoacacia,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,64
 -0.567449738748703,44.871421061011,31508.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,A,A,A,31.0,15.0,JEUNE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,62
--0.568596000365478,44.8713936121838,31510.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,A_REMPLACER,D,C,D,29.0,8.0,ADULTE,SEMI_LIBRE,EN_GESTION,Prunus cerasifera 'Pissardii',Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,24
+-0.568596000365478,44.8713936121838,31510.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,A_REMPLACER,D,C,D,29.0,8.0,ADULTE,SEMI_LIBRE,EN_GESTION,Prunus cerasifera 'Pissardii',Centre d'animation Le Lac_Ferme pédagogique,Bastide-Bordeaux Maritime,,24
 -0.597214078048803,44.8318628580453,31512.0,PT_BORDEAUX,Saint-Augustin / Tauzin / Alphonse Dupeux,33063,VIVANT,SUP_20_ANS,A,A,A,15.0,7.0,ADULTE,MIXTE,EN_GESTION,Tilia x europaea 'Pallida',Parking d'Ornano,Caudéran-Saint Augustin,,1
 -0.570036092447339,44.8681063063547,31513.0,PT_BORDEAUX,Bordeaux maritime,33063,SOUCHE,,,,,64.0,17.0,,,EN_GESTION,Populus nigra,Pôle Technique Municipal Latule-Hameau,Bastide-Bordeaux Maritime,,4
 -0.600600112837227,44.8530736786931,31600.0,PT_BORDEAUX,Caudéran,33063,VIVANT,,A,B,B,3.0,6.0,JEUNE,LIBRE,EN_GESTION,Quercus cerris,PB_Chênaie,Parc Bordelais,Parc Bordelais,K45
@@ -62697,7 +62698,7 @@
 -0.66900083890568,44.8726649359734,31135.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,A,A,A,21.0,2.0,JEUNE,SEMI_LIBRE,EN_GESTION,Morus alba 'Pendula',Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,138
 -0.667867510861936,44.8720230166536,31137.0,PT_BORDEAUX,,33200,VIVANT,6_10_ANS,C,C,C,62.0,11.0,ADULTE,MUTILEE,EN_GESTION,Quercus robur,Centre de culture,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,139
 -0.667245056686524,44.8679587902318,31227.0,PT_BORDEAUX,,33200,VIVANT,1_5_ANS,C,C,C,8.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Zelkova serrata,Centre de culture,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,85
--0.668521679196939,44.8722629196907,31228.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,C,B,C,43.0,10.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,85
+-0.668521679196939,44.8722629196907,31228.0,PT_BORDEAUX,,33200,VIVANT,SUP_20_ANS,A,B,B,43.0,12.0,ADULTE,SEMI_LIBRE,EN_GESTION,Carpinus betulus,Lycée horticole Camille Godard,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,85
 -0.667256977392665,44.8680962364091,31233.0,PT_BORDEAUX,,33200,VIVANT,,A,A,A,11.0,5.0,ADULTE,SEMI_LIBRE,EN_GESTION,Cupressocyparis x leylandii,Centre de culture,Service logistique du Haillan-Centre de culture mutualisé et Lycée horticole,,88
 -0.556838371541444,44.9031350181949,27715.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,,A,A,A,53.0,14.0,ADULTE,LIBRE,EN_GESTION,Taxodium distichum,REB_G,Réserves écologiques des Barails,Réserves écologiques des Barails,G289
 -0.556890960428997,44.9031450867606,27716.0,PT_BORDEAUX,Bordeaux maritime,33063,VIVANT,SUP_20_ANS,A,A,A,21.0,10.0,ADULTE,LIBRE,EN_GESTION,Taxodium distichum,REB_G,Réserves écologiques des Barails,Réserves écologiques des Barails,G290
@@ -71342,7 +71343,7 @@
 -0.594838520000049,44.848190045,48976.0,PT_BORDEAUX,Bordeaux centre,33063,VIVANT,SUP_20_ANS,A,A,A,8.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Acer campestre,Jardin de la Visitation,Hypercentre Métropolitain,,75
 -0.545219234331139,44.8441951848939,49074.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,8.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Zelkova carpinifolia,Parc Pinçon,Bastide-Bordeaux Maritime,,E37
 -0.545054269479322,44.8441828787573,49075.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,8.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Ostrya carpinifolia,Parc Pinçon,Bastide-Bordeaux Maritime,,F40
--0.553936489999977,44.8376942979999,49076.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,,,,6.0,5.0,,,SOUS_FINALISATION,Acer platanoides,Jardin sportif Suzanne Lenglen,Bastide-Bordeaux Maritime,,106
+-0.553936489999977,44.8376942979999,49076.0,PT_BORDEAUX,La Bastide,33063,MORT,SUP_20_ANS,,,,6.0,5.0,,,SOUS_FINALISATION,Acer platanoides,Jardin sportif Suzanne Lenglen,Bastide-Bordeaux Maritime,,106
 -0.559778937515183,44.8881321461149,49078.0,PT_BORDEAUX,Bordeaux maritime,33063,ELIMINE,SUP_20_ANS,,,,6.0,5.0,,,SOUS_FINALISATION,Quercus frainetto,Marie Fel (rond point),Bastide-Bordeaux Maritime,,15
 -0.582899770000054,44.860572294,49170.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,11_15_ANS,A,B,B,4.0,3.0,JEUNE,SEMI_LIBRE,EN_GESTION,Ostrya carpinifolia,Parc du Grand Parc,Grand Parc-Chartrons,,C76
 -0.582912507999938,44.860560214,49171.0,PT_BORDEAUX,Chartrons / Grand Parc / Jardin public,33063,VIVANT,16_20_ANS,A,B,B,5.0,3.0,JEUNE,SEMI_LIBRE,EN_GESTION,Prunus avium,Parc du Grand Parc,Grand Parc-Chartrons,,C74
@@ -73245,7 +73246,7 @@
 -0.554901016155132,44.8361692416459,48612.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Quercus cerris,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,71
 -0.554852882905644,44.8361400568479,48613.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Carya illinoinensis,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,72
 -0.554968402786279,44.8362101003288,48615.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Carya illinoinensis,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,61
--0.54533017199999,44.846287348,48699.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,7.0,6.0,,,EN_GESTION,Quercus cerris,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,14
+-0.54533017199999,44.846287348,48699.0,PT_BORDEAUX,La Bastide,33063,MORT,,,,,7.0,6.0,,,EN_GESTION,Quercus cerris,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,14
 -0.545367212999959,44.8463871109999,48701.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,6.0,6.0,,,EN_GESTION,Ulmus 'Nanguen' (Lutèce),Square du Petit Cardinal,Bastide-Bordeaux Maritime,,16
 -0.545270400999963,44.846473176,48704.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,5.0,4.0,,,EN_GESTION,Cercis siliquastrum,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,35
 -0.550225083000065,44.8373789461567,48797.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,10.0,4.0,JEUNE,SEMI_LIBRE,EN_GESTION,Cupressus sempervirens,des Abeilles (allée),Bastide-Bordeaux Maritime,,36
@@ -73298,7 +73299,7 @@
 -0.557556661571602,44.8378427565911,48619.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Quercus cerris,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,19
 -0.557603208118174,44.8378732176106,48620.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Quercus cerris,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,18
 -0.545054523999957,44.846458972,48706.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,6.0,6.0,,,EN_GESTION,Quercus cerris,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,37
--0.545091418000032,44.8462665919999,48709.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,6.0,,,EN_GESTION,Quercus x hispanica,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,40
+-0.545091418000032,44.8462665919999,48709.0,PT_BORDEAUX,La Bastide,33063,MORT,,,,,8.0,6.0,,,EN_GESTION,Quercus x hispanica,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,40
 -0.545169960000034,44.846261756,48711.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,2.0,2.0,,,EN_GESTION,Cercis siliquastrum,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,42
 -0.550100924715605,44.8374651139535,48802.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,10.0,4.0,JEUNE,SEMI_LIBRE,EN_GESTION,Cupressus sempervirens,des Abeilles (allée),Bastide-Bordeaux Maritime,,37
 -0.550011678804717,44.8374198217778,48803.0,PT_BORDEAUX,La Bastide,33063,VIVANT,SUP_20_ANS,A,A,A,8.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Quercus robur 'Fastigiata Koster',des Abeilles (allée),Bastide-Bordeaux Maritime,,29
@@ -73348,7 +73349,7 @@
 -0.55771398909674,44.83794571476,48622.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Carya illinoinensis,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,16
 -0.556906203542587,44.8374207040498,48624.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Carya illinoinensis,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,31
 -0.556999646084787,44.8374802844801,48626.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,8.0,5.0,,,EN_GESTION,Acer platanoides,Deschamps TPC (quai),Bastide-Bordeaux Maritime,,29
--0.545253572000044,44.846266939,48712.0,PT_BORDEAUX,La Bastide,33063,VIVANT,,,,,2.0,2.0,,,EN_GESTION,Cercis siliquastrum,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,43
+-0.545253572000044,44.846266939,48712.0,PT_BORDEAUX,La Bastide,33063,MORT,,,,,2.0,2.0,,,EN_GESTION,Cercis siliquastrum,Square du Petit Cardinal,Bastide-Bordeaux Maritime,,43
 -0.548597912490122,44.8262355306512,48724.0,PT_BORDEAUX,Bordeaux Sud,33063,VIVANT,SUP_20_ANS,,,,6.0,5.0,,,SOUS_FINALISATION,Quercus imbricaria,de Paludate_B (quai),Berges Urbaines-Promenade Corajoud,,81
 -0.548323445677266,44.8260950083881,48726.0,PT_BORDEAUX,Bordeaux Sud,33063,ELIMINE,SUP_20_ANS,,,,6.0,5.0,,,SOUS_FINALISATION,Quercus imbricaria,de Paludate_B (quai),Berges Urbaines-Promenade Corajoud,,85
 -0.559157233616728,44.8295353221479,48727.0,PT_BORDEAUX,Bordeaux Sud,33063,VIVANT,SUP_20_ANS,A,B,B,6.0,5.0,JEUNE,MIXTE,SOUS_FINALISATION,Ostrya carpinifolia,de Tauzia_B (rue),Bordeaux Sud-Nansouty Saint Genès,,10
@@ -78096,7 +78097,7 @@
 -0.692171701760345,44.8199697222026,95662.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Pyrus calleryana 'Chanticleer',,Secteur Nord,,
 -0.686849299471902,44.8195326234048,95663.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Trachycarpus fortunei,,Secteur Nord,,
 -0.686071437638446,44.8194063075489,95664.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus palustris,,Secteur Nord,,
--0.699105992781508,44.8126704915102,95795.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Pinus nigra,,Secteur Nord,,
+-0.699105992781508,44.8126704915102,95795.0,PT_OUEST,Beutre,33281,SOUCHE,,,,,,,,,EN_GESTION,Pinus nigra,,Secteur Nord,,
 -0.699218686542988,44.8130502826254,95796.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Lagerstroemia indica,,Secteur Nord,,
 -0.69803193280155,44.8128018157913,95798.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus rubra,,Secteur Nord,,
 -0.697983579378428,44.8127999452711,95799.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus rubra,,Secteur Nord,,
@@ -78162,7 +78163,7 @@
 -0.696594486298447,44.814132083798,95800.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Taxus baccata,,Secteur Nord,,
 -0.697011278010028,44.8135960931697,95802.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Acer platanoides,,Secteur Nord,,
 -0.697035813925111,44.8135609724537,95803.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Acer platanoides,,Secteur Nord,,
--0.696800701692635,44.8138422463395,95805.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Acer platanoides,,Secteur Nord,,
+-0.696800701692635,44.8138422463395,95805.0,PT_OUEST,Beutre,33281,ELIMINE,,,,,,,,,EN_GESTION,Acer platanoides,,Secteur Nord,,
 -0.664661118922566,44.8228382331789,94374.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus palustris,,Secteur Sud,,
 -0.664613522471159,44.8228955405354,94375.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus palustris,,Secteur Sud,,
 -0.664425524366766,44.8228937302266,94377.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus palustris,,Secteur Sud,,
@@ -81336,7 +81337,7 @@
 -0.65665646206664,44.8123272643355,94227.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Liquidambar styraciflua,,Secteur Sud,,
 -0.697437706003001,44.8169901627274,95832.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
 -0.697371290561359,44.816925820025,95833.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
--0.697597707066066,44.8171508580416,95834.0,PT_OUEST,Beutre,33281,SOUCHE,,,,,,,,,EN_GESTION,Prunus sp.,,Secteur Nord,,
+-0.697597707066066,44.8171508580416,95834.0,PT_OUEST,Beutre,33281,ELIMINE,,,,,,,,,EN_GESTION,Prunus sp.,,Secteur Nord,,
 -0.63871602574133,44.8332416110142,95836.0,PT_OUEST,La Glacière,33281,VIVANT,,,,,,,,,EN_GESTION,Tilia tomentosa,,Parc du Bourran,,
 -0.651376914295916,44.8232310701788,95924.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Carpinus betulus,,Secteur Sud,,
 -0.652421866307263,44.8231524811117,95925.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Populus nigra,,Secteur Sud,,
@@ -81584,7 +81585,7 @@
 -0.656551038798022,44.8125514017738,94250.0,PT_OUEST,Chemin Long,33281,VIVANT,,,,,,,,,EN_GESTION,Carpinus betulus 'Pyramidalis',,Secteur Sud,,
 -0.645968581354295,44.827381437457,95855.0,PT_OUEST,Les Eyquems,33281,VIVANT,,,,,,,,,EN_GESTION,Indéterminé,,Secteur Sud,,
 -0.697384007811447,44.8169361327134,95857.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
--0.697639599284248,44.8171931155479,95858.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Prunus sp.,,Secteur Nord,,
+-0.697639599284248,44.8171931155479,95858.0,PT_OUEST,Beutre,33281,ELIMINE,,,,,,,,,EN_GESTION,Prunus sp.,,Secteur Nord,,
 -0.6965024606352,44.8176165060492,95860.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Acer campestre,,Secteur Nord,,
 -0.694419797206339,44.8179128642275,95948.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
 -0.69441650744085,44.817877217716,95949.0,PT_OUEST,Beutre,33281,VIVANT,,,,,,,,,EN_GESTION,Quercus robur,,Secteur Nord,,
@@ -108482,7 +108483,7 @@
 -0.53817373528808,44.8015304874778,220430.0,PT_SUD,Dorat Verduc,33039,VIVANT,1_5_ANS,A,C,C,7.0,5.0,JEUNE,SEMI_LIBRE,EN_GESTION,Platanus x hispanica,Parking / Plaine des Sports,Bègles,Plaine des Sports,42
 -0.537802590448721,44.8086603772729,220431.0,PT_SUD,Mairie Bourg,33039,VIVANT,SUP_20_ANS,B,B,B,13.0,7.0,ADULTE,SEMI_LIBRE,EN_GESTION,Celtis australis,Voie Verte Pierre Mancicidor,Bègles,,124
 -0.537807874741871,44.8086566872171,220432.0,PT_SUD,Mairie Bourg,33039,VIVANT,SUP_20_ANS,A,A,A,12.0,7.0,ADULTE,SEMI_LIBRE,EN_GESTION,Celtis australis,Voie Verte Pierre Mancicidor,Bègles,,125
--0.619278170120675,44.8063278279255,220523.0,PT_SUD,Brivazac-Candau,33318,VIVANT,A_REMPLACER,E,D,E,47.0,10.0,ADULTE,SEMI_LIBRE,EN_GESTION,Salix babylonica,Bois des Roses,Pessac Intra-rocade,,34
+-0.619278170120675,44.8063278279255,220523.0,PT_SUD,Brivazac-Candau,33318,VIVANT,1_5_ANS,E,,,47.0,3.0,ADULTE,CHANDELLE_NICHE_ECOLOGIQUE,EN_GESTION,Salix babylonica,Bois des Roses,Pessac Intra-rocade,,34
 -0.619601564491534,44.8065900913583,220524.0,PT_SUD,Brivazac-Candau,33318,VIVANT,SUP_20_ANS,A,A,A,75.0,19.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus robur,Bois des Roses,Pessac Intra-rocade,,31
 -0.619090958534217,44.8064036841705,220526.0,PT_SUD,Brivazac-Candau,33318,VIVANT,SUP_20_ANS,A,A,A,14.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Prunus domestica,Bois des Roses,Pessac Intra-rocade,,35
 -0.619059189635774,44.8062702591455,220527.0,PT_SUD,Brivazac-Candau,33318,VIVANT,SUP_20_ANS,B,A,B,63.0,20.0,ADULTE,SEMI_LIBRE,EN_GESTION,Quercus robur,Bois des Roses,Pessac Intra-rocade,,37
@@ -110630,7 +110631,7 @@
 -0.618767986547303,44.7994676309115,229178.0,PT_SUD,Chiquet-Fontaudin,33318,VIVANT,16_20_ANS,A,B,B,19.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Fraxinus angustifolia (syn. Fraxinus oxycarpa),Avenue du Docteur Schweitzer,Pessac Intra-rocade,,95
 -0.619623948572931,44.7984785703818,229180.0,PT_SUD,Chiquet-Fontaudin,33318,VIVANT,A_REMPLACER,A,D,D,10.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Acer saccharinum,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,187
 -0.616370786031758,44.8020825199648,229248.0,PT_SUD,Brivazac-Candau,33318,VIVANT,16_20_ANS,A,C,C,14.0,4.0,ADULTE,SEMI_LIBRE,EN_GESTION,Indéterminé,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,226
--0.622530189617853,44.7959096358054,229250.0,PT_SUD,Chiquet-Fontaudin,33318,VIVANT,,,,,,7.0,,,EN_GESTION,Indéterminé,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,107
+-0.622530189617853,44.7959096358054,229250.0,PT_SUD,Chiquet-Fontaudin,33318,VIVANT,SUP_20_ANS,A,A,A,44.0,13.0,,LIBRE,EN_GESTION,Liquidambar styraciflua,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,107
 -0.623400023623495,44.7939715197619,229252.0,PT_SUD,Saige,33318,VIVANT,SUP_20_ANS,A,A,A,84.0,6.0,ADULTE,SEMI_LIBRE,EN_GESTION,Pinus pinea,Giratoire des Lettres,Pessac Intra-rocade,,122
 -0.616849911475697,44.8013558064636,229318.0,PT_SUD,Brivazac-Candau,33318,VIVANT,16_20_ANS,A,C,C,22.0,4.0,ADULTE,SEMI_LIBRE,EN_GESTION,Indéterminé,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,216
 -0.616668593661792,44.8017631637344,229319.0,PT_SUD,Brivazac-Candau,33318,VIVANT,16_20_ANS,A,C,C,14.0,4.0,ADULTE,SEMI_LIBRE,EN_GESTION,Indéterminé,Avenue du Docteur Schweitzer,Pessac Intra-rocade,,323

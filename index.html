@@ -888,7 +888,8 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
 
 /* ===== Fichiers de données (CSV) : adaptez les chemins si besoin ===== */
 const FICHIERS={arbres:['data/arbres.csv','arbres.csv','data/EV_ARBRE_P_2.csv','EV_ARBRE_P_2.csv','data/EV_ARBRE_P.csv','EV_ARBRE_P.csv'],
- interventions:['data/interventions.csv','interventions.csv','data/data_1.csv','data_1.csv','data/data.csv','data.csv']};
+ interventions:['data/interventions.csv','interventions.csv','data/data_1.csv','data_1.csv','data/data.csv','data.csv'],
+ classifications:['data/classifications.csv','classifications.csv']};
 const CC45='+proj=lcc +lat_1=44.25 +lat_2=45.75 +lat_0=45 +lon_0=3 +x_0=1700000 +y_0=4200000 +ellps=GRS80 +units=m +no_defs';
 if(typeof L==='undefined'||typeof proj4==='undefined')throw new Error('bibliothèques manquantes');
 proj4.defs('CC45',CC45);
@@ -934,15 +935,15 @@ function bDI(rows){
  return{C,S,AF,E,TE,I:Object.values(I)};
 }
 const $c=id=>document.getElementById(id);
-async function lancer(ta,ti){
+async function lancer(ta,ti,tc){
  $c('chgf').style.display='none';$c('chgm').textContent='Traitement des données…';
  await new Promise(r=>setTimeout(r,30));
- try{const A=parseCSV(ta),B=parseCSV(ti);demarrer(bDA(A),bDI(B));$c('chg').remove();}
+ try{const A=parseCSV(ta),B=parseCSV(ti),C=tc?parseCSV(tc):[];demarrer(bDA(A),bDI(B),C);$c('chg').remove();}
  catch(e){$c('chgm').textContent='Erreur : '+e.message;console.error(e);}
 }
 const lire=f=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(decode(r.result));r.onerror=ko;r.readAsArrayBuffer(f);});
 const entete=t=>NORM(t.slice(0,Math.max(0,t.indexOf('\n'))||2000));
-const TEST={arbres:t=>/TERRIT_P|QUARTIER|ETAT_GEN|RS_EV/.test(entete(t)),interventions:t=>/NUMERO/.test(entete(t))&&/GID_ARBRE/.test(entete(t))};
+const TEST={arbres:t=>/TERRIT_P|QUARTIER|ETAT_GEN|RS_EV/.test(entete(t)),interventions:t=>/NUMERO/.test(entete(t))&&/GID_ARBRE/.test(entete(t)),classifications:t=>/CODE/.test(entete(t))&&/FAMILLE_CODE/.test(entete(t))};
 const tries=[];
 async function essayer(liste,test){
  for(const u of liste){
@@ -960,9 +961,9 @@ async function decouvrir(){
  }catch(e){tries.push('liste des fichiers du dépôt GitHub  →  '+(e.message||'échec'));return [];}}
 (async()=>{
  {const q0=new URLSearchParams(location.search).get('inter');if(q0)$c('chgm').textContent='Ouverture de la fiche d\'intervention N° '+q0+'…';}
- let a=await essayer(FICHIERS.arbres,TEST.arbres),i=await essayer(FICHIERS.interventions,TEST.interventions);
- if(!a||!i){const f=await decouvrir();if(f.length){if(!a)a=await essayer(f,TEST.arbres);if(!i)i=await essayer(f,TEST.interventions);}}
- if(a&&i)return lancer(a,i);
+ let a=await essayer(FICHIERS.arbres,TEST.arbres),i=await essayer(FICHIERS.interventions,TEST.interventions),c=await essayer(FICHIERS.classifications,TEST.classifications);
+ if(!a||!i||!c){const f=await decouvrir();if(f.length){if(!a)a=await essayer(f,TEST.arbres);if(!i)i=await essayer(f,TEST.interventions);if(!c)c=await essayer(f,TEST.classifications);}}
+ if(a&&i)return lancer(a,i,c);
  const local=location.protocol==='file:';
  $c('chgm').textContent=(a?'':'Fichier des arbres introuvable. ')+(i?'':'Fichier des interventions introuvable. ')+(local?'La page est ouverte en double-clic : le navigateur bloque la lecture automatique (utilisez Ouvrir_carte.bat, ou sélectionnez les fichiers ci-dessous).':'Vérifiez que les CSV sont bien dans le dépôt, à côté de index.html ou dans un dossier data, ou sélectionnez-les ci-dessous.');
  $c('chgd').textContent=tries.join('\n');
@@ -970,10 +971,14 @@ async function decouvrir(){
  $c('fa').onchange=async e=>{a=await lire(e.target.files[0]);if(a&&i)lancer(a,i);};
  $c('fi').onchange=async e=>{i=await lire(e.target.files[0]);if(a&&i)lancer(a,i);};
 })();
-function demarrer(DA,DI){
+function demarrer(DA,DI,DC){
 const T=DA.T,I=DI.I,$=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fd=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'—',nf=n=>n.toLocaleString('fr-FR');
+/* Classification hiérarchique : le fichier est facultatif pour préserver le mode dégradé. */
+const CLMETA=(()=>{const m=new Map(),fam=new Map();(DC||[]).forEach(r=>{const code=String(r.CODE||'').trim(),label=String(r.LIBELLE||'').trim();if(!label)return;const x={code,label,famCode:String(r.FAMILLE_CODE||'').trim(),famLabel:String(r.FAMILLE_LIBELLE||'').trim(),sub:String(r.SOUS_FAMILLE_LIBELLE||'').trim(),color:String(r.COULEUR||'').trim()};m.set(NORM(label),x);if(x.famCode&&!fam.has(x.famCode))fam.set(x.famCode,{code:x.famCode,label:x.famLabel,children:[]});if(x.famCode)fam.get(x.famCode).children.push(x);});return{m,fam};})();
+const clMeta=i=>CLMETA.m.get(NORM(DI.C[i]))||null;
+const clLabel=i=>clMeta(i)?.label||DI.C[i];
 const SC={VIVANT:'#00e640',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PROJET:'#2e6da4'};
 const SL={VIVANT:'Vivant',MORT:'Mort',SOUCHE:'Souche',ELIMINE:'Éliminé',PROJET:'Projet'};
 const EGC={A:'#1a9850',B:'#91cf60',C:'#ffd54a',D:'#f46d43',E:'#a50026'},EGN='#b8bfb9',GR='#9aa5b1';
@@ -996,9 +1001,8 @@ const egk=t=>t[9]<0?'—':DA.eg[t[9]];
 
 const tree=new Map(T.map((t,i)=>[t[0],i])),tInt=new Map();
 I.forEach((it,i)=>it[7].forEach(g=>{let a=tInt.get(g);if(!a)tInt.set(g,a=[]);a.push(i);}));
-const ord=DI.C.map((_,i)=>i).sort((a,b)=>DI.C[a].localeCompare(DI.C[b],'fr')),CCOL={};
-/* couleurs vives, hors verts (peu visibles sur la végétation) : cyan, bleu, violet, rose, rouge, orange, jaune */
-ord.forEach((i,k)=>{const f=(k*0.61803398875)%1,hu=(160+f*270)%360;CCOL[i]=`hsl(${Math.round(hu)},${88+(k%2)*8}%,${48+(k%3)*7}%)`;});
+const ord=DI.C.map((_,i)=>i).sort((a,b)=>clLabel(a).localeCompare(clLabel(b),'fr')),CCOL={};
+ord.forEach((i,k)=>{const meta=clMeta(i);CCOL[i]=meta&&/^#[0-9a-f]{6}$/i.test(meta.color)?meta.color:`hsl(${Math.round((160+(k*0.61803398875)%1*270)%360)},90%,58%)`;});
 const CC=i=>CCOL[i];
 /* échéances des interventions non terminées */
 const ACT=new Set(['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION']),isAct=it=>ACT.has(DI.S[it[2]]);
@@ -1121,9 +1125,9 @@ function aggLeg(S){
 const cntTxt=e=>`(${nf(e?e.n:0)}-${nf(e?e.g.size:0)})`;
 function legendE(ec){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
 function legendCl(cl){
- const sc=$('ll')?.scrollTop||0,rows=ord.filter(i=>cl[i]||M.off.cl.has(i));
- $('clp').innerHTML=bar('data-all="cl:1"','data-all="cl:0"')+'<div id="ll">'+rows.map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(DI.C[i])} ${cntTxt(cl[i])}</label>`).join('')+'</div>';
- if($('ll'))$('ll').scrollTop=sc;}
+ const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[]};g.items.push(i);groups.set(key,g);});
+ let html=bar('data-all="cl:1"','data-all="cl:0"');for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;html+=`<details class="clfam" open><summary><label class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">(${active}/${g.items.length})</span></label></summary><div class="ch">`;html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
+ $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;}
 function ckTable(kind,S,rows,colr){
  const nm=NAMES[kind],ids=nm.map((_,i)=>i).filter(i=>rows[i]||S.off[kind].has(i)).sort((a,b)=>nm[a].localeCompare(nm[b],'fr'));
  return `<div class="row" style="margin:2px 0 4px"><button class="s" data-all="${kind}:1">Tout cocher</button><button class="s" data-all="${kind}:0">Tout décocher</button></div><table class="ck"><tr><th></th><th></th><th>Interv.</th><th>Arbres</th></tr>`+
@@ -1146,6 +1150,7 @@ $('qu').onchange=()=>{readM();refresh(true);};
 ['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
 $('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
 bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh('f'));
+$('clp').addEventListener('change',e=>{const key=e.target.dataset.fam;if(key===undefined)return;const ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?M.off.cl.delete(i):M.off.cl.add(i));refresh('f');});
 $('lgE').onchange=e=>{const i=e.target.dataset.e;if(i===undefined)return;e.target.checked?offE.delete(+i):offE.add(+i);refresh(false);};
 $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
 $('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
@@ -1578,5 +1583,6 @@ else{resetM();
 window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
