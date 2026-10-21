@@ -1,108 +1,108 @@
-﻿CODE;LIBELLE;FAMILLE_CODE;FAMILLE_LIBELLE;SOUS_FAMILLE_LIBELLE;COULEUR
-ARB-ABA;ABATTAGE;ARB-ABA;ABATTAGE;;#C62828
-ARB-ABA-001;Abattage avec démontage;ARB-ABA;ABATTAGE;Abattage avec démontage;#D63636
-ARB-ABA-002;Abattage sans démontage;ARB-ABA;ABATTAGE;Abattage sans démontage;#DC5050
-ARB-ABA-003;Recepage;ARB-ABA;ABATTAGE;Recepage;#E16969
-ARB-AMC;ABATTAGE POUR MISE EN CHANDELLE;ARB-AMC;ABATTAGE POUR MISE EN CHANDELLE;;#C72929
-ARB-CON;CONTROLE DE L'ENTRETIEN;ARB-CON;CONTROLE DE L'ENTRETIEN;;#2E7D32
-ARB-DES;DESSOUCHAGE;ARB-DES;DESSOUCHAGE;DESSOUCHAGE;#8E5A2A
-ARB-DES-001;Essouchage superficiel;ARB-DES;DESSOUCHAGE;Essouchage superficiel;#B17034
-ARB-DES-002;Essouchage profond;ARB-DES;DESSOUCHAGE;Essouchage profond;#CA874A
-ARB-EXP;EXPERTISE COMPLEMENTAIRE;ARB-EXP;EXPERTISE COMPLEMENTAIRE;;#AD1457
-ARB-EXP-001;Analyse laboratoire;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Analyse laboratoire;#B4155A
-ARB-EXP-002;Analyse pédologique;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Analyse pédologique;#BB165E
-ARB-EXP-003;Autres;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Autres;#C21661
-ARB-EXP-004;Contrôle en hauteur échelle;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur échelle;#C81765
-ARB-EXP-005;Contrôle en hauteur grimper;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur grimper;#CF1868
-ARB-EXP-006;Contrôle en hauteur nacelle;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur nacelle;#D6196C
-ARB-EXP-007;Dendrochronologie;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Dendrochronologie;#DD1A6F
-ARB-EXP-008;Excavation racinaire;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Excavation racinaire;#E41A73
-ARB-EXP-009;Pénétromètre;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Pénétromètre;#E52177
-ARB-EXP-010;Tarrière de Pressler;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Tarrière de Pressler;#E6277B
-ARB-EXP-011;Test de traction;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Test de traction;#E72E7F
-ARB-EXP-012;Tomographie;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Tomographie;#E83583
-ARB-HAU;HAUBANAGE;ARB-HAU;HAUBANAGE;;#6A1B9A
-ARB-HAU-001;Contrôle avant renouvellement haubanage;ARB-HAU;HAUBANAGE;Contrôle avant renouvellement haubanage;#721DA5
-ARB-HAU-002;Contrôle de système de haubanage en hauteur;ARB-HAU;HAUBANAGE;Contrôle de système de haubanage en hauteur;#791FB0
-ARB-HAU-003;Pose complémentaire à un système de haubanage;ARB-HAU;HAUBANAGE;Pose complémentaire à un système de haubanage;#8121BB
-ARB-HAU-004;Pose système de haubanage;ARB-HAU;HAUBANAGE;Pose système de haubanage;#8923C7
-ARB-HAU-005;Réglage du système de haubanage;ARB-HAU;HAUBANAGE;Réglage du système de haubanage;#9025D2
-ARB-HAU-006;Remplacement d'une partie du système de haubanage;ARB-HAU;HAUBANAGE;Remplacement d'une partie du système de haubanage;#972ADA
-ARB-HAU-007;Retrait système de haubanage;ARB-HAU;HAUBANAGE;Retrait système de haubanage;#9D35DC
-ARB-INT;INTERVENTION TECHNIQUE;ARB-INT;INTERVENTION TECHNIQUE;;#1565C0
-ARB-INT-POS;Pose;ARB-INT;INTERVENTION TECHNIQUE;Pose;#1667C5
-ARB-INT-POS-001;Pose - Pose Autre;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Autre;#166AC9
-ARB-INT-POS-002;Pose - Pose Etai;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Etai;#176CCE
-ARB-INT-POS-003;Pose - Pose Paillage;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Paillage;#176FD2
-ARB-INT-POS-004;Pose - Pose Périmètre de protection;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Périmètre de protection;#1871D7
-ARB-INT-POS-005;Pose - Pose Périmètre de sécurité;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Périmètre de sécurité;#1874DC
-ARB-INT-POS-006;Pose - Pose Système d'ancrage de motte;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Système d'ancrage de motte;#1976E0
-ARB-INT-POS-007;Pose - Pose Tuteur;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Tuteur;#1978E5
-ARB-INT-RET;Retrait;ARB-INT;INTERVENTION TECHNIQUE;Retrait;#1D7BE6
-ARB-INT-RET-001;Retrait - Retrait Autre;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Autre;#217EE7
-ARB-INT-RET-002;Retrait - Retrait Etai;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Etai;#2680E7
-ARB-INT-RET-003;Retrait - Retrait Grille d'arbre;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Grille d'arbre;#2A83E8
-ARB-INT-RET-004;Retrait - Retrait Paillage au collet;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Paillage au collet;#2F86E8
-ARB-INT-RET-005;Retrait - Retrait Périmètre de Protection;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Périmètre de Protection;#3488E9
-ARB-INT-RET-006;Retrait - Retrait Périmètre de sécurité;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Périmètre de sécurité;#388BE9
-ARB-INT-RET-007;Retrait - Retrait Protection du tronc;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Protection du tronc;#3D8EEA
-ARB-INT-RET-008;Retrait - Retrait Système d'ancrage de motte;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Système d'ancrage de motte;#4190EA
-ARB-INT-RET-009;Retrait - Retrait Tuteur;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Tuteur;#4693EB
-ARB-NOR;NR;ARB-NOR;NR;;#6B7280
-ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;;#2F7E33
-ARB-PBI-001;Enlèvement de nids de frelon asiatique;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Enlèvement de nids de frelon asiatique;#318535
-ARB-PBI-002;Enlèvement de nids de processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Enlèvement de nids de processionnaires;#348E39
-ARB-PBI-003;Lâcher d'auxiliaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Lâcher d'auxiliaires;#37963C
-ARB-PBI-004;Piège à phéromones;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Piège à phéromones;#3A9F3F
-ARB-PBI-005;Pose de nichoirs;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Pose de nichoirs;#3DA743
-ARB-PBI-006;Pose écopiège à chenilles processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Pose écopiège à chenilles processionnaires;#41AF46
-ARB-PBI-007;Traitement biologique;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Traitement biologique;#44B849
-ARB-PBI-008;Renouvellement d'écopiège à chenilles processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Renouvellement d'écopiège à chenilles processionnaires;#4ABD50
-ARB-SUI;SUIVI DE L'ARBRE;ARB-SUI;SUIVI DE L'ARBRE;;#1464BF
-ARB-SUI-001;Contrôle systématique après intempéries;ARB-SUI;SUIVI DE L'ARBRE;Contrôle systématique après intempéries;#1770D5
-ARB-SUI-002;Contrôle visuel;ARB-SUI;SUIVI DE L'ARBRE;Contrôle visuel;#1C7AE5
-ARB-SUI-003;Expertise;ARB-SUI;SUIVI DE L'ARBRE;Expertise;#3187E9
-ARB-SUI-004;Relevé GPS;ARB-SUI;SUIVI DE L'ARBRE;Relevé GPS;#4592EA
-ARB-TENT;TAILLE D'ENTRETIEN;ARB-TENT;TAILLE D'ENTRETIEN;;#EF6C00
-ARB-TENT-001;Eclaircie de couronne;ARB-TENT;TAILLE D'ENTRETIEN;Eclaircie de couronne;#F26E00
-ARB-TENT-002;Suppression des rejets (Emondage);ARB-TENT;TAILLE D'ENTRETIEN;Suppression des rejets (Emondage);#F66F00
-ARB-TENT-003;Suppression du gui;ARB-TENT;TAILLE D'ENTRETIEN;Suppression du gui;#F97100
-ARB-TENT-004;Suppression du lierre;ARB-TENT;TAILLE D'ENTRETIEN;Suppression du lierre;#FD7200
-ARB-TENT-005;Taille d'adaptation;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation;#FF7401
-ARB-TENT-006;Taille d'adaptation : dégagement de façade / toiture;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : dégagement de façade / toiture;#FF7604
-ARB-TENT-007;Taille d'adaptation : ligne électrique ou eclairage public;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : ligne électrique ou eclairage public;#FF7808
-ARB-TENT-008;Taille d'adaptation : remontée de couronne / relevage;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : remontée de couronne / relevage;#FF790B
-ARB-TENT-009;Taille de conversion;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion;#FF7B0F
-ARB-TENT-010;Taille de conversion : vers une forme architecturée en rideau;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme architecturée en rideau;#FF7D12
-ARB-TENT-011;Taille de conversion : vers une forme architecturée en tête ou micro-tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme architecturée en tête ou micro-tête de chat;#FF7F15
-ARB-TENT-012;Taille de conversion : vers une forme contenue;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme contenue;#FF8119
-ARB-TENT-013;Taille de conversion : vers une forme mixte;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme mixte;#FF831C
-ARB-TENT-014;Taille de conversion : vers une forme semi-libre;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme semi-libre;#FF8520
-ARB-TENT-015;Taille de conversion : vers une forme sur prolongement;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme sur prolongement;#FF8623
-ARB-TENT-016;Taille de restructuration;ARB-TENT;TAILLE D'ENTRETIEN;Taille de restructuration;#FF8826
-ARB-TENT-017;Taille d'entretien en tonnelle;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien en tonnelle;#FF8A2A
-ARB-TENT-018;Taille d'entretien sur forme mixte;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte;#FF8C2D
-ARB-TENT-019;Taille d'entretien sur forme mixte : semi-libre / contenu;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte : semi-libre / contenu;#FF8E31
-ARB-TENT-020;Taille d'entretien sur forme mixte : semi-libre unilateral;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte : semi-libre unilateral;#FF9034
-ARB-TENT-021;Taille d'entretien sur forme semi-libre;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme semi-libre;#FF9237
-ARB-TENT-022;Taille d'entretien sur micro-tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur micro-tête de chat;#FF933B
-ARB-TENT-023;Taille d'entretien sur port contenu;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur port contenu;#FF953E
-ARB-TENT-024;Taille d'entretien sur port réduit;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur port réduit;#FF9742
-ARB-TENT-025;Taille d'entretien sur prolongement;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur prolongement;#FF9945
-ARB-TENT-026;Taille d'entretien sur tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur tête de chat;#FF9B48
-ARB-TENT-027;Taille en rideau;ARB-TENT;TAILLE D'ENTRETIEN;Taille en rideau;#FF9D4C
-ARB-TFRM;TAILLE DE FORMATION;ARB-TFRM;TAILLE DE FORMATION;;#1666C1
-ARB-TFRM-001;Taille de formation sur forme mixte;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte;#166BCD
-ARB-TFRM-002;Taille de formation sur forme mixte : semi-libre / contenu;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte : semi-libre / contenu;#1975DD
-ARB-TFRM-003;Taille de formation sur forme mixte : semi-libre unilateral;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte : semi-libre unilateral;#1B79E4
-ARB-TFRM-004;Taille de formation sur forme semi-libre;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme semi-libre;#2B84E9
-ARB-TFRM-005;Taille de formation sur micro-tête de chat;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur micro-tête de chat;#378AE8
-ARB-TFRM-006;Taille de formation sur tête de chat;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur tête de chat;#4794EC
-ARB-TSEC;TAILLE DE SECURITE;ARB-TSEC;TAILLE DE SECURITE;;#EE6B0A
-ARB-TSEC-001;Enlèvement / Allègement de branche à ancrage déficient;ARB-TSEC;TAILLE DE SECURITE;Enlèvement / Allègement de branche à ancrage déficient;#FC7200
-ARB-TSEC-002;Enlèvement / Allègement de branche fissurée / déchirée;ARB-TSEC;TAILLE DE SECURITE;Enlèvement / Allègement de branche fissurée / déchirée;#FF790A
-ARB-TSEC-003;Enlèvement de branche(s) suspendue(s);ARB-TSEC;TAILLE DE SECURITE;Enlèvement de branche(s) suspendue(s);#FF8017
-ARB-TSEC-004;Réduction forte de couronne;ARB-TSEC;TAILLE DE SECURITE;Réduction forte de couronne;#FF8724
-ARB-TSEC-005;Réduction légère de couronne;ARB-TSEC;TAILLE DE SECURITE;Réduction légère de couronne;#FF8E32
-ARB-TSEC-006;Suppression de bois mort;ARB-TSEC;TAILLE DE SECURITE;Suppression de bois mort;#FF963F
-ARB-TSEC-007;Travaux de sécurité divers;ARB-TSEC;TAILLE DE SECURITE;Travaux de sécurité divers;#F59E4D
+﻿CODE;LIBELLE;FAMILLE_CODE;FAMILLE_LIBELLE;SOUS_FAMILLE_LIBELLE;COULEUR;GROUPE
+ARB-ABA;ABATTAGE;ARB-ABA;ABATTAGE;;#C62828;Gestion
+ARB-ABA-001;Abattage avec démontage;ARB-ABA;ABATTAGE;Abattage avec démontage;#D63636;Gestion
+ARB-ABA-002;Abattage sans démontage;ARB-ABA;ABATTAGE;Abattage sans démontage;#DC5050;Gestion
+ARB-ABA-003;Recepage;ARB-ABA;ABATTAGE;Recepage;#E16969;Gestion
+ARB-AMC;ABATTAGE POUR MISE EN CHANDELLE;ARB-AMC;ABATTAGE POUR MISE EN CHANDELLE;;#C72929;Gestion
+ARB-CON;CONTROLE DE L'ENTRETIEN;ARB-CON;CONTROLE DE L'ENTRETIEN;;#2E7D32;Gestion
+ARB-DES;DESSOUCHAGE;ARB-DES;DESSOUCHAGE;DESSOUCHAGE;#8E5A2A;Gestion
+ARB-DES-001;Essouchage superficiel;ARB-DES;DESSOUCHAGE;Essouchage superficiel;#B17034;Gestion
+ARB-DES-002;Essouchage profond;ARB-DES;DESSOUCHAGE;Essouchage profond;#CA874A;Gestion
+ARB-EXP;EXPERTISE COMPLEMENTAIRE;ARB-EXP;EXPERTISE COMPLEMENTAIRE;;#AD1457;Diagnostic
+ARB-EXP-001;Analyse laboratoire;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Analyse laboratoire;#B4155A;Diagnostic
+ARB-EXP-002;Analyse pédologique;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Analyse pédologique;#BB165E;Diagnostic
+ARB-EXP-003;Autres;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Autres;#C21661;Diagnostic
+ARB-EXP-004;Contrôle en hauteur échelle;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur échelle;#C81765;Diagnostic
+ARB-EXP-005;Contrôle en hauteur grimper;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur grimper;#CF1868;Diagnostic
+ARB-EXP-006;Contrôle en hauteur nacelle;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Contrôle en hauteur nacelle;#D6196C;Diagnostic
+ARB-EXP-007;Dendrochronologie;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Dendrochronologie;#DD1A6F;Diagnostic
+ARB-EXP-008;Excavation racinaire;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Excavation racinaire;#E41A73;Diagnostic
+ARB-EXP-009;Pénétromètre;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Pénétromètre;#E52177;Diagnostic
+ARB-EXP-010;Tarrière de Pressler;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Tarrière de Pressler;#E6277B;Diagnostic
+ARB-EXP-011;Test de traction;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Test de traction;#E72E7F;Diagnostic
+ARB-EXP-012;Tomographie;ARB-EXP;EXPERTISE COMPLEMENTAIRE;Tomographie;#E83583;Diagnostic
+ARB-HAU;HAUBANAGE;ARB-HAU;HAUBANAGE;;#6A1B9A;Gestion,Diagnostic
+ARB-HAU-001;Contrôle avant renouvellement haubanage;ARB-HAU;HAUBANAGE;Contrôle avant renouvellement haubanage;#721DA5;Diagnostic
+ARB-HAU-002;Contrôle de système de haubanage en hauteur;ARB-HAU;HAUBANAGE;Contrôle de système de haubanage en hauteur;#791FB0;Gestion
+ARB-HAU-003;Pose complémentaire à un système de haubanage;ARB-HAU;HAUBANAGE;Pose complémentaire à un système de haubanage;#8121BB;Gestion
+ARB-HAU-004;Pose système de haubanage;ARB-HAU;HAUBANAGE;Pose système de haubanage;#8923C7;Gestion
+ARB-HAU-005;Réglage du système de haubanage;ARB-HAU;HAUBANAGE;Réglage du système de haubanage;#9025D2;Gestion
+ARB-HAU-006;Remplacement d'une partie du système de haubanage;ARB-HAU;HAUBANAGE;Remplacement d'une partie du système de haubanage;#972ADA;Gestion
+ARB-HAU-007;Retrait système de haubanage;ARB-HAU;HAUBANAGE;Retrait système de haubanage;#9D35DC;Gestion
+ARB-INT;INTERVENTION TECHNIQUE;ARB-INT;INTERVENTION TECHNIQUE;;#1565C0;Diagnostic
+ARB-INT-POS;Pose;ARB-INT;INTERVENTION TECHNIQUE;Pose;#1667C5;Diagnostic
+ARB-INT-POS-001;Pose - Pose Autre;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Autre;#166AC9;Diagnostic
+ARB-INT-POS-002;Pose - Pose Etai;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Etai;#176CCE;Diagnostic
+ARB-INT-POS-003;Pose - Pose Paillage;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Paillage;#176FD2;Diagnostic
+ARB-INT-POS-004;Pose - Pose Périmètre de protection;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Périmètre de protection;#1871D7;Diagnostic
+ARB-INT-POS-005;Pose - Pose Périmètre de sécurité;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Périmètre de sécurité;#1874DC;Diagnostic
+ARB-INT-POS-006;Pose - Pose Système d'ancrage de motte;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Système d'ancrage de motte;#1976E0;Diagnostic
+ARB-INT-POS-007;Pose - Pose Tuteur;ARB-INT;INTERVENTION TECHNIQUE;Pose - Pose Tuteur;#1978E5;Diagnostic
+ARB-INT-RET;Retrait;ARB-INT;INTERVENTION TECHNIQUE;Retrait;#1D7BE6;Diagnostic
+ARB-INT-RET-001;Retrait - Retrait Autre;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Autre;#217EE7;Diagnostic
+ARB-INT-RET-002;Retrait - Retrait Etai;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Etai;#2680E7;Diagnostic
+ARB-INT-RET-003;Retrait - Retrait Grille d'arbre;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Grille d'arbre;#2A83E8;Diagnostic
+ARB-INT-RET-004;Retrait - Retrait Paillage au collet;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Paillage au collet;#2F86E8;Diagnostic
+ARB-INT-RET-005;Retrait - Retrait Périmètre de Protection;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Périmètre de Protection;#3488E9;Diagnostic
+ARB-INT-RET-006;Retrait - Retrait Périmètre de sécurité;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Périmètre de sécurité;#388BE9;Diagnostic
+ARB-INT-RET-007;Retrait - Retrait Protection du tronc;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Protection du tronc;#3D8EEA;Diagnostic
+ARB-INT-RET-008;Retrait - Retrait Système d'ancrage de motte;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Système d'ancrage de motte;#4190EA;Diagnostic
+ARB-INT-RET-009;Retrait - Retrait Tuteur;ARB-INT;INTERVENTION TECHNIQUE;Retrait - Retrait Tuteur;#4693EB;Diagnostic
+ARB-NOR;NR;ARB-NOR;NR;;#6B7280;Gestion
+ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;;#2F7E33;Gestion
+ARB-PBI-001;Enlèvement de nids de frelon asiatique;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Enlèvement de nids de frelon asiatique;#318535;Gestion
+ARB-PBI-002;Enlèvement de nids de processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Enlèvement de nids de processionnaires;#348E39;Gestion
+ARB-PBI-003;Lâcher d'auxiliaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Lâcher d'auxiliaires;#37963C;Gestion
+ARB-PBI-004;Piège à phéromones;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Piège à phéromones;#3A9F3F;Gestion
+ARB-PBI-005;Pose de nichoirs;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Pose de nichoirs;#3DA743;Gestion
+ARB-PBI-006;Pose écopiège à chenilles processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Pose écopiège à chenilles processionnaires;#41AF46;Gestion
+ARB-PBI-007;Traitement biologique;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Traitement biologique;#44B849;Gestion
+ARB-PBI-008;Renouvellement d'écopiège à chenilles processionnaires;ARB-PBI;PROTECTION BIOLOGIQUE INTEGREE;Renouvellement d'écopiège à chenilles processionnaires;#4ABD50;Gestion
+ARB-SUI;SUIVI DE L'ARBRE;ARB-SUI;SUIVI DE L'ARBRE;;#1464BF;Diagnostic
+ARB-SUI-001;Contrôle systématique après intempéries;ARB-SUI;SUIVI DE L'ARBRE;Contrôle systématique après intempéries;#1770D5;Diagnostic
+ARB-SUI-002;Contrôle visuel;ARB-SUI;SUIVI DE L'ARBRE;Contrôle visuel;#1C7AE5;Diagnostic
+ARB-SUI-003;Expertise;ARB-SUI;SUIVI DE L'ARBRE;Expertise;#3187E9;Diagnostic
+ARB-SUI-004;Relevé GPS;ARB-SUI;SUIVI DE L'ARBRE;Relevé GPS;#4592EA;Diagnostic
+ARB-TENT;TAILLE D'ENTRETIEN;ARB-TENT;TAILLE D'ENTRETIEN;;#EF6C00;Gestion
+ARB-TENT-001;Eclaircie de couronne;ARB-TENT;TAILLE D'ENTRETIEN;Eclaircie de couronne;#F26E00;Gestion
+ARB-TENT-002;Suppression des rejets (Emondage);ARB-TENT;TAILLE D'ENTRETIEN;Suppression des rejets (Emondage);#F66F00;Gestion
+ARB-TENT-003;Suppression du gui;ARB-TENT;TAILLE D'ENTRETIEN;Suppression du gui;#F97100;Gestion
+ARB-TENT-004;Suppression du lierre;ARB-TENT;TAILLE D'ENTRETIEN;Suppression du lierre;#FD7200;Gestion
+ARB-TENT-005;Taille d'adaptation;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation;#FF7401;Gestion
+ARB-TENT-006;Taille d'adaptation : dégagement de façade / toiture;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : dégagement de façade / toiture;#FF7604;Gestion
+ARB-TENT-007;Taille d'adaptation : ligne électrique ou eclairage public;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : ligne électrique ou eclairage public;#FF7808;Gestion
+ARB-TENT-008;Taille d'adaptation : remontée de couronne / relevage;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'adaptation : remontée de couronne / relevage;#FF790B;Gestion
+ARB-TENT-009;Taille de conversion;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion;#FF7B0F;Gestion
+ARB-TENT-010;Taille de conversion : vers une forme architecturée en rideau;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme architecturée en rideau;#FF7D12;Gestion
+ARB-TENT-011;Taille de conversion : vers une forme architecturée en tête ou micro-tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme architecturée en tête ou micro-tête de chat;#FF7F15;Gestion
+ARB-TENT-012;Taille de conversion : vers une forme contenue;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme contenue;#FF8119;Gestion
+ARB-TENT-013;Taille de conversion : vers une forme mixte;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme mixte;#FF831C;Gestion
+ARB-TENT-014;Taille de conversion : vers une forme semi-libre;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme semi-libre;#FF8520;Gestion
+ARB-TENT-015;Taille de conversion : vers une forme sur prolongement;ARB-TENT;TAILLE D'ENTRETIEN;Taille de conversion : vers une forme sur prolongement;#FF8623;Gestion
+ARB-TENT-016;Taille de restructuration;ARB-TENT;TAILLE D'ENTRETIEN;Taille de restructuration;#FF8826;Gestion
+ARB-TENT-017;Taille d'entretien en tonnelle;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien en tonnelle;#FF8A2A;Gestion
+ARB-TENT-018;Taille d'entretien sur forme mixte;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte;#FF8C2D;Gestion
+ARB-TENT-019;Taille d'entretien sur forme mixte : semi-libre / contenu;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte : semi-libre / contenu;#FF8E31;Gestion
+ARB-TENT-020;Taille d'entretien sur forme mixte : semi-libre unilateral;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme mixte : semi-libre unilateral;#FF9034;Gestion
+ARB-TENT-021;Taille d'entretien sur forme semi-libre;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur forme semi-libre;#FF9237;Gestion
+ARB-TENT-022;Taille d'entretien sur micro-tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur micro-tête de chat;#FF933B;Gestion
+ARB-TENT-023;Taille d'entretien sur port contenu;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur port contenu;#FF953E;Gestion
+ARB-TENT-024;Taille d'entretien sur port réduit;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur port réduit;#FF9742;Gestion
+ARB-TENT-025;Taille d'entretien sur prolongement;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur prolongement;#FF9945;Gestion
+ARB-TENT-026;Taille d'entretien sur tête de chat;ARB-TENT;TAILLE D'ENTRETIEN;Taille d'entretien sur tête de chat;#FF9B48;Gestion
+ARB-TENT-027;Taille en rideau;ARB-TENT;TAILLE D'ENTRETIEN;Taille en rideau;#FF9D4C;Gestion
+ARB-TFRM;TAILLE DE FORMATION;ARB-TFRM;TAILLE DE FORMATION;;#1666C1;Gestion
+ARB-TFRM-001;Taille de formation sur forme mixte;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte;#166BCD;Gestion
+ARB-TFRM-002;Taille de formation sur forme mixte : semi-libre / contenu;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte : semi-libre / contenu;#1975DD;Gestion
+ARB-TFRM-003;Taille de formation sur forme mixte : semi-libre unilateral;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme mixte : semi-libre unilateral;#1B79E4;Gestion
+ARB-TFRM-004;Taille de formation sur forme semi-libre;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur forme semi-libre;#2B84E9;Gestion
+ARB-TFRM-005;Taille de formation sur micro-tête de chat;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur micro-tête de chat;#378AE8;Gestion
+ARB-TFRM-006;Taille de formation sur tête de chat;ARB-TFRM;TAILLE DE FORMATION;Taille de formation sur tête de chat;#4794EC;Gestion
+ARB-TSEC;TAILLE DE SECURITE;ARB-TSEC;TAILLE DE SECURITE;;#EE6B0A;Gestion
+ARB-TSEC-001;Enlèvement / Allègement de branche à ancrage déficient;ARB-TSEC;TAILLE DE SECURITE;Enlèvement / Allègement de branche à ancrage déficient;#FC7200;Gestion
+ARB-TSEC-002;Enlèvement / Allègement de branche fissurée / déchirée;ARB-TSEC;TAILLE DE SECURITE;Enlèvement / Allègement de branche fissurée / déchirée;#FF790A;Gestion
+ARB-TSEC-003;Enlèvement de branche(s) suspendue(s);ARB-TSEC;TAILLE DE SECURITE;Enlèvement de branche(s) suspendue(s);#FF8017;Gestion
+ARB-TSEC-004;Réduction forte de couronne;ARB-TSEC;TAILLE DE SECURITE;Réduction forte de couronne;#FF8724;Gestion
+ARB-TSEC-005;Réduction légère de couronne;ARB-TSEC;TAILLE DE SECURITE;Réduction légère de couronne;#FF8E32;Gestion
+ARB-TSEC-006;Suppression de bois mort;ARB-TSEC;TAILLE DE SECURITE;Suppression de bois mort;#FF963F;Gestion
+ARB-TSEC-007;Travaux de sécurité divers;ARB-TSEC;TAILLE DE SECURITE;Travaux de sécurité divers;#F59E4D;Gestion

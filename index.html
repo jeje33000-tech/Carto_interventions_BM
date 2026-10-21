@@ -804,7 +804,7 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
     <div><h3>Thématique (couleur des arbres)</h3><select id="th"><option value="st">Statut de l'arbre</option><option value="eg">État général</option></select><div id="leg"></div></div>
   <div><h3>Couches</h3><label class="chk"><input type="checkbox" id="lyA" checked> Arbres (ronds)</label><label class="chk"><input type="checkbox" id="lyI" checked> Interventions (épingles)</label></div>
   <div><h3>Échéances</h3><div id="lgE"></div></div>
-  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clp"></div></div>
+  <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clTools" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><label class="mut" for="clPreset">Présélection</label><select id="clPreset" style="max-width:210px"><option value="Tout">Tout</option><option value="Aucun">Aucun</option></select><button id="clToggle" type="button" class="s">Tout déplier</button></div><div id="clp"></div></div>
   <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
     <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
   </div>
@@ -977,6 +977,10 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const fd=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'—',nf=n=>n.toLocaleString('fr-FR');
 /* Classification hiérarchique : le fichier est facultatif pour préserver le mode dégradé. */
 const CLMETA=(()=>{const m=new Map(),fam=new Map();(DC||[]).forEach(r=>{const code=String(r.CODE||'').trim(),label=String(r.LIBELLE||'').trim();if(!label)return;const x={code,label,famCode:String(r.FAMILLE_CODE||'').trim(),famLabel:String(r.FAMILLE_LIBELLE||'').trim(),sub:String(r.SOUS_FAMILLE_LIBELLE||'').trim(),color:String(r.COULEUR||'').trim()};m.set(NORM(label),x);if(x.famCode&&!fam.has(x.famCode))fam.set(x.famCode,{code:x.famCode,label:x.famLabel,children:[]});if(x.famCode)fam.get(x.famCode).children.push(x);});return{m,fam};})();
+/* Les groupes sont pilotés par GROUPE quand la colonne existe ; sinon ce fallback reste facile à éditer. */
+const PRESETS={Gestion:/abattage|dessouchage|taille|haubanage|intervention technique|protection biologique/i,Diagnostic:/expertise|suivi|contr[oô]le/i};
+const presetIds=name=>{if(name==='Tout')return new Set(ord);if(name==='Aucun')return new Set();const byData=new Set();(DC||[]).forEach(r=>{if(String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).includes(name)){const i=DI.C.findIndex(c=>NORM(c)===NORM(r.LIBELLE||''));if(i>=0)byData.add(i);}});if(byData.size)return byData;const re=PRESETS[name];return new Set(ord.filter(i=>re&&re.test(clMeta(i)?.famLabel||clLabel(i))));};
+
 const clMeta=i=>CLMETA.m.get(NORM(DI.C[i]))||null;
 const clLabel=i=>clMeta(i)?.label||DI.C[i];
 const SC={VIVANT:'#00e640',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PROJET:'#2e6da4'};
@@ -1001,7 +1005,7 @@ const egk=t=>t[9]<0?'—':DA.eg[t[9]];
 
 const tree=new Map(T.map((t,i)=>[t[0],i])),tInt=new Map();
 I.forEach((it,i)=>it[7].forEach(g=>{let a=tInt.get(g);if(!a)tInt.set(g,a=[]);a.push(i);}));
-const ord=DI.C.map((_,i)=>i).sort((a,b)=>clLabel(a).localeCompare(clLabel(b),'fr')),CCOL={};
+const ord=DI.C.map((_,i)=>i).sort((a,b)=>{const A=clMeta(a),B=clMeta(b);return (A?.code||'\uffff').localeCompare(B?.code||'\uffff','fr',{numeric:true})||a-b;}),CCOL={};
 ord.forEach((i,k)=>{const meta=clMeta(i);CCOL[i]=meta&&/^#[0-9a-f]{6}$/i.test(meta.color)?meta.color:`hsl(${Math.round((160+(k*0.61803398875)%1*270)%360)},90%,58%)`;});
 const CC=i=>CCOL[i];
 /* échéances des interventions non terminées */
@@ -1118,16 +1122,21 @@ function legendT(th,cnt){
  const ks=th==='eg'?[...DA.eg,'—']:DA.s,off=offT[th==='eg'?'eg':'st'];
  $('leg').innerHTML=bar('data-a="all"','data-a="none"')+ks.filter(k=>cnt[k]||off.has(k)).map(k=>`<label class="chk"><input type="checkbox" data-k="${esc(k)}" ${off.has(k)?'':'checked'}><i style="background:${th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')}"></i>${th==='eg'?'État '+(k==='—'?'non renseigné':esc(k)):esc(SL[k]||k)} (${nf(cnt[k]||0)})</label>`).join('');}
 function aggLeg(S){
- const GG=geoG(S),cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
+ const GG=geoG(S),cl={},ec={},fam={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
  I.forEach((it,x)=>{const gs=GG[x];if(!gs.length||!dOK(it,S)||S.off.st.has(it[2])||S.off.af.has(it[9]))return;
-  add(cl,it[1],gs);if(!S.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
- return{cl,ec};}
-const cntTxt=e=>`(${nf(e?e.n:0)}-${nf(e?e.g.size:0)})`;
+  add(cl,it[1],gs);const meta=clMeta(it[1]),fk=meta?.famCode||('__'+it[1]);add(fam,fk,gs);if(!S.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
+ famStats=fam;return{cl,ec,fam};}
+const cntTxt=e=>`(${nf(e?e.n:0)} / ${nf(e?e.g.size:0)})`;
 function legendE(ec){$('lgE').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-e="${i}" ${offE.has(i)?'':'checked'}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
+let clOpen=new Set(),clAllOpen=false;
 function legendCl(cl){
- const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[]};g.items.push(i);groups.set(key,g);});
- let html=bar('data-all="cl:1"','data-all="cl:0"');for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;html+=`<details class="clfam" open><summary><label class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">(${active}/${g.items.length})</span></label></summary><div class="ch">`;html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
- $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;}
+ const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
+ let html='';for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;const isOpen=clAllOpen||clOpen.has(key);html+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><label class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
+  html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
+ $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;$('clToggle').textContent=clAllOpen?'Tout replier':'Tout déplier';}
+/* Les compteurs de famille sont l'union des enfants, donc sans double comptage d'arbres. */
+let famStats={};function famStatsFor(g,key,cl){const e=famStats[key];return e||{n:g.items.reduce((n,i)=>n+(cl[i]?.n||0),0),g:new Set(g.items.flatMap(i=>[...(cl[i]?.g||[])]))};}function clFamilyFallback(g,cl){return famStatsFor(g,g.code,cl);}
+
 function ckTable(kind,S,rows,colr){
  const nm=NAMES[kind],ids=nm.map((_,i)=>i).filter(i=>rows[i]||S.off[kind].has(i)).sort((a,b)=>nm[a].localeCompare(nm[b],'fr'));
  return `<div class="row" style="margin:2px 0 4px"><button class="s" data-all="${kind}:1">Tout cocher</button><button class="s" data-all="${kind}:0">Tout décocher</button></div><table class="ck"><tr><th></th><th></th><th>Interv.</th><th>Arbres</th></tr>`+
@@ -1150,6 +1159,9 @@ $('qu').onchange=()=>{readM();refresh(true);};
 ['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
 $('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
 bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh('f'));
+$('clp').addEventListener('toggle',e=>{if(!e.target.dataset.famDetails)return;if(e.target.open)clOpen.add(e.target.dataset.famDetails);else clOpen.delete(e.target.dataset.famDetails);});
+$('clToggle').onclick=()=>{clAllOpen=!clAllOpen;clOpen=clAllOpen?new Set([...new Set(ord.map(i=>clMeta(i)?.famCode||('__'+i))) ]):new Set();refresh('f');};
+const presetSel=$('clPreset');const presetNames=[...new Set(['Gestion','Diagnostic',...(DC||[]).flatMap(r=>String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).filter(Boolean))])];presetNames.forEach(n=>{if(![...presetSel.options].some(o=>o.value===n))presetSel.add(new Option(n,n));});presetSel.onchange=()=>{const keep=presetIds(presetSel.value);M.off.cl=new Set(ord.filter(i=>!keep.has(i)));refresh('f')};
 $('clp').addEventListener('change',e=>{const key=e.target.dataset.fam;if(key===undefined)return;const ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?M.off.cl.delete(i):M.off.cl.add(i));refresh('f');});
 $('lgE').onchange=e=>{const i=e.target.dataset.e;if(i===undefined)return;e.target.checked?offE.delete(+i):offE.add(+i);refresh(false);};
 $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
