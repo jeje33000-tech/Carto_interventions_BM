@@ -984,13 +984,13 @@ const presetIds=name=>{if(name==='Tout')return new Set(ord);if(name==='Aucun')re
 
 const clMeta=i=>CLMETA.m.get(NORM(DI.C[i]))||null;
 const clLabel=i=>clMeta(i)?.label||DI.C[i];
-const SC={VIVANT:'#00e640',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PROJET:'#2e6da4'};
+const SC={VIVANT:'#39ff14',MORT:'#222222',SOUCHE:'#8b5a2b',ELIMINE:'#e03030',PROJET:'#2e6da4'};
 const SL={VIVANT:'Vivant',MORT:'Mort',SOUCHE:'Souche',ELIMINE:'Éliminé',PROJET:'Projet'};
 const EGC={A:'#1a9850',B:'#91cf60',C:'#ffd54a',D:'#f46d43',E:'#a50026'},EGN='#b8bfb9',GR='#9aa5b1';
 const PAL=['#e6194b','#f58231','#e6c700','#3cb44b','#42d4f4','#4363d8','#911eb4','#f032e6','#9a6324','#808000','#008080','#800000'];
 const sv=b=>`<svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align:middle;flex:none">${b}</svg>`;
 const IC={
- VIVANT:sv('<rect x="7" y="9.5" width="2" height="5.5" rx=".6" fill="#7a5230"/><circle cx="5.2" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="10.8" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="8" cy="4.7" r="3.7" fill="#4fd878" stroke="#177a3a" stroke-width=".6"/>'),
+ VIVANT:sv('<rect x="7" y="9.5" width="2" height="5.5" rx=".6" fill="#7a5230"/><circle cx="5.2" cy="7.2" r="3.5" fill="#39ff14" stroke="#087a24" stroke-width=".6"/><circle cx="10.8" cy="7.2" r="3.5" fill="#39ff14" stroke="#087a24" stroke-width=".6"/><circle cx="8" cy="4.7" r="3.7" fill="#39ff14" stroke="#087a24" stroke-width=".6"/>'),
  MORT:sv('<path d="M8 15V8M8 11.2L4.4 7.6M8 9.6L11.6 6M8 8V3.4M4.4 7.6L3 5.2M11.6 6L13 4" stroke="#4a4a4a" stroke-width="1.5" stroke-linecap="round" fill="none"/>'),
  SOUCHE:sv('<ellipse cx="8" cy="13" rx="5" ry="1.8" fill="#6b4a2b"/><rect x="3" y="7" width="10" height="6" fill="#9a6b3d"/><ellipse cx="8" cy="7" rx="5" ry="2" fill="#dfba84" stroke="#6b4a2b" stroke-width=".7"/><ellipse cx="8" cy="7" rx="2.6" ry="1" fill="none" stroke="#9a6b3d" stroke-width=".6"/>'),
  ELIMINE:sv('<circle cx="8" cy="6" r="4.5" fill="#d3d8d4"/><rect x="7.2" y="10" width="1.6" height="5" fill="#a0a0a0"/><path d="M2.6 13.4L13.4 2.6M2.6 2.6L13.4 13.4" stroke="#e03030" stroke-width="2" stroke-linecap="round"/>'),
@@ -1020,12 +1020,12 @@ const lateOf=it=>isAct(it)&&!!it[5]&&it[5]<TODAY;
 const TQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);});
 
 /* ---- carte ---- */
-const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:20}).setView([44.8378,-0.5792],13);
+const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24}).setView([44.8378,-0.5792],13);
 const esri=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/{z}/{y}/{x}`;
 const ignU=(l,f)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${l}&STYLE=normal&FORMAT=${f}&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}`;
-const ign=L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:20,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}).addTo(map);
-const sat=L.tileLayer(esri('World_Imagery'),{maxZoom:20,maxNativeZoom:19,attribution:'Imagerie &copy; Esri, Maxar, Earthstar Geographics'});
-const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:20,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
+const ign=L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:24,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}).addTo(map);
+const sat=L.tileLayer(esri('World_Imagery'),{maxZoom:24,maxNativeZoom:19,attribution:'Imagerie &copy; Esri, Maxar, Earthstar Geographics'});
+const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:24,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
 L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn}).addTo(map);
 L.control.scale({imperial:false}).addTo(map);
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
@@ -1060,16 +1060,14 @@ function draw(){
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
   for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<2500)lbl.push([lab(V[k].t),x+r+3,y+1]);}
+   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
-  g.font='bold 8.5px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
+  g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
   const occ=new Map(),CS=40;
-  lbl.forEach(([l,x,y])=>{const w=g.measureText(l).width,hh=10,bx=x,by0=y-hh/2;
-   let hit=false;const c0=Math.floor(bx/CS),c1=Math.floor((bx+w)/CS),r0=Math.floor(by0/CS),r1=Math.floor((by0+hh)/CS);
-   for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(bx<q2[0]+q2[2]&&bx+w>q2[0]&&by0<q2[1]+q2[3]&&by0+hh>q2[1]){hit=true;break;}
-   if(hit)return;for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([bx,by0,w,hh]);}
-   g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,x,y);g.fillStyle='#111';g.fillText(l,x,y);});}
+  lbl.forEach(([l,x,y,isLarge])=>{const w=g.measureText(l).width,hh=10,tries=[[0,0],[0,12],[0,-12],[w+8,0],[-w-8,0],[0,24],[0,-24],[w+8,12],[-w-8,12]];let bx=x-w/2,by0=y-hh/2,chosen=null;
+   for(const [dx,dy] of tries){const X=bx+dx,Y=by0+dy;let hit=false;const c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(X<q2[0]+q2[2]&&X+w>q2[0]&&Y<q2[1]+q2[3]&&Y+hh>q2[1]){hit=true;break;}if(!hit){chosen=[X,Y];break;}}
+   if(!chosen)chosen=[bx,by0+24];const [X,Y]=chosen,c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([X,Y,w,hh]);}g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,X+w/2,Y+hh/2);g.fillStyle='#111';g.fillText(l,X+w/2,Y+hh/2);});}
 }
 map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
 
@@ -1213,7 +1211,7 @@ map.on('click',e=>{if(PZ!==map.getZoom())proj();const p=map.project(e.latlng);le
 
 /* ---- recherche et sélection ---- */
 const pts=gs=>gs.filter(g=>tree.has(g)).map(g=>{const t=T[tree.get(g)];return[t[2],t[1]];});
-function zoomTo(p,maxZ){map.invalidateSize();if(!p.length)return;if(p.length===1){map.setView(p[0],Math.min(18,maxZ||18),{animate:false});return;}map.fitBounds(L.latLngBounds(p).pad(.15),{maxZoom:maxZ||19,animate:false});}
+function zoomTo(p,maxZ){map.invalidateSize();if(!p.length)return;if(p.length===1){map.setView(p[0],Math.min(24,maxZ||24),{animate:false});return;}map.fitBounds(L.latLngBounds(p).pad(.15),{maxZoom:maxZ||24,animate:false});}
 function montrer(gs,txt){closeDr();
  sel=new Set(gs.filter(g=>tree.has(g)));refresh(false);
  zoomTo(pts(gs),19);
@@ -1298,19 +1296,19 @@ function overlaps(a,W,H,pad){
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
 function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
- const bad=a=>a.length>1&&(a.length>48||fitZ(a,W,H,pad)<15.8||(a.length>24&&overlaps(a,W,H,pad)));
+ const bad=a=>a.length>1&&(a.length>48||labelZoom(a,W,H,pad)<15.8||(a.length>24&&overlaps(a,W,H,pad)));
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
   const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
 function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
- const zf=fitZ(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+ const zf=labelZoom(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
   im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
- const mine=new Set(all.map(t=>t[0])),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
+ const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
@@ -1323,11 +1321,11 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
-   lbl+=`<text x="${x+6}" y="${y+3}" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
-  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;const other=lab(t);if(other)lbl+=`<text x="${x+4}" y="${y-4}" font-size="6.5" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(other)}</text>`;}
+   if(!overview)lbl+=`<text x="${x}" y="${y+14}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
+  }else if(!overview&&stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;const other=lab(t);if(other&&!overview)lbl+=`<text x="${x}" y="${y+11}" text-anchor="middle" font-size="6.5" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(other)}</text>`;}
  }
  const r0=lab(a[0]),r1=lab(a[a.length-1]);
- return `<div class="map-card"><div class="mt">${overview?'Carte d’ensemble — tous les arbres de l’intervention':`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
+ return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
 }
 const etatCode=t=>{const v=t&&t[9]>=0?String(DA.eg[t[9]]||'').trim().toUpperCase():'';return /^[A-E]$/.test(v)?v:''};
 const etatBox=t=>{const e=etatCode(t);return `<span class="etat-box" style="background:${e?(EGC[e]||EGN):EGN}">${e||'—'}</span>`};
@@ -1343,7 +1341,7 @@ function fiche(k){
  const ech=ec>=0?`<span class="ech" style="background:${ECC[ec]};${ec===0?'color:#3a2e00':''}">${coneSvg(ECC[ec],false,'#fff')}<span class="bang">${'!'.repeat(ec+1)}</span> ${esc(ECL[ec])}</span>`:'';
  const lons=ts.map(t=>t[1]),lats=ts.map(t=>t[2]),wM=ts.length?(Math.max(...lons)-Math.min(...lons))*78000:0,hM=ts.length?(Math.max(...lats)-Math.min(...lats))*110540:0;
  const portrait=ts.length && hM>0 && wM<hM, W=portrait?540:718,H=portrait?718:540;
- const mp=ts.length?splitMaps(ts,W,H):[], overview=ts.length?mapHTML(ts,ts,W,H,0,1,col,ec,true):'', maps=overview+mp.map((a,i)=>mapHTML(a,ts,W,H,i+1,mp.length,col,ec,false)).join('');
+ const mp=ts.length?splitMaps(ts,W,H):[], hasOverview=mp.length>=2, totalCards=mp.length+(hasOverview?1:0), overview=hasOverview?mapHTML(ts,ts,W,H,1,totalCards,col,ec,true):'', maps=overview+mp.map((a,i)=>mapHTML(a,ts,W,H,i+(hasOverview?2:1),totalCards,col,ec,false)).join('');
  const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
   return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${etatBox(t)}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
  const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
