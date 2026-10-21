@@ -667,7 +667,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 </style>
 <style>
-:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#4f7662}
+:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#5d8a6b}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font:13px/1.4 "Segoe UI",system-ui,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #app{--lw:350px;--rw:280px;display:grid;grid-template-columns:var(--lw) 1fr var(--rw);height:100%}
@@ -796,7 +796,6 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
   <div id="fiche">
     <div id="ft"></div>
     <button id="bf">Imprimer la fiche d'intervention</button>
-     <label class="chk" style="display:inline-flex;margin:3px 0"><input type="checkbox" id="printMaps" checked> Imprimer les cartes</label>
     <button id="bl" class="s">Copier le lien de cette intervention</button>
     <button id="bi" class="s">Itinéraire depuis ma position</button>
     <button id="bx" class="s">Effacer la sélection</button>
@@ -1003,9 +1002,6 @@ const lab=t=>t[10]||('gid '+t[0]);
 const cmpT=(a,b)=>{const x=a[10],y=b[10];if(x&&y)return x.localeCompare(y,'fr',{numeric:true});if(x)return -1;if(y)return 1;return a[0]-b[0];};
 const cmpG=(a,b)=>{const i=tree.get(a),j=tree.get(b);if(i===undefined||j===undefined)return i===undefined?(j===undefined?a-b:1):-1;return cmpT(T[i],T[j]);};
 const egk=t=>t[9]<0?'—':DA.eg[t[9]];
-const egBox=(s)=>{const c=EGC[s]||EGN;return `<span class="egbox" style="background:${c};color:${s==='C'?'#332600':'#fff'}">${esc(s||'—')}</span>`;};
-const icInner={VIVANT:'<rect x="7" y="9.5" width="2" height="5.5" rx=".6" fill="#7a5230"/><circle cx="5.2" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="10.8" cy="7.2" r="3.5" fill="#34c25f" stroke="#177a3a" stroke-width=".6"/><circle cx="8" cy="4.7" r="3.7" fill="#4fd878" stroke="#177a3a" stroke-width=".6"/>',MORT:'<path d="M8 15V8M8 11.2L4.4 7.6M8 9.6L11.6 6M8 8V3.4M4.4 7.6L3 5.2M11.6 6L13 4" stroke="#4a4a4a" stroke-width="1.5" stroke-linecap="round" fill="none"/>',SOUCHE:'<ellipse cx="8" cy="13" rx="5" ry="1.8" fill="#6b4a2b"/><rect x="3" y="7" width="10" height="6" fill="#9a6b3d"/><ellipse cx="8" cy="7" rx="5" ry="2" fill="#dfba84" stroke="#6b4a2b" stroke-width=".7"/><ellipse cx="8" cy="7" rx="2.6" ry="1" fill="none" stroke="#9a6b3d" stroke-width=".6"/>'};
-const mapIcon=(s,x,y,scale=1)=>`<g transform="translate(${x-8*scale},${y-8*scale}) scale(${scale})">${icInner[s]||''}</g>`;
 
 const tree=new Map(T.map((t,i)=>[t[0],i])),tInt=new Map();
 I.forEach((it,i)=>it[7].forEach(g=>{let a=tInt.get(g);if(!a)tInt.set(g,a=[]);a.push(i);}));
@@ -1299,17 +1295,14 @@ function overlaps(a,W,H,pad){
  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
-function splitMaps(ts,W,H){const pad=34,MAXM=18;let G=[ts];
- const bad=a=>a.length>1&&(a.length>60||fitZ(a,W,H,pad)<15.8||overlaps(a,W,H,pad));
+function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
+ const bad=a=>a.length>1&&(a.length>40||fitZ(a,W,H,pad)<16.5||overlaps(a,W,H,pad));
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
   const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
 function mapHTML(a,all,W,H,i,n,col,ec){
- const ala=a.map(t=>t[2]),alo=a.map(t=>t[1]);
- const isLand=(Math.max(...alo)-Math.min(...alo))*78000 >= (Math.max(...ala)-Math.min(...ala))*110540*1.15;
- if((W>=H)!==isLand)[W,H]=[H,W];
  const zf=fitZ(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
@@ -1329,12 +1322,10 @@ function mapHTML(a,all,W,H,i,n,col,ec){
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
    lbl+=`<text x="${x+6}" y="${y+3}" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
-  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=mapIcon(s,x,y,.58)+`<text x="${x+4}" y="${y+2}" font-size="6.5" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(lab(t))}</text>`;}
+  }else if((s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
  }
- const shown=a.filter(t=>t[1]>=lonA&&t[1]<=lonB&&t[2]<=latA&&t[2]>=latB), nums=shown.map(lab), r0=nums[0]||lab(a[0]),r1=nums[nums.length-1]||r0;
- const metersPerPx=156543.03392*Math.cos(((latA+latB)/2)*Math.PI/180)/2**zf, denom=Math.max(1,Math.round(1/(metersPerPx*(25.4/96))));
- const orient=W>=H?'land':'port';
- return `<div class="mt" style="page:map-${orient}">Carte ${i}/${n} — arbres ${esc(r0)}${nums.length>1?' → '+esc(r1):''} (${nums.length})</div><div class="m" style="width:${W}px;height:${H}px;page:map-${orient}">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}<g><path d="M${W-35} 55V18M${W-35} 18l-6 10h12z" fill="#222"/><text x="${W-42}" y="70" font-size="11" font-weight="700">N</text><text x="12" y="${H-12}" font-size="10">Échelle 1/${denom}</text></g></svg></div>`;
+ const r0=lab(a[0]),r1=lab(a[a.length-1]);
+ return `<div class="mt">Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div>`;
 }
 function fiche(k){
  if(!I[k])return;
@@ -1350,13 +1341,13 @@ function fiche(k){
  const land=wM>=hM*1.15,W=land?1047:718,H=land?560:540;
  const mp=ts.length?splitMaps(ts,W,H):[],maps=mp.map((a,i)=>mapHTML(a,ts,W,H,i+1,mp.length,col,ec)).join('');
  const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
-  return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${egBox(s)}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
+  return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${esc(SL[s]||s||'non localisé')}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
  const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
  const buf=[],w={document:{write:s=>buf.push(s),close:()=>ficheShow(buf.join(''))}};
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
  @page{size:A4 ${land?'landscape':'portrait'};margin:10mm}
- *{box-sizing:border-box}body{margin:0 12mm;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
- .hero{background:linear-gradient(135deg,#466f5d 0%,#6e9880 55%,#a0bdaa 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
+ *{box-sizing:border-box}body{margin:0;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .hero{background:linear-gradient(135deg,#2c6e5c 0%,#4a9877 55%,#86c4a0 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
  .hero:after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:#ffffff1c}
  .hero small{opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-size:10.5px}.hero h1{margin:1px 0 5px;font-size:23px}.hero .cl{font-size:17px;font-weight:800;text-shadow:0 1px 2px #0003}
  .badge{display:inline-block;padding:2px 12px;border-radius:12px;font-weight:700;color:#fff;margin-right:8px;box-shadow:0 1px 3px #0003}
@@ -1364,16 +1355,11 @@ function fiche(k){
  .card .k{font-size:10px;text-transform:uppercase;color:#5b7062;letter-spacing:.07em}.card .v{font-size:13px;font-weight:600}.card.w{grid-column:1/-1}
  .cnt{background:#e2f1e7;color:#2c6a45;border-radius:9px;padding:0 7px;font-weight:700;font-size:10.5px;margin-left:2px}
  .ech{display:inline-flex;align-items:center;gap:5px;padding:1px 10px;border-radius:12px;color:#fff;font-weight:700;margin-left:6px;box-shadow:0 1px 3px #0003}.bang{letter-spacing:1px;font-size:14px}
- h2{font-size:14px;margin:14px 0 6px;color:#466f5d;border-bottom:2px solid #cfe3d6;padding-bottom:3px}
+ h2{font-size:14px;margin:14px 0 6px;color:#2c6e5c;border-bottom:2px solid #cfe3d6;padding-bottom:3px}
  table{border-collapse:collapse;width:100%;table-layout:fixed;box-shadow:0 2px 6px #0001;border-radius:8px;overflow:hidden}
- th{background:#466f5d;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
+ th{background:#2c6e5c;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
  td.c{text-align:center}td.num{font-weight:700;font-size:12.5px}td.st{font-size:11px;color:#3d5546}.box{display:inline-block;width:15px;height:15px;border:1.6px solid #3b5646;border-radius:3px;background:#fff}.ink{height:16px;border-bottom:1.3px dotted #7d948a}
  .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
- @page tree-list{size:A4 portrait;margin:10mm}
- @page map-land{size:A4 landscape;margin:10mm}
- @page map-port{size:A4 portrait;margin:10mm}
- .tree-list{page:tree-list}
- .egbox{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:2px;font-weight:800;font-size:12px}
  .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}
  </style></head><body>
  <div class="hero"><small>Fiche d'intervention</small><h1>N° ${esc(it[0])}</h1><div class="cl">${esc(DI.C[it[1]])}</div><div style="margin-top:7px"><span class="badge" style="background:${sc}">${esc(nm)}</span>${ech}</div></div>
@@ -1384,12 +1370,12 @@ function fiche(k){
   <div class="card w"><div class="k">Description</div><div class="v">${esc(it[4])||'—'}</div></div>
   <div class="card w"><div class="k">Description détaillée</div><div class="v">${esc(it[8])||'—'}</div></div>
  </div>
- <div class="tree-list"><h2>Arbres concernés (${it[7].length})</h2>
- <table class="tree-list"><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
- <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table></div>
+ <h2>Arbres concernés (${it[7].length})</h2>
+ <table><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
+ <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table>
  <h2>Situation</h2>
  <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${IC[s]} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
- ${$('printMaps')?.checked===false?'':(maps||'<p>Aucun arbre localisé.</p>')}
+ ${maps||'<p>Aucun arbre localisé.</p>'}
  <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
  w.document.close();
 }
@@ -1567,14 +1553,14 @@ function fstSections(e,all){
    const it=I[k],tr=it[7].filter(g=>gs.has(g)).sort(cmpG),ec=ecl(it),late=lateOf(it);
    return `<details ${all?'open':''}><summary>${ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]))}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="bd g">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
     (it[4]?`<div class="dt" style="padding:0 12px 3px">${esc(it[4])}</div>`:'')+
-    '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${egBox(s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
+    '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
  return `<h3 class="lt">Interventions de la station (<b>${its.size}</b>)</h3>`+(sec||'<p class="mut">Aucune intervention ne correspond aux filtres.</p>');
 }
 function fstArbres(e,all){
  const keep=t=>{const n=miT(t);return(n>0&&PF.oui)||(n===0&&PF.non);};
  const ts=e.gids.map(g=>T[tree.get(g)]).filter(keep).sort(cmpT);
- const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${egBox(s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
- const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>État général</th><th>État</th><th>Interv.</th></tr>';
+ const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
+ const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>État</th><th>Interv.</th></tr>';
  const ok=ts.filter(t=>DA.s[t[3]]!=='ELIMINE'),el=ts.filter(t=>DA.s[t[3]]==='ELIMINE');
  return `<h3 class="lt">Arbres de la station (<b>${ok.length}</b>) <span class="dt">— en jaune : arbres avec intervention</span></h3><table>${hd}${ok.map(row).join('')}</table>`+
   (el.length?`<details class="sec" style="--sc:#e03030" ${all?'open':''}><summary><b>Éliminés</b> — <b>${el.length}</b> arbre(s)</summary><table>${hd}${el.map(row).join('')}</table></details>`:'');}
@@ -1619,7 +1605,7 @@ $('fMap').onclick=()=>{if(curSt){showTab(0);$('qs').value=lblOf(curSt);selStatio
 $('fRst').onclick=()=>{PF.off={st:new Set(),af:new Set(),cl:new Set()};PF.ret=new Set();PF.oui=PF.non=true;PF.d1=PF.d2='';$('pOui').checked=$('pNon').checked=true;$('pd1').value=$('pd2').value='';
  $('fTp').value=DEFTP;fstUn();$('fUn').value='';fstSi();$('fSi').value='';$('fQ').value='';pMulti=null;pFocus=null;curSt=null;patRender();};
 $('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans la liste.');const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
- w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page stationA4{size:A4 portrait;margin:10mm}body{page:stationA4;font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
+ w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
 
 /* ---- initialisation ---- */
 $('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
