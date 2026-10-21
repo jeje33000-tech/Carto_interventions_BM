@@ -915,7 +915,8 @@ function bDA(rows){
  const nb=v=>parseFloat(String(v).replace(/\s/g,'').replace(',','.')),tr=v=>v?v.trim():'',i2=(m,v)=>{v=tr(v);return v?m.ix(v):-1;};
  for(const r of rows){let x=nb(r[P[0]]),y=nb(r[P[1]]);if(isNaN(x)||isNaN(y))continue;
   if(Math.abs(x)>180){const c=proj4('CC45','WGS84',[x,y]);x=c[0];y=c[1];}
-  const e=tr(r.ETAT_GEN),cn=tr(r.EMPL_CARRE_NUM||r.CARRE_NUMERO||r.CARRE_NUM);
+  const pick=(r,names)=>{for(const n of names){const k=NORM(n);if(k in r&&tr(r[k]))return tr(r[k]);}return '';};
+   const e=pick(r,['ETAT_GEN','ETAT','ETAT_GENERAL','ETAT_GENERAL_ARBRE']),cn=pick(r,['EMPL_CARRE_NUM','CARRE_NUMERO','CARRE_NUM']);
   /* t = [gid, lon, lat, statut, territoire, quartier, unité, site, station, état général, carré-numéro, espèce] */
   T.push([parseInt(r.GID),Math.round(x*1e6)/1e6,Math.round(y*1e6)/1e6,S.ix(tr(r.STATUT)||'INCONNU'),TP.ix(tr(r.TERRIT_P)||'—'),QU.ix(tr(r.QUARTIER)||'—'),
    i2(UN,r.EMPL_UNITE_UNITE),i2(SI,r.EMPL_SITE_SITE),i2(ST,r.EMPL_STATION_STATION),e?EG.ix(e):-1,cn&&cn!=='0'?cn:null,i2(SP,r.ESPECES_NOM_LATIN)]);}
@@ -999,6 +1000,7 @@ const GEO='https://geopro.bordeaux-metropole.fr/adws/app/7e191113-a8ee-11f0-8c10
 const nmi=(a,i)=>i>=0?a[i]:'';
 const espT=t=>{const e=DI.TE[t[0]];return e!==undefined?DI.E[e]:(t[11]>=0?DA.sp[t[11]]:'—');};
 const lab=t=>t[10]||('gid '+t[0]);
+ const treeSym=s=>'<svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align:middle;flex:none"><circle cx="8" cy="8" r="5.5" fill="'+(SC[s]||'#777')+'" stroke="rgba(0,0,0,.55)" stroke-width=".8"/></svg>';
 const cmpT=(a,b)=>{const x=a[10],y=b[10];if(x&&y)return x.localeCompare(y,'fr',{numeric:true});if(x)return -1;if(y)return 1;return a[0]-b[0];};
 const cmpG=(a,b)=>{const i=tree.get(a),j=tree.get(b);if(i===undefined||j===undefined)return i===undefined?(j===undefined?a-b:1):-1;return cmpT(T[i],T[j]);};
 const egk=t=>t[9]<0?'—':DA.eg[t[9]];
@@ -1296,7 +1298,7 @@ function overlaps(a,W,H,pad){
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
 function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
- const bad=a=>a.length>1&&(a.length>40||fitZ(a,W,H,pad)<16.5||overlaps(a,W,H,pad));
+ const bad=a=>a.length>1&&(a.length>48||fitZ(a,W,H,pad)<15.8||(a.length>24&&overlaps(a,W,H,pad)));
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
@@ -1338,14 +1340,14 @@ function fiche(k){
   stTxt=stl.length?stl.slice(0,8).map(e=>`${esc(DA.sta[e.sta])} <span class="cnt">${nbOK(e)} arbres</span>`).join(' · ')+(stl.length>8?' … (+'+(stl.length-8)+')':''):'—';
  const ech=ec>=0?`<span class="ech" style="background:${ECC[ec]};${ec===0?'color:#3a2e00':''}">${coneSvg(ECC[ec],false,'#fff')}<span class="bang">${'!'.repeat(ec+1)}</span> ${esc(ECL[ec])}</span>`:'';
  const lons=ts.map(t=>t[1]),lats=ts.map(t=>t[2]),wM=ts.length?(Math.max(...lons)-Math.min(...lons))*78000:0,hM=ts.length?(Math.max(...lats)-Math.min(...lats))*110540:0;
- const land=wM>=hM*1.15,W=land?1047:718,H=land?560:540;
+ const land=false,W=718,H=540;
  const mp=ts.length?splitMaps(ts,W,H):[],maps=mp.map((a,i)=>mapHTML(a,ts,W,H,i+1,mp.length,col,ec)).join('');
  const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
   return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${esc(SL[s]||s||'non localisé')}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
  const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
  const buf=[],w={document:{write:s=>buf.push(s),close:()=>ficheShow(buf.join(''))}};
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
- @page{size:A4 ${land?'landscape':'portrait'};margin:10mm}
+ @page{size:A4 portrait;margin:10mm}
  *{box-sizing:border-box}body{margin:0;font:12px/1.45 "Segoe UI",Arial,sans-serif;color:#18261d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
  .hero{background:linear-gradient(135deg,#2c6e5c 0%,#4a9877 55%,#86c4a0 100%);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 6px 14px #2c6e5c55;position:relative;overflow:hidden}
  .hero:after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:#ffffff1c}
@@ -1360,7 +1362,7 @@ function fiche(k){
  th{background:#2c6e5c;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
  td.c{text-align:center}td.num{font-weight:700;font-size:12.5px}td.st{font-size:11px;color:#3d5546}.box{display:inline-block;width:15px;height:15px;border:1.6px solid #3b5646;border-radius:3px;background:#fff}.ink{height:16px;border-bottom:1.3px dotted #7d948a}
  .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
- .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}
+ .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}.sit-title{display:flex;align-items:center;justify-content:space-between}.map-actions{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:400}.map-actions button{width:auto;padding:4px 8px}.etat-box{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:3px;color:#fff;font-weight:700;font-size:11px}.map-card[hidden]{display:none!important}@media print{.map-actions{display:none!important}.map-card{break-inside:avoid}body{height:auto!important;min-height:0!important}}
  </style></head><body>
  <div class="hero"><small>Fiche d'intervention</small><h1>N° ${esc(it[0])}</h1><div class="cl">${esc(DI.C[it[1]])}</div><div style="margin-top:7px"><span class="badge" style="background:${sc}">${esc(nm)}</span>${ech}</div></div>
  <div class="grid">
@@ -1373,9 +1375,9 @@ function fiche(k){
  <h2>Arbres concernés (${it[7].length})</h2>
  <table><colgroup><col style="width:30px"><col style="width:66px"><col style="width:23%"><col style="width:74px"><col style="width:38px"><col style="width:84px"><col></colgroup>
  <thead><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>Fait</th><th>Date</th><th>Saisie terrain ✎</th></tr></thead><tbody>${rows}</tbody></table>
- <h2>Situation</h2>
- <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${IC[s]} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
- ${maps||'<p>Aucun arbre localisé.</p>'}
+ <h2 class="sit-title">Situation <span class="map-actions"><label><input type="checkbox" checked onchange="document.querySelectorAll('.map-card').forEach(e=>e.hidden=!this.checked)"> Afficher les cartes</label><button type="button" onclick="window.print()">Imprimer les cartes</button></span></h2>
+ <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${treeSym(s)} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
+ ${maps.replace(/class=\"m\"/g,'class=\"m map-card\"')||'<p>Aucun arbre localisé.</p>'}
  <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
  w.document.close();
 }
@@ -1559,8 +1561,8 @@ function fstSections(e,all){
 function fstArbres(e,all){
  const keep=t=>{const n=miT(t);return(n>0&&PF.oui)||(n===0&&PF.non);};
  const ts=e.gids.map(g=>T[tree.get(g)]).filter(keep).sort(cmpT);
- const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td>${esc(egk(t))}</td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
- const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>État</th><th>Interv.</th></tr>';
+ const row=t=>{const s=DA.s[t[3]],n=miT(t);return `<tr class="${n?'hasI':''}"><td>${treeSym(s)}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td><td><span class="etat-box" style="background:${t[9]>=0?(EGC[DA.eg[t[9]]]||EGN):'#b8bfb9'}">${t[9]>=0?esc(DA.eg[t[9]]):'—'}</span></td><td>${n?`<span class="bd b">${n}</span>`:'—'}</td></tr>`;};
+ const hd='<tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th><th>Etat général</th><th>Interv.</th></tr>';
  const ok=ts.filter(t=>DA.s[t[3]]!=='ELIMINE'),el=ts.filter(t=>DA.s[t[3]]==='ELIMINE');
  return `<h3 class="lt">Arbres de la station (<b>${ok.length}</b>) <span class="dt">— en jaune : arbres avec intervention</span></h3><table>${hd}${ok.map(row).join('')}</table>`+
   (el.length?`<details class="sec" style="--sc:#e03030" ${all?'open':''}><summary><b>Éliminés</b> — <b>${el.length}</b> arbre(s)</summary><table>${hd}${el.map(row).join('')}</table></details>`:'');}
@@ -1620,6 +1622,7 @@ else{resetM();
 window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
