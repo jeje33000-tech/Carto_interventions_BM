@@ -1288,6 +1288,9 @@ autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length)
 const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
 function fitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
  let z=20;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
+/* Le zoom cartographique est aussi l'échelle de référence pour les numéros.
+   La régression précédente appelait labelZoom sans jamais le définir. */
+const labelZoom=(a,W,H,pad)=>fitZ(a,W,H,pad);
 function overlaps(a,W,H,pad){
  const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
  const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
@@ -1311,6 +1314,8 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
+ const labelItems=[];
+ const rectsOverlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
  for(const t of T){
@@ -1321,8 +1326,34 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
-   if(!overview)lbl+=`<text x="${x}" y="${y+14}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
+   if(!overview){
+    const text=String(lab(t)), w=9*Math.max(1,text.length*.58)+6, h=12;
+    labelItems.push({x,y:y+14,w,h,text,priority:labelItems.length});
+   }
   }else if(!overview&&stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;const other=lab(t);if(other&&!overview)lbl+=`<text x="${x}" y="${y+11}" text-anchor="middle" font-size="6.5" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(other)}</text>`;}
+ }
+ /* Anticollision des numéros : à <= 5 m/px on décale, sinon on masque
+    les suivants en conservant le premier (prioritaire) visible. */
+ if(!overview){
+  const midLat=la.length?(Math.max(...la)+Math.min(...la))/2:0;
+  const metersPerPixel=156543.03392*Math.cos(midLat*Math.PI/180)/2**zf;
+  const offsetMode=metersPerPixel<=5;
+  const placed=[];
+  for(const item of labelItems){
+   let x=item.x-item.w/2,y=item.y-item.h;
+   if(offsetMode){
+    const candidates=[[0,0],[-18,0],[18,0],[0,-16],[0,16],[-18,-16],[18,-16],[-18,16],[18,16]];
+    let chosen=null;
+    for(const [dx,dy] of candidates){const r={x:x+dx,y:y+dy,w:item.w,h:item.h};if(!placed.some(p=>rectsOverlap(r,p))){chosen=r;break;}}
+    if(!chosen)chosen={x:x+24,y,w:item.w,h:item.h};
+    placed.push(chosen);x=chosen.x;y=chosen.y;
+   }else{
+    const r={x,y,w:item.w,h:item.h};
+    if(placed.some(p=>rectsOverlap(r,p)))continue;
+    placed.push(r);
+   }
+   lbl+=`<text x="${x+item.w/2}" y="${y+item.h-2}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(item.text)}</text>`;
+  }
  }
  const r0=lab(a[0]),r1=lab(a[a.length-1]);
  return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
