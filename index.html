@@ -1139,9 +1139,25 @@ function syncClOpenFromDom(){
 function legendCl(cl){
  syncClOpenFromDom();
  const sc=$('ll')?.scrollTop||0,groups=new Map();ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
- let html='';for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;const isOpen=clAllOpen||clOpen.has(key);html+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><label class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
+ let html='';for(const [key,g] of groups){const active=g.items.filter(i=>!M.off.cl.has(i)).length;const isOpen=clAllOpen||clOpen.has(key);html+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><span class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
   html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
  $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;$('clToggle').textContent=clAllOpen?'Tout replier':'Tout déplier';}
+/* Rendu partagé des classifications pour les différents filtres. */
+const clStates={G:{open:new Set(),all:false},P:{open:new Set(),all:false}};
+function renderClassificationFilter(host,S,cl,after,stateId,prefix){
+ const st=clStates[stateId], groups=new Map();
+ ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
+ const preset=prefix+'Preset',toggle=prefix+'Toggle';
+ let h=`<div class="clTools" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><label class="mut" for="${preset}">Présélection</label><select id="${preset}" style="max-width:210px"><option value="Tout">Tout</option><option value="Aucun">Aucun</option><option value="Gestion">Gestion</option><option value="Diagnostic">Diagnostic</option></select><button id="${toggle}" type="button" class="s">${st.all?'Tout replier':'Tout déplier'}</button></div>`;
+ for(const [key,g] of groups){const active=g.items.filter(i=>!S.off.cl.has(i)).length,isOpen=st.all||st.open.has(key);h+=`<details class="clfam" data-fam-details="${esc(key)}" ${isOpen?'open':''} style="border-left:4px solid ${esc(g.color)};background:color-mix(in srgb, ${esc(g.color)} 7%, transparent);margin:3px 0"><summary><span class="chk"><input type="checkbox" data-fam="${esc(key)}" ${active?'checked':''}>${tri(g.color)}<b>${esc(g.label)}</b> <span class="mut">${cntTxt(famStatsFor(g,key,cl))}</span></label></summary><div class="ch">`;
+  h+=g.items.filter(i=>cl[i]||S.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${S.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('')+'</div></details>';}
+ const el=$(host);el.innerHTML=h;
+ el.querySelectorAll('details[data-fam-details]').forEach(d=>d.addEventListener('toggle',()=>{d.open?st.open.add(d.dataset.famDetails):st.open.delete(d.dataset.famDetails);}));
+ el.onclick=e=>{if(e.target.matches('input[data-fam],input[data-t="cl"]'))e.stopPropagation();};
+ el.onchange=e=>{if(e.target.matches('input[data-fam]')){const key=e.target.dataset.fam,ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?S.off.cl.delete(i):S.off.cl.add(i));after();}else if(e.target.matches('input[data-t="cl"]')){const i=+e.target.dataset.v;e.target.checked?S.off.cl.delete(i):S.off.cl.add(i);after();}};
+ $(toggle).onclick=()=>{st.all=!st.all;st.open=st.all?new Set(groups.keys()):new Set();after();};
+ const sel=$(preset);if(sel){sel.onchange=()=>{const keep=presetIds(sel.value);S.off.cl=new Set(ord.filter(i=>!keep.has(i)));after();};}
+}
 /* Les compteurs de famille sont l'union des enfants, donc sans double comptage d'arbres. */
 let famStats={};function famStatsFor(g,key,cl){const e=famStats[key];return e||{n:g.items.reduce((n,i)=>n+(cl[i]?.n||0),0),g:new Set(g.items.flatMap(i=>[...(cl[i]?.g||[])]))};}function clFamilyFallback(g,cl){return famStatsFor(g,g.code,cl);}
 
@@ -1166,11 +1182,12 @@ $('tp').onchange=()=>{fillQ('tp','qu');readM();dlMap();refresh(true);};
 $('qu').onchange=()=>{readM();refresh(true);};
 ['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
 $('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
-bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh('f'));
+bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh(true));
+$('clp').addEventListener('click',e=>{if(e.target.matches('input[data-fam],input[data-t=\"cl\"]'))e.stopPropagation();});
 $('clp').addEventListener('toggle',e=>{if(!e.target.dataset.famDetails)return;if(e.target.open)clOpen.add(e.target.dataset.famDetails);else clOpen.delete(e.target.dataset.famDetails);});
-$('clToggle').onclick=()=>{clAllOpen=!clAllOpen;clOpen=clAllOpen?new Set([...new Set(ord.map(i=>clMeta(i)?.famCode||('__'+i))) ]):new Set();refresh('f');};
-const presetSel=$('clPreset');const presetNames=[...new Set(['Gestion','Diagnostic',...(DC||[]).flatMap(r=>String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).filter(Boolean))])];presetNames.forEach(n=>{if(![...presetSel.options].some(o=>o.value===n))presetSel.add(new Option(n,n));});presetSel.onchange=()=>{const keep=presetIds(presetSel.value);M.off.cl=new Set(ord.filter(i=>!keep.has(i)));refresh('f')};
-$('clp').addEventListener('change',e=>{const key=e.target.dataset.fam;if(key===undefined)return;const ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?M.off.cl.delete(i):M.off.cl.add(i));refresh('f');});
+$('clToggle').onclick=()=>{clAllOpen=!clAllOpen;clOpen=clAllOpen?new Set([...new Set(ord.map(i=>clMeta(i)?.famCode||('__'+i))) ]):new Set();refresh(true);};
+const presetSel=$('clPreset');const presetNames=[...new Set(['Gestion','Diagnostic',...(DC||[]).flatMap(r=>String(r.GROUPE||'').split(/[|,]/).map(x=>x.trim()).filter(Boolean))])];presetNames.forEach(n=>{if(![...presetSel.options].some(o=>o.value===n))presetSel.add(new Option(n,n));});presetSel.onchange=()=>{const keep=presetIds(presetSel.value);M.off.cl=new Set(ord.filter(i=>!keep.has(i)));refresh(true)};
+$('clp').addEventListener('change',e=>{const key=e.target.dataset.fam;if(key===undefined)return;const ids=ord.filter(i=>(clMeta(i)?.famCode||('__'+i))===key);ids.forEach(i=>e.target.checked?M.off.cl.delete(i):M.off.cl.add(i));refresh(true);});
 $('lgE').onchange=e=>{const i=e.target.dataset.e;if(i===undefined)return;e.target.checked?offE.delete(+i):offE.add(+i);refresh(false);};
 $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
 $('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
@@ -1436,13 +1453,13 @@ function resBlock(title,o,names,type){
 function stat(){
  readG();const a=agg(G);
  $('sres').textContent=`${nf(a.ni)} intervention(s) · ${nf(a.all.size)} arbre(s)`;
- $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);$('skc').innerHTML=ckTable('cl',G,a.k.cl,CC);
+ $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);renderClassificationFilter('skc',G,a.k.cl,stat,'G','s');
  $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');}
 $('stp').innerHTML=optsS('Tous les territoires',DA.tp);
 $('stp').onchange=()=>{fillQ('stp','squ');stat();};
 ['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).onchange=stat);
 $('sm').onchange=()=>{presetSt();stat();};
-bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);bindCk($('skc'),G,stat);
+bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);
 function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};}
 $('sgo').onclick=()=>{readG();
  Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
@@ -1572,10 +1589,10 @@ function pLegend(){
  const ik=new Map();scope().forEach(e=>e.gids.forEach(g=>(tInt.get(g)||[]).forEach(k=>{let s=ik.get(k);if(!s)ik.set(k,s=new Set());s.add(g);})));
  const cl={},ec={},add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
  ik.forEach((gs,k)=>{const it=I[k];if(!dOKp(it))return;add(cl,it[1],gs);if(!PF.off.cl.has(it[1])){const c=ecl(it);if(c>=0)add(ec,c,gs);}});
- $('fCl').innerHTML=ckTable('cl',PF,cl,CC);
+ renderClassificationFilter('fCl',PF,cl,patRender,'P','p');
  $('fRet').innerHTML=ECL.map((l,i)=>`<label class="chk"><input type="checkbox" data-r="${i}" ${PF.ret.has(i)?'checked':''}>${coneSvg(ECC[i],false)}${esc(l)} ${cntTxt(ec[i])}</label>`).join('');}
 function patRender(){pLegend();patBody();openFocus();}
-bindCk($('fCl'),PF,patRender);
+
 $('fRet').onchange=e=>{const i=e.target.dataset.r;if(i===undefined)return;e.target.checked?PF.ret.add(+i):PF.ret.delete(+i);patRender();};
 $('pOui').onchange=()=>{PF.oui=$('pOui').checked;patRender();};$('pNon').onchange=()=>{PF.non=$('pNon').checked;patRender();};
 $('pd1').onchange=()=>{PF.d1=$('pd1').value;patRender();};$('pd2').onchange=()=>{PF.d2=$('pd2').value;patRender();};
