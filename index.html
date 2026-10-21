@@ -1065,14 +1065,14 @@ function draw(){
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
   for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
+   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+(V[k].ti||V[k].cn>=0?3:2),(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
   /* Collision réelle en pixels écran : ancrage Leaflet, mesure canvas et boîtes rectangulaires. */
   const placed=[]; const offsetMode=(156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/2**z)<=5;
   lbl.forEach(([l,x,y,isLarge])=>{const v=V.find(v=>lab(v.t)===l && Math.abs(XY(V.indexOf(v))[0]-x)<.1 && Math.abs(XY(V.indexOf(v))[1]-y+S*1.25)<.1);const p=v?map.latLngToContainerPoint([v.t[2],v.t[1]]):{x,y};const w=g.measureText(l).width+4,hh=10;let bx=x-w/2,by=y-hh/2,chosen=null;
-   const tries=offsetMode?[[0,0],[-18,0],[18,0],[0,-16],[0,16],[-18,-16],[18,-16],[-18,16],[18,16]]:[[0,0]];
+   const tries=isLarge?[[0,0]]:(offsetMode?[[0,0]]:[[0,0]]);
    for(const [dx,dy] of tries){const r={x:bx+dx,y:by+dy,w,h:hh};if(!placed.some(q=>r.x<q.x+q.w&&r.x+r.w>q.x&&r.y<q.y+q.h&&r.y+r.h>q.y)){chosen=r;break;}}
    if(!chosen)return;placed.push(chosen);g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,chosen.x+w/2,chosen.y+hh/2);g.fillStyle='#111';g.fillText(l,chosen.x+w/2,chosen.y+hh/2);});}
 }
@@ -1116,9 +1116,11 @@ function refresh(fit){
   let ti=null,cn=-1;
   if(m.length){const ec=Math.max(...m.map(x=>ecl(I[x])));if(ec>=0){cE[ec]=(cE[ec]||0)+1;if(!offE.has(ec))cn=ec;}if(sI&&cn<0)ti=CC(I[m[0]][1]);}  /* les cônes restent affichés même si la couche « Interventions » est décochée */
   const c=((sA&&!off.has(k))||(f&&!ti&&cn<0))?(th==='eg'?(EGC[k]||EGN):(SC[k]||'#777')):null,cb=bl?'#1565ff':c;
-  if(cb||ti||cn>=0)V.push({t,m,c:cb,ti,cn});
+  /* Toujours garder un point arbre sous une épingle/cône d'intervention. */
+  const pt=(th==='eg'?(EGC[k]||EGN):(SC[k]||'#777'));
+  if(cb||ti||cn>=0)V.push({t,m,c:cb,pt,ti,cn});
  });
- BKc={};BKt={};BKe={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);if(v.cn>=0)(BKe[v.cn]??=[]).push(i);});
+ BKc={};BKt={};BKe={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.pt&&(v.ti||v.cn>=0))(BKc[v.pt]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);if(v.cn>=0)(BKe[v.cn]??=[]).push(i);});
  const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();proj();draw();
  if(fit===true)homeView();else if(fit)fitV();
 }
@@ -1293,24 +1295,30 @@ autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length)
 
 /* ---- fiche d'intervention : orientation automatique, cartes pleine largeur découpées, pictos et échéances ---- */
 const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
-/* Cartes de fiche : 1/400 est la limite de zoom imprimable. On ne zoome
-   jamais davantage ; les groupes trop grands sont donc découpés avant rendu. */
+/* Cartes de fiche : le dénominateur ne doit jamais dépasser 400.
+   En Web-Mercator, un zoom plus grand signifie une échelle plus zoomée
+   (dénominateur plus petit). z400 est donc un plancher de zoom, pas un
+   plafond : on conserve le zoom ajusté à l'emprise quand le groupe est compact. */
 const SCALE_400_MPP=400*.0254/96;
 const scale400Zoom=lat=>Math.log2(156543.03392*Math.cos(lat*Math.PI/180)/SCALE_400_MPP);
-function fitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
- let z=24;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;
- /* z400 est un plafond de zoom : 1/400 au minimum d'emprise, jamais 1/800. */
- return Math.min(z,scale400Zoom((y1+y2)/2));}
+function rawFitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
+ let z=24;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
+function fitZ(a,W,H,pad){const lat=a.reduce((q,t)=>q+t[2],0)/a.length;
+ /* Ne jamais dézoomer au-delà de 1/400 ; les groupes trop étendus
+    sont séparés par splitMaps avant le rendu. */
+ return Math.max(rawFitZ(a,W,H,pad),scale400Zoom(lat));}
 const labelZoom=(a,W,H,pad)=>fitZ(a,W,H,pad);
 function overlaps(a,W,H,pad){
  const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
  const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
  return false;}
-/* Découpage spatial disjoint : aucune répétition d'arbre entre deux cartes
-   consécutives ; on ne crée pas de carte supplémentaire au-delà de MAXM. */
+/* Découpage spatial disjoint : aucune répétition d'arbre entre deux cartes.
+   Le seul motif de découpage est l'emprise qui ne tient pas à 1/400 :
+   le chevauchement visuel ne doit pas multiplier les cartes (les petits
+   numéros station sont masqués, tandis que les numéros d'intervention restent fixes). */
 function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
- const bad=a=>a.length>1&&(a.length>48||labelZoom(a,W,H,pad)<scale400Zoom(a.reduce((q,t)=>q+t[2],0)/a.length)||(a.length>24&&overlaps(a,W,H,pad)));
+ const bad=a=>a.length>1&&rawFitZ(a,W,H,pad)<scale400Zoom(a.reduce((q,t)=>q+t[2],0)/a.length);
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
@@ -1322,7 +1330,7 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
   im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
- const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
+ const mine=new Set((overview?all:a).map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
  const intLabels=[],stationLabels=[];
@@ -1337,11 +1345,11 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
-   if(!overview){const text=String(lab(t)),w=9*Math.max(1,text.length*.58)+6,h=12;intLabels.push({x,y:y+14,w,h,text});}
+   if(!overview){const text=String(lab(t)),w=9*Math.max(1,text.length*.58)+6,h=12;intLabels.push({x,y:y+3,w,h,text});}
   }else if(stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){
    /* nb est écrit avant sy : les arbres station restent sous les épingles. */
    nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]||'#777'}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
-   if(!overview){const text=String(lab(t)),w=7*Math.max(1,text.length*.58)+4,h=10;stationLabels.push({x,y:y+12,w,h,text});}
+   if(!overview){const text=String(lab(t)),w=7*Math.max(1,text.length*.58)+4,h=10;stationLabels.push({x,y:y+2,w,h,text});}
   }
  }
  /* Les numéros d'intervention sont inamovibles et toujours rendus. Les
