@@ -1295,73 +1295,46 @@ autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length)
 
 /* ---- fiche d'intervention : orientation automatique, cartes pleine largeur découpées, pictos et échéances ---- */
 const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
-/* Cartes de fiche : le dénominateur ne doit jamais dépasser 400.
-   En Web-Mercator, un zoom plus grand signifie une échelle plus zoomée
-   (dénominateur plus petit). z400 est donc un plancher de zoom, pas un
-   plafond : on conserve le zoom ajusté à l'emprise quand le groupe est compact. */
-const SCALE_400_MPP=400*.0254/96;
-const scale400Zoom=lat=>Math.log2(156543.03392*Math.cos(lat*Math.PI/180)/SCALE_400_MPP);
-function rawFitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
+/* Cartes de fiche : échelle libre 1/400..1/3000.  Le calcul est en
+   Web-Mercator : la latitude intervient donc dans la conversion m/px. */
+const SCALE_MIN=400,SCALE_MAX=3000,PPM=96/0.0254;
+const zoomForScale=(d,lat)=>Math.log2(156543.03392*Math.cos(lat*Math.PI/180)*PPM/d);
+const scaleForZoom=(z,lat)=>156543.03392*Math.cos(lat*Math.PI/180)*PPM/2**z;
+function rawFitZ(a,W,H,pad){if(!a.length)return 12;const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
  let z=24;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
-function fitZ(a,W,H,pad){const lat=a.reduce((q,t)=>q+t[2],0)/a.length;
- /* Ne jamais dézoomer au-delà de 1/400 ; les groupes trop étendus
-    sont séparés par splitMaps avant le rendu. */
- return Math.max(rawFitZ(a,W,H,pad),scale400Zoom(lat));}
-const labelZoom=(a,W,H,pad)=>fitZ(a,W,H,pad);
-function overlaps(a,W,H,pad){
- const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
- const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
- for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
- return false;}
-/* Découpage spatial disjoint : aucune répétition d'arbre entre deux cartes.
-   Le seul motif de découpage est l'emprise qui ne tient pas à 1/400 :
-   le chevauchement visuel ne doit pas multiplier les cartes (les petits
-   numéros station sont masqués, tandis que les numéros d'intervention restent fixes). */
-function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
- const bad=a=>a.length>1&&rawFitZ(a,W,H,pad)<scale400Zoom(a.reduce((q,t)=>q+t[2],0)/a.length);
- for(let n=0;n<400&&G.length<MAXM;n++){
-  let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
+function labelRects(a,z,W,H,pad){if(!a.length)return [];const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
+ return a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy,w=9*Math.max(1,String(lab(t)).length*.58)+6;return{x:x-w/2,y:y-21,w,h:12};});}
+function rectOverlap(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function scaleFits(a,W,H,pad,d){if(!a.length)return true;const lat=a.reduce((q,t)=>q+t[2],0)/a.length,z=zoomForScale(d,lat),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+ if(wxp(Math.max(...lo),z)-wxp(Math.min(...lo),z)>W-2*pad||wyp(Math.min(...la),z)-wyp(Math.max(...la),z)>H-2*pad)return false;
+ const r=labelRects(a,z,W,H,pad);for(let i=0;i<r.length;i++)for(let j=i+1;j<r.length;j++)if(rectOverlap(r[i],r[j]))return false;return true;}
+function bestScale(a,W,H,pad){if(!a.length)return SCALE_MAX;const lat=a.reduce((q,t)=>q+t[2],0)/a.length;
+ /* Chercher le dénominateur le plus grand (le plus dézoomé) qui tient. */
+ for(let d=SCALE_MAX;d>=SCALE_MIN;d-=10)if(scaleFits(a,W,H,pad,d))return d;
+ return SCALE_MIN;}
+function splitMaps(ts,W,H){const pad=44,MAXM=40,G=[ts.slice()];
+ const bad=a=>a.length>1&&!scaleFits(a,W,H,pad,SCALE_MIN);
+ for(let n=0;n<400&&G.length<MAXM;n++){let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
-  const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
+  const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=Math.max(1,b.length>>1);G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
 function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
- const zf=labelZoom(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+ const den=bestScale(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),lat=la.reduce((q,v)=>q+v,0)/la.length,zf=zoomForScale(den,lat);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
- for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
-  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
- const mine=new Set((overview?all:a).map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
- const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
- let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
- const intLabels=[],stationLabels=[];
- const rectsOverlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+ for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
+ const mine=new Set((overview?all:a).map(t=>t[0])),statusKeys=new Set(a.map(t=>`${t[6]}|${t[7]}|${t[8]}`));
+ const sc2=256*2**zf,mer=y=>180/Math.PI*Math.atan(.5*(Math.exp(Math.PI-2*Math.PI*y/sc2)-Math.exp(-Math.PI+2*Math.PI*y/sc2))),latA=mer(y0),latB=mer(y0+H);
+ let nb='',sy='',lbl='';const intLabels=[],stationLabels=[],S=6.5,Rr=S*.95;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
- for(const t of T){
-  if(t[1]<lonA||t[1]>lonB||t[2]>latA||t[2]<latB)continue;
-  const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
-  if(mine.has(t[0])){
-   sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;
-   const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
-   sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
-   sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
-   if(!overview){const text=String(lab(t)),w=9*Math.max(1,text.length*.58)+6,h=12;intLabels.push({x,y:y+3,w,h,text});}
-  }else if(stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){
-   /* nb est écrit avant sy : les arbres station restent sous les épingles. */
-   nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]||'#777'}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
-   if(!overview){const text=String(lab(t)),w=7*Math.max(1,text.length*.58)+4,h=10;stationLabels.push({x,y:y+2,w,h,text});}
-  }
- }
- /* Les numéros d'intervention sont inamovibles et toujours rendus. Les
-    numéros station sont petits, ancrés au point et masqués en cas de conflit. */
- if(!overview){
-  const occupied=intLabels.map(item=>({x:item.x-item.w/2,y:item.y-item.h,w:item.w,h:item.h}));
-  for(const item of intLabels){lbl+=`<text x="${item.x}" y="${item.y+item.h-2}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(item.text)}</text>`;}
-  for(const item of stationLabels){const r={x:item.x-item.w/2,y:item.y-item.h,w:item.w,h:item.h};if(occupied.some(p=>rectsOverlap(r,p)))continue;occupied.push(r);lbl+=`<text x="${item.x}" y="${item.y+item.h-2}" text-anchor="middle" font-size="7" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" stroke-linejoin="round" fill="#333">${esc(item.text)}</text>`;}
- }
- const r0=lab(a[0]),r1=lab(a[a.length-1]);
- const num=niceScaleNumber((156543.03392*Math.cos(((Math.max(...la)+Math.min(...la))/2)*Math.PI/180)/2**zf)*96/0.0254); return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`} <span class="map-scale-num">${num}</span></div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}px">${nb}${sy}${lbl}</svg></div></div>`;
-}
+ for(const t of T){if(t[1]<Math.min(...lo)-.02||t[1]>Math.max(...lo)+.02||t[2]>latA||t[2]<latB)continue;const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
+  /* Chaque arbre reçoit son point de statut, y compris les arbres de l'intervention. */
+  if(s==='VIVANT'||s==='MORT'||s==='SOUCHE')nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]||'#777'}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
+  if(mine.has(t[0])){sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6"/>`;sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;if(!overview)intLabels.push({x,y:y+3,w:9*Math.max(1,String(lab(t)).length*.58)+6,h:12,text:String(lab(t))});}
+  else if(statusKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&!overview&&!['ELIMINE'].includes(s))stationLabels.push({x,y:y+2,w:7*Math.max(1,String(lab(t)).length*.58)+4,h:10,text:String(lab(t))});}
+ if(!overview){const occupied=intLabels.map(v=>({x:v.x-v.w/2,y:v.y-v.h,w:v.w,h:v.h}));for(const v of intLabels){lbl+=`<text x="${v.x}" y="${v.y+v.h-2}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" fill="#111">${esc(v.text)}</text>`;}for(const v of stationLabels){const r={x:v.x-v.w/2,y:v.y-v.h,w:v.w,h:v.h};if(occupied.some(p=>rectOverlap(r,p)))continue;occupied.push(r);lbl+=`<text x="${v.x}" y="${v.y+v.h-2}" text-anchor="middle" font-size="7" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#333">${esc(v.text)}</text>`;}}
+ const r0=lab(a[0]),r1=lab(a[a.length-1]);return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`} <span class="map-scale-num">1/${Math.round(den)}</span></div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}px">${nb}${sy}${lbl}</svg></div></div>`;}
 const etatCode=t=>{const v=t&&t[9]>=0?String(DA.eg[t[9]]||'').trim().toUpperCase():'';return /^[A-E]$/.test(v)?v:''};
 const etatBox=t=>{const e=etatCode(t);return `<span class="etat-box" style="background:${e?(EGC[e]||EGN):EGN}">${e||'—'}</span>`};
 function fiche(k){
