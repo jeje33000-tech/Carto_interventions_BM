@@ -1036,7 +1036,9 @@ function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=17,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
+ 
+ 
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=18,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
  const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
  const pin=(x,y)=>{const R=S*.95,cy=y-S*1.6;g.moveTo(x,y);g.bezierCurveTo(x-R*.15,y-S*.7,x-R,cy+R*.75,x-R,cy);g.arc(x,cy,R,Math.PI,0);g.bezierCurveTo(x+R,cy+R*.75,x+R*.15,y-S*.7,x,y);g.closePath();};
@@ -1060,7 +1062,12 @@ function draw(){
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
   for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
+   
+   
+   
+   
+   
+   if(lb&&lbl.length<1000)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
@@ -1298,6 +1305,9 @@ function overlaps(a,W,H,pad){
  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
+
+
+
 function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
  const bad=a=>a.length>1&&(a.length>48||labelZoom(a,W,H,pad)<15.8||(a.length>24&&overlaps(a,W,H,pad)));
  for(let n=0;n<400&&G.length<MAXM;n++){
