@@ -1312,6 +1312,19 @@ function bestScale(a,W,H,pad){if(!a.length)return SCALE_MAX;const lat=a.reduce((
  /* Chercher le dénominateur le plus grand (le plus dézoomé) qui tient. */
  for(let d=SCALE_MAX;d>=SCALE_MIN;d-=10)if(scaleFits(a,W,H,pad,d))return d;
  return SCALE_MIN;}
+
+ function overviewScale(a,W,H,pad){
+ if(!a.length)return SCALE_MAX;
+ const lat=a.reduce((q,t)=>q+t[2],0)/a.length,
+  la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+ for(let d=SCALE_MIN;d<=200000;d+=Math.max(10,d*.02)){
+  const z=zoomForScale(d,lat);
+  if(wxp(Math.max(...lo),z)-wxp(Math.min(...lo),z)<=W-2*pad&&
+     wyp(Math.min(...la),z)-wyp(Math.max(...la),z)<=H-2*pad)return d;
+ }
+ return 200000;
+}
+
 function splitMaps(ts,W,H){const pad=44,MAXM=40,G=[ts.slice()];
  const bad=a=>a.length>1&&!scaleFits(a,W,H,pad,SCALE_MIN);
  for(let n=0;n<400&&G.length<MAXM;n++){let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
@@ -1319,7 +1332,7 @@ function splitMaps(ts,W,H){const pad=44,MAXM=40,G=[ts.slice()];
   const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=Math.max(1,b.length>>1);G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
 function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
- const den=bestScale(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),lat=la.reduce((q,v)=>q+v,0)/la.length,zf=zoomForScale(den,lat);
+ const den=overview?overviewScale(a,W,H,50):bestScale(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),lat=la.reduce((q,v)=>q+v,0)/la.length,zf=zoomForScale(den,lat);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
