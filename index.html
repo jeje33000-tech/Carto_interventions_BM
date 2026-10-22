@@ -1021,7 +1021,7 @@ const lateOf=it=>isAct(it)&&!!it[5]&&it[5]<TODAY;
 const TQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);});
 
 /* ---- carte ---- */
-const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24,preferCanvas:true,renderer:L.canvas({padding:.25})}).setView([44.8378,-0.5792],13);
+const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24}).setView([44.8378,-0.5792],13);
 const esri=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/{z}/{y}/{x}`;
 const ignU=(l,f)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${l}&STYLE=normal&FORMAT=${f}&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}`;
 const ign=L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:24,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}).addTo(map);
@@ -1037,6 +1037,7 @@ const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.point
 let V=[],BKc={},BKt={},BKe={},PX=new Float64Array(0),PZ=null,sel=new Set(),selSt=new Set(),selK=-1,route=null;
 /* Index spatial projeté: une seule construction par zoom, puis lecture des seules cellules visibles. */
 let PGrid=new Map(),PGridZ=null; const PGRID_CELL=256;
+function invalidateProjection(){PZ=null;PGridZ=null;PGrid=new Map();PX=new Float64Array(0);}
 function proj(){const z=map.getZoom();PZ=z;PGridZ=z;PX=new Float64Array(V.length*2);PGrid=new Map();V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;const gx=Math.floor(p.x/PGRID_CELL),gy=Math.floor(p.y/PGRID_CELL),key=gx+'_'+gy;let a=PGrid.get(key);if(!a)PGrid.set(key,a=[]);a.push(k);});}
 function visibleIndices(margin){const b=map.getPixelBounds(),x0=b.min.x-margin,y0=b.min.y-margin,x1=b.max.x+margin,y1=b.max.y+margin, out=[];for(let gx=Math.floor(x0/PGRID_CELL);gx<=Math.floor(x1/PGRID_CELL);gx++)for(let gy=Math.floor(y0/PGRID_CELL);gy<=Math.floor(y1/PGRID_CELL);gy++){const a=PGrid.get(gx+'_'+gy);if(a)for(const k of a){const x=PX[2*k],y=PX[2*k+1];if(x>=x0&&x<=x1&&y>=y0&&y<=y1)out.push(k);}}return out;}
 /* canvas plus large que l'écran, redessiné en fin de déplacement */
@@ -1082,8 +1083,13 @@ function draw(){
    if(!chosen)return;placed.push(chosen);(labelGrid.get(gx+'_'+gy)||labelGrid.set(gx+'_'+gy,[]).get(gx+'_'+gy)).push(chosen);g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,chosen.x+w/2,chosen.y+hh/2);g.fillStyle='#111';g.fillText(l,chosen.x+w/2,chosen.y+hh/2);});}
 }
 let drawTimer=0,drawFrame=0;
-function scheduleDraw(){clearTimeout(drawTimer);drawTimer=setTimeout(()=>{cancelAnimationFrame(drawFrame);drawFrame=requestAnimationFrame(draw);},120);}
-map.on('moveend resize',scheduleDraw);map.on('zoomend',()=>{proj();scheduleDraw();});
+function scheduleDraw(delay=120){clearTimeout(drawTimer);drawTimer=setTimeout(()=>{cancelAnimationFrame(drawFrame);drawFrame=requestAnimationFrame(draw);},delay);}
+/* Le cache projeté dépend du zoom et du déplacement de la carte : ne jamais le
+   réutiliser pendant/après un zoom. Le rendu canvas est volontairement séparé
+   du renderer Leaflet afin de ne pas perturber les éventuels divIcon. */
+map.on('zoomstart',()=>{invalidateProjection();clearTimeout(drawTimer);cancelAnimationFrame(drawFrame);});
+map.on('zoomend',()=>{invalidateProjection();proj();draw();});
+map.on('moveend resize',()=>{invalidateProjection();scheduleDraw();});
 
 /* ---- filtres ---- */
 const mkS=()=>({tp:'',qu:'',d1:'',d2:'',r1:'',r2:'',off:{st:new Set(),af:new Set(),cl:new Set()}});
@@ -1128,7 +1134,7 @@ function refresh(fit){
   if(cb||ti||cn>=0)V.push({t,m,c:cb,pt,ti,cn});
  });
  BKc={};BKt={};BKe={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.pt&&(v.ti||v.cn>=0))(BKc[v.pt]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);if(v.cn>=0)(BKe[v.cn]??=[]).push(i);});
- const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();proj();scheduleDraw();
+ const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();invalidateProjection();proj();draw();
  if(fit===true)homeView();else if(fit)fitV();
 }
 const tri=c=>`<svg width="13" height="17" viewBox="0 0 13 17" style="flex:none"><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="${c}" stroke="#2b2b2b" stroke-width="1.8"/><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="none" stroke="#fff" stroke-width=".8"/><circle cx="6.5" cy="6" r="2" fill="#fff"/></svg>`;
