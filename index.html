@@ -1341,7 +1341,11 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  let nb='',sy='',lbl='';const intLabels=[],stationLabels=[],S=6.5,Rr=S*.95;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
- for(const t of T){if(t[1]<Math.min(...lo)-.02||t[1]>Math.max(...lo)+.02||t[2]>latA||t[2]<latB)continue;const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
+ for(const t of T){
+ if(t[1]<Math.min(...lo)-.02||t[1]>Math.max(...lo)+.02||t[2]>latA||t[2]<latB)continue;
+ const inInt=mine.has(t[0]),inSta=statusKeys.has(`${t[6]}|${t[7]}|${t[8]}`);
+ if(!inInt&&!inSta)continue; /* fiche impression : masque les arbres hors station */
+ const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
   /* Chaque arbre reçoit son point de statut, y compris les arbres de l'intervention. */
   if(s==='VIVANT'||s==='MORT'||s==='SOUCHE')nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]||'#777'}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
   if(mine.has(t[0])){sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6"/>`;sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;if(!overview)intLabels.push({x,y:y+3,w:9*Math.max(1,String(lab(t)).length*.58)+6,h:12,text:String(lab(t))});}
