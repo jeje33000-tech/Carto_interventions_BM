@@ -1269,7 +1269,7 @@ function mapHTML(a,all,W,H,i,n,col,ec,opts={}){
   im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
  const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.filter(t=>t[8]>=0).map(t=>t.slice(6,9).join('|'))),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
- let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
+ let nb='',sy='',lbl=[],cnt=0;const S=6.5,Rr=S*.95;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
  for(const t of T){
@@ -1280,11 +1280,12 @@ function mapHTML(a,all,W,H,i,n,col,ec,opts={}){
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
-   lbl+=`<text x="${x+6}" y="${y+3}" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(lab(t))}</text>`;
-  }else if((!opts.interventionOnly||isStation)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000)nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
+   lbl.push({x:x+6,y:y+3,text:lab(t),fs:9,sw:2.6,main:true});
+  }else if((!opts.interventionOnly||isStation)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;if(isStation)lbl.push({x:x+3,y:y+2,text:lab(t),fs:5.5,sw:1.8,main:false});}
  }
  const r0=lab(a[0]),r1=lab(a[a.length-1]);
- return `<div class="mt">Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length}) · échelle 1/${rs.den}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div>`;
+ let lt='';const occ=[];lbl.sort((a,b)=>Number(b.main)-Number(a.main)).forEach(p=>{const w=Math.max(3,p.text.length*p.fs*.58),h=p.fs+2,bx=p.x,by=p.y-h;let hit=false;for(const q of occ)if(bx<q.x+q.w&&bx+w>q.x&&by<q.y+q.h&&by+h>q.y){hit=true;break;}if(hit)return;occ.push({x:bx,y:by,w,h});lt+=`<text x="${p.x}" y="${p.y}" font-size="${p.fs}" font-weight="${p.main?'700':'600'}" paint-order="stroke" stroke="#fff" stroke-width="${p.sw}" stroke-linejoin="round" fill="#111">${esc(p.text)}</text>`;});
+ return `<div class="mt">Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length}) · échelle 1/${rs.den}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lt}</svg></div>`;
 }
 function fiche(k){
  if(!I[k])return;
