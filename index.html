@@ -1021,7 +1021,7 @@ const lateOf=it=>isAct(it)&&!!it[5]&&it[5]<TODAY;
 const TQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);});
 
 /* ---- carte ---- */
-const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24}).setView([44.8378,-0.5792],13);
+const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24,preferCanvas:true,renderer:L.canvas({padding:.25})}).setView([44.8378,-0.5792],13);
 const esri=p=>`https://server.arcgisonline.com/ArcGIS/rest/services/${p}/MapServer/tile/{z}/{y}/{x}`;
 const ignU=(l,f)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${l}&STYLE=normal&FORMAT=${f}&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}`;
 const ign=L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:24,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}).addTo(map);
@@ -1035,7 +1035,10 @@ function updateNumScale(){const lat=map.getCenter().lat,z=map.getZoom(),mpp=1565
 map.on('zoomend moveend resize',updateNumScale); updateNumScale();
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
 let V=[],BKc={},BKt={},BKe={},PX=new Float64Array(0),PZ=null,sel=new Set(),selSt=new Set(),selK=-1,route=null;
-function proj(){const z=map.getZoom();PZ=z;PX=new Float64Array(V.length*2);V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;});}
+/* Index spatial projeté: une seule construction par zoom, puis lecture des seules cellules visibles. */
+let PGrid=new Map(),PGridZ=null; const PGRID_CELL=256;
+function proj(){const z=map.getZoom();PZ=z;PGridZ=z;PX=new Float64Array(V.length*2);PGrid=new Map();V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;const gx=Math.floor(p.x/PGRID_CELL),gy=Math.floor(p.y/PGRID_CELL),key=gx+'_'+gy;let a=PGrid.get(key);if(!a)PGrid.set(key,a=[]);a.push(k);});}
+function visibleIndices(margin){const b=map.getPixelBounds(),x0=b.min.x-margin,y0=b.min.y-margin,x1=b.max.x+margin,y1=b.max.y+margin, out=[];for(let gx=Math.floor(x0/PGRID_CELL);gx<=Math.floor(x1/PGRID_CELL);gx++)for(let gy=Math.floor(y0/PGRID_CELL);gy<=Math.floor(y1/PGRID_CELL);gy++){const a=PGrid.get(gx+'_'+gy);if(a)for(const k of a){const x=PX[2*k],y=PX[2*k+1];if(x>=x0&&x<=x1&&y>=y0&&y<=y1)out.push(k);}}return out;}
 /* canvas plus large que l'écran, redessiné en fin de déplacement */
 function draw(){
  if(PZ!==map.getZoom())proj();
@@ -1043,40 +1046,44 @@ function draw(){
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
  const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=17,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
+ const visible=visibleIndices(Math.max(96,m*s.x+64)),visibleSet=new Set(visible);
  const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
  const pin=(x,y)=>{const R=S*.95,cy=y-S*1.6;g.moveTo(x,y);g.bezierCurveTo(x-R*.15,y-S*.7,x-R,cy+R*.75,x-R,cy);g.arc(x,cy,R,Math.PI,0);g.bezierCurveTo(x+R,cy+R*.75,x+R*.15,y-S*.7,x,y);g.closePath();};
  const cone=(x,y)=>{g.moveTo(x-q*.36,y-q*1.7);g.lineTo(x+q*.36,y-q*1.7);g.lineTo(x+q*.78,y-q*.28);g.lineTo(x-q*.78,y-q*.28);g.closePath();g.rect(x-q*.92,y-q*.28,q*1.84,q*.26);};
  g.lineJoin='round';
- for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){const[x,y]=XY(k);if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();}
+ for(const c in BKc){g.fillStyle=c;g.beginPath();for(const k of BKc[c]){if(!visibleSet.has(k))continue;const[x,y]=XY(k);if(!ins(x,y))continue;g.moveTo(x+r,y);g.arc(x,y,r,0,6.2832);}g.fill();}
  /* interventions : en dessous du 1/500 une seule épingle / un seul cône par zone ; au-delà, la couleur de classification de chaque arbre */
  const pins=[],cones=[];
  if(grp){const cell=Math.max(11,S*2.2),A=new Map(),C=new Map();
-  for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=A.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cc[c]=(e.cc[c]||0)+1;}else A.set(key,{x,y,n:1,cc:{[c]:1}});}
+  for(const c in BKt)for(const k of BKt[c]){if(!visibleSet.has(k))continue;const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=A.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cc[c]=(e.cc[c]||0)+1;}else A.set(key,{x,y,n:1,cc:{[c]:1}});}
   A.forEach(e=>{let bc=null,bn=-1;for(const c in e.cc)if(e.cc[c]>bn){bn=e.cc[c];bc=c;}pins.push({x:e.x/e.n,y:e.y/e.n,c:bc});});  /* couleur = classification dominante de la zone */
-  for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=C.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cl=Math.max(e.cl,+c);}else C.set(key,{x,y,n:1,cl:+c});}
+  for(const c in BKe)for(const k of BKe[c]){if(!visibleSet.has(k))continue;const[x,y]=XY(k);if(!ins(x,y))continue;const key=Math.floor(x/cell)+'_'+Math.floor(y/cell),e=C.get(key);if(e){e.x+=x;e.y+=y;e.n++;e.cl=Math.max(e.cl,+c);}else C.set(key,{x,y,n:1,cl:+c});}
   C.forEach(e=>cones.push({x:e.x/e.n,y:e.y/e.n,c:ECC[e.cl]}));}
- else{for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(ins(x,y))pins.push({x,y,c});}
-  for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(ins(x,y))cones.push({x,y,c:ECC[c]});}}
+ else{for(const c of BKt)for(const k of BKt[c]){if(!visibleSet.has(k))continue;const[x,y]=XY(k);if(ins(x,y))pins.push({x,y,c});}
+  for(const c in BKe)for(const k of BKe[c]){if(!visibleSet.has(k))continue;const[x,y]=XY(k);if(ins(x,y))cones.push({x,y,c:ECC[c]});}}
  const by=l=>{const o={};l.forEach(p=>(o[p.c]??=[]).push(p));return o;};
  const bp=by(pins);for(const c in bp){g.fillStyle=c;g.beginPath();bp[c].forEach(p=>pin(p.x,p.y));halo(3.4,1.8);g.fill();}
  g.fillStyle='#fff';g.beginPath();pins.forEach(p=>{g.moveTo(p.x+S*.3,p.y-S*1.6);g.arc(p.x,p.y-S*1.6,S*.3,0,6.2832);});g.fill();
  const bc=by(cones);for(const c in bc){g.fillStyle=c;g.beginPath();bc[c].forEach(p=>cone(p.x,p.y));halo(3.4,1.8);g.fill();}
  g.fillStyle='#fff';g.beginPath();cones.forEach(p=>{g.moveTo(p.x-q*.5,p.y-q*1.38);g.lineTo(p.x+q*.5,p.y-q*1.38);g.lineTo(p.x+q*.64,p.y-q*.95);g.lineTo(p.x-q*.64,p.y-q*.95);g.closePath();});g.fill();
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
-  for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
+  for(const k of visible){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+(V[k].ti||V[k].cn>=0?3:2),(V[k].ti||V[k].cn>=0)]);}
+   if(lb&&lbl.length<5000)lbl.push([lab(V[k].t),x,y+(V[k].ti||V[k].cn>=0?3:2),(V[k].ti||V[k].cn>=0),k]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
   /* Collision réelle en pixels écran : ancrage Leaflet, mesure canvas et boîtes rectangulaires. */
   const placed=[]; const offsetMode=(156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/2**z)<=5;
-  lbl.forEach(([l,x,y,isLarge])=>{const v=V.find(v=>lab(v.t)===l && Math.abs(XY(V.indexOf(v))[0]-x)<.1 && Math.abs(XY(V.indexOf(v))[1]-y+S*1.25)<.1);const p=v?map.latLngToContainerPoint([v.t[2],v.t[1]]):{x,y};const w=g.measureText(l).width+4,hh=10;let bx=x-w/2,by=y-hh/2,chosen=null;
-   const tries=isLarge?[[0,0]]:(offsetMode?[[0,0]]:[[0,0]]);
-   for(const [dx,dy] of tries){const r={x:bx+dx,y:by+dy,w,h:hh};if(!placed.some(q=>r.x<q.x+q.w&&r.x+r.w>q.x&&r.y<q.y+q.h&&r.y+r.h>q.y)){chosen=r;break;}}
-   if(!chosen)return;placed.push(chosen);g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,chosen.x+w/2,chosen.y+hh/2);g.fillStyle='#111';g.fillText(l,chosen.x+w/2,chosen.y+hh/2);});}
+  const labelGrid=new Map(),cell=24;
+  lbl.forEach(([l,x,y,isLarge,k])=>{const w=g.measureText(l).width+4,hh=10,bx=x-w/2,by=y-hh/2;let chosen=null;
+   const gx=Math.floor(bx/cell),gy=Math.floor(by/cell),near=[];for(let ix=gx-1;ix<=gx+1;ix++)for(let iy=gy-1;iy<=gy+1;iy++){const a=labelGrid.get(ix+'_'+iy);if(a)near.push(...a);}
+   const r={x:bx,y:by,w,h:hh};if(!near.some(q=>r.x<q.x+q.w&&r.x+r.w>q.x&&r.y<q.y+q.h&&r.y+r.h>q.y)){chosen=r;}
+   if(!chosen)return;placed.push(chosen);(labelGrid.get(gx+'_'+gy)||labelGrid.set(gx+'_'+gy,[]).get(gx+'_'+gy)).push(chosen);g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,chosen.x+w/2,chosen.y+hh/2);g.fillStyle='#111';g.fillText(l,chosen.x+w/2,chosen.y+hh/2);});}
 }
-map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
+let drawTimer=0,drawFrame=0;
+function scheduleDraw(){clearTimeout(drawTimer);drawTimer=setTimeout(()=>{cancelAnimationFrame(drawFrame);drawFrame=requestAnimationFrame(draw);},120);}
+map.on('moveend resize',scheduleDraw);map.on('zoomend',()=>{proj();scheduleDraw();});
 
 /* ---- filtres ---- */
 const mkS=()=>({tp:'',qu:'',d1:'',d2:'',r1:'',r2:'',off:{st:new Set(),af:new Set(),cl:new Set()}});
@@ -1121,7 +1128,7 @@ function refresh(fit){
   if(cb||ti||cn>=0)V.push({t,m,c:cb,pt,ti,cn});
  });
  BKc={};BKt={};BKe={};V.forEach((v,i)=>{if(v.c)(BKc[v.c]??=[]).push(i);if(v.pt&&(v.ti||v.cn>=0))(BKc[v.pt]??=[]).push(i);if(v.ti)(BKt[v.ti]??=[]).push(i);if(v.cn>=0)(BKe[v.cn]??=[]).push(i);});
- const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();proj();draw();
+ const LG=aggLeg(M);legendT(th,cnt);legendE(LG.ec);legendCl(LG.cl);panel();proj();scheduleDraw();
  if(fit===true)homeView();else if(fit)fitV();
 }
 const tri=c=>`<svg width="13" height="17" viewBox="0 0 13 17" style="flex:none"><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="${c}" stroke="#2b2b2b" stroke-width="1.8"/><path d="M6.5 16C6.5 16 1 9.8 1 6a5.5 5.5 0 0111 0c0 3.8-5.500 10-5.500 10z" fill="none" stroke="#fff" stroke-width=".8"/><circle cx="6.5" cy="6" r="2" fill="#fff"/></svg>`;
