@@ -1052,7 +1052,7 @@ function draw(){
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
    if(lb&&lbl.length<2500)lbl.push([lab(V[k].t),x,y+S*1.9]);}
   g.stroke();g.restore();
-  /* numéros : petit texte gras avec halo blanc, centré sous la pointe de l'épingle */
+  /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font='bold 8.5px "Segoe UI",sans-serif';g.textBaseline='top';g.textAlign='center';g.lineJoin='round';
   const occ=new Map(),CS=40;
   lbl.forEach(([l,x,y])=>{const w=g.measureText(l).width,hh=10,bx=x-w/2,by0=y;
@@ -1246,8 +1246,6 @@ autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length)
 const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
 function fitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
  let z=20;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
-/* Echelle lisible, arrondie vers le haut pour conserver toute l'emprise. */
-function roundScale(z,lat){const raw=559082264*Math.max(.2,Math.cos(lat*Math.PI/180))/2**z,step=raw>=10000?500:raw>=2000?100:50,den=Math.ceil(raw/step)*step;return {z:Math.log2(559082264*Math.max(.2,Math.cos(lat*Math.PI/180))/den),den};}
 function overlaps(a,W,H,pad){
  const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
  const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
@@ -1256,29 +1254,28 @@ function overlaps(a,W,H,pad){
  return false;}
 /* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
 function splitMaps(ts,W,H){const pad=30,MAXM=40;let G=[ts];
- /* Le plafond de 40 arbres et le padding de 44px étaient trop stricts. */
- const bad=a=>a.length>1&&(a.length>80||fitZ(a,W,H,pad)<17.55||overlaps(a,W,H,pad));
+ const bad=a=>a.length>1&&(a.length>80||fitZ(a,W,H,pad)<16.5||overlaps(a,W,H,pad));
  for(let n=0;n<400&&G.length<MAXM;n++){
   let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
   const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
+function roundScale(z,lat){const raw=559082264*Math.max(.2,Math.cos(lat*Math.PI/180))/2**z,step=raw>=10000?500:raw>=2000?100:50,den=Math.ceil(raw/step)*step;return {z:Math.log2(559082264*Math.max(.2,Math.cos(lat*Math.PI/180))/den),den};}
 function mapHTML(a,all,W,H,i,n,col,ec,opts={}){
  const rawZ=fitZ(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),rs=roundScale(rawZ,(Math.min(...la)+Math.max(...la))/2),zf=rs.z;
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
   im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
- const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>t.slice(6,9).join('|'))),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
+ const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.filter(t=>t[8]>=0).map(t=>t.slice(6,9).join('|'))),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
  for(const t of T){
   if(t[1]<lonA||t[1]>lonB||t[2]>latA||t[2]<latB)continue;
-  const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
-  const isIntervention=mine.has(t[0]),isStation=stationKeys.has(t.slice(6,9).join('|'));
-  if(isIntervention){
+  const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]],isStation=t[8]>=0&&stationKeys.has(t.slice(6,9).join('|'));
+  if(mine.has(t[0])){
    sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
