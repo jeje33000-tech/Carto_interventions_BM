@@ -1065,7 +1065,7 @@ function draw(){
  if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
   for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   if(lb&&lbl.length<1000)lbl.push([lab(V[k].t),x,y+(V[k].ti||V[k].cn>=0?3:2),(V[k].ti||V[k].cn>=0)]);}
+   if(lb&&lbl.length<200)lbl.push([lab(V[k].t),x,y+(V[k].ti||V[k].cn>=0?3:2),(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
