@@ -1038,6 +1038,8 @@ function draw(){
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
  
  
+   /* ---- seuil des étiquettes ---- */ 
+ 
  const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=18,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
  const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
@@ -1064,10 +1066,10 @@ function draw(){
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
    
    
+  /* ---- etiquettes et nb arbres ---- */ 
    
    
-   
-   if(lb&&lbl.length<1000)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
+   if(lb&&lbl.length<500)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
