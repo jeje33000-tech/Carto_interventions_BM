@@ -1028,9 +1028,9 @@ const sat=L.tileLayer(esri('World_Imagery'),{maxZoom:24,maxNativeZoom:19,attribu
 const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:24,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
 const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
 const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
-L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
-const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
 L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);
+
+
 
 const BG={
  ign:{l:ign,u:(z,x,y)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${y}&TILECOL=${x}`,c:'Orthophotographie © IGN / Géoplateforme'},
@@ -1340,8 +1340,8 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  
  const B=bgCur();
- for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
-  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
+  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
+  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
  const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
