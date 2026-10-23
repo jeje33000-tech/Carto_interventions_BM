@@ -1026,7 +1026,24 @@ const ignU=(l,f)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSI
 const ign=L.tileLayer(ignU('ORTHOIMAGERY.ORTHOPHOTOS','image/jpeg'),{maxZoom:24,maxNativeZoom:19,attribution:'Orthophotographie &copy; IGN / Géoplateforme'}).addTo(map);
 const sat=L.tileLayer(esri('World_Imagery'),{maxZoom:24,maxNativeZoom:19,attribution:'Imagerie &copy; Esri, Maxar, Earthstar Geographics'});
 const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:24,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
-L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn}).addTo(map);
+const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
+const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
+L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
+const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
+L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);
+
+const BG={
+ ign:{l:ign,u:(z,x,y)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${y}&TILECOL=${x}`,c:'Orthophotographie © IGN / Géoplateforme'},
+ planIgn:{l:planIgn,u:(z,x,y)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&FORMAT=image/png&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${y}&TILECOL=${x}`,c:'Plan © IGN / Géoplateforme'},
+ sat:{l:sat,u:(z,x,y)=>`https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`,c:'Imagerie © Esri, Maxar, Earthstar Geographics'},
+ gSat:{l:gSat,u:(z,x,y)=>`https://mt1.google.com/vt/lyrs=s&hl=fr&x=${x}&y=${y}&z=${z}`,c:'Map data ©2026 Google'},
+ gHyb:{l:gHyb,u:(z,x,y)=>`https://mt1.google.com/vt/lyrs=y&hl=fr&x=${x}&y=${y}&z=${z}`,c:'Map data ©2026 Google'},
+ gPlan:{l:gPlan,u:(z,x,y)=>`https://mt1.google.com/vt/lyrs=m&hl=fr&x=${x}&y=${y}&z=${z}`,c:'Map data ©2026 Google'}
+};
+const bgCur=()=>BG[Object.keys(BG).find(k=>map.hasLayer(BG[k].l))]||BG.ign;
+
+
+
 L.control.scale({imperial:false}).addTo(map);
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
 let V=[],BKc={},BKt={},BKe={},PX=new Float64Array(0),PZ=null,sel=new Set(),selSt=new Set(),selK=-1,route=null;
@@ -1069,7 +1086,7 @@ function draw(){
   /* ---- etiquettes et nb arbres ---- */ 
    
    
-   if(lb&&lbl.length<500)lbl.push([lab(V[k].t),x,y+S*1.25,(V[k].ti||V[k].cn>=0)]);}
+   if(lb&&lbl.length<100)lbl.push([lab(V[k].t),x,y+S*2,(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
   g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
@@ -1321,8 +1338,10 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  const zf=labelZoom(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
+ 
+ const B=bgCur();
  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
-  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${zt}&TILEROW=${ty}&TILECOL=${tx}">`;
+  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
  const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
