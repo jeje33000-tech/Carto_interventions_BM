@@ -1,0 +1,176 @@
+RÉSUMÉ DES MODIFICATIONS — indexok.txt → indexok_modifie.txt
+================================================================
+
+Date : 2026-10-24
+Source : /mnt/user-data/uploads/indexok.txt (1 905 lignes, 412 711 octets)
+Livrable : /mnt/user-data/outputs/indexok_modifie.txt (2 055 lignes, 422 542 octets)
+Diff : +150 lignes, 0 ligne supprimée ; tous les blocs ajoutés commentés en français.
+
+----------------------------------------------------
+1. ONGLETS « FILTRES CARTO » / « FILTRES AVANCÉS » DANS LE MENU CARTE
+----------------------------------------------------
+Où : bloc HTML <aside> → <div id="fmap">.
+Ce qui change :
+  * Insertion d'une barre d'onglets (#fmapTabs) avec deux boutons :
+    « Filtres carto » (affiché par défaut, class="on") et « Filtres avancés ».
+  * Le contenu déjà présent dans #fmap est conservé tel quel et devient le volet
+    #fmapCarto (Filtres carto).
+  * Le contenu du menu de droite (#rp) est dupliqué en miroir sous forme de
+    #fmapAdv (Filtres avancés) : select Territoire/Quartier, recherche station,
+    Statut, Affectation, dates Objectif de fin / Fin réelle.
+  * Le volet #fmapAdv est masqué (display:none) tant que l'utilisateur n'a pas
+    cliqué sur l'onglet « Filtres avancés ». Le switch est piloté par un
+    petit IIFE qui pose des listeners sur #fmapTabs et bascule l'attribut
+    data-pane de #fmapPane ("carto" | "adv").
+  * Styles cohérents avec l'existant : boutons engrenés dans la palette
+    du panneau gauche (#eef2f2 / #fff, bordures #cfd6d6, coins arrondis).
+
+Comment tester : ouvrir indexok_modifie.txt dans un navigateur → onglets visibles
+en haut du panneau gauche ; cliquer « Filtres avancés » fait apparaître le
+volet miroir du menu de droite.
+
+----------------------------------------------------
+2. BOUTON « RÉINITIALISER LES FILTRES » DÉPLACÉ DANS L'ONGLET « FILTRES CARTO »
+----------------------------------------------------
+Où : <div id="map"> (anciennement <button id="rsM">…</button>).
+Ce qui change :
+  * Le bouton #rsM est retiré de la barre flottante sur la carte.
+  * Il est réinséré comme premier élément du volet #fmapCarto (donc visible
+    uniquement quand l'onglet « Filtres carto » est actif).
+  * Le listener `$('rsM').onclick=resetM;` est conservé tel quel : aucun
+    changement de comportement côté JS.
+  * Le masquage CSS existant (`body[data-print] #rsM,body[data-pv] #rsM{display:none!important}`)
+    reste valide puisque l'identifiant #rsM existe toujours.
+
+Comment tester : cliquer « Filtres carto » → le bouton « Réinitialiser les
+filtres » apparaît en haut du volet ; cliquer dessus remet tous les filtres
+à leur valeur par défaut.
+
+----------------------------------------------------
+3. ÉCHELLE NUMÉRIQUE « 1/XXXX » SUR LES CADRES DES CARTES DES FICHES
+----------------------------------------------------
+Où : fonction mapHTML() + wrapper mapHTMLFramed() + ajout d'un badge .scaleBadge.
+Méthode exacte du calcul de l'échelle :
+  * On utilise la résolution native Web Mercator (EPSG:3857) au centre de la
+    carte :  res (m/px) = 156543.0339 × cos(latitude) / 2^zoom.
+  * On ramène en m/px CSS en supposant un écran 96 DPI
+    (1 CSS px = 25,4/96 mm = 0,00026458 m).
+  * Le dénominateur affiché N = round(res / 0.00026458), garantissant
+    N ≥ 1 et une valeur lisible (1/2 500, 1/5 000, 1/10 000, 1/25 000, etc.).
+  * Calcul encapsulé dans _scaleDenom(z,lat) puis _scaleText(z,lat).
+Implémentation :
+  * Nouvelle fonction mapHTMLFramed(a,all,W,H,i,n,col,ec,overview=false) qui
+    appelle mapHTML(...) et enveloppe le SVG retourné dans
+    `<div class="mapframe">${svg}${badge?`<div class="scaleBadge">…</div>`:''}</div>`.
+  * fiche(k) utilise désormais mapHTMLFramed() au lieu de mapHTML() directement.
+  * Le zoom réel PZ (variable globale du moteur de rendu) est utilisé comme
+    entrée : la mise à jour est automatique à chaque moveend/zoomend.
+
+Comment tester : ouvrir une fiche d'intervention → chaque carte (vue d'ensemble
++ cartes détaillées) affiche un bandeau blanc en bas à droite avec
+« Échelle 1/XXXX ». Zoomer : la valeur change.
+
+----------------------------------------------------
+4. BOUTONS DE ZOOM +/- REMPLACÉS PAR DES BULLES COLORÉES EN RELIEF
+----------------------------------------------------
+Où : <div id="map"> → ajout d'un conteneur #zoomBubbles.
+Ce qui change :
+  * Création du panneau Leaflet désactivée via `zoomControl:false` dans les
+    options de L.map('map', …). Les boutons natifs .leaflet-control-zoom-in
+    et .leaflet-control-zoom-out ne sont donc plus rendus.
+  * Deux boutons ronds .zbubble sont ajoutés en bas à gauche de la carte :
+    #zbIn (zoom +, 36×36 px) et #zbOut (zoom −).
+  * Ils appellent respectivement map.zoomIn() et map.zoomOut() — exactement
+    la même fonctionnalité que les boutons natifs Leaflet.
+  * Sur zoomend, sync() désactive le bouton approprié si la limite min/max
+    de zoom est atteinte.
+  * Styles : dégradé bleu (#4a90d9 → #2466b0), ombrage inset (relief),
+    hover (brightness +1.12), active (translate + scale 0.97), responsive
+    (32×32 px sous 600 px de largeur via media query).
+  * Accessibilité : title + aria-label sur chaque bouton.
+
+Comment tester : cliquer les bulles ; le zoom change. Au zoom max, « + » est
+désactivé ; au zoom min, « − » est désactivé. Sur mobile (<600 px), la taille
+passe à 32 px.
+
+----------------------------------------------------
+5. COMPTEURS DE SYNTHÈSE RECALCULÉS DYNAMIQUEMENT (filtres actifs, séparateur FR)
+----------------------------------------------------
+Où : fonction window.refreshSummaryCounters() + appel depuis panel() et
+event map.on('moveend zoomend').
+Ce qui change :
+  * Nouvelle fonction window.refreshSummaryCounters() :
+      - appelle agg(M) pour obtenir le nombre d'interventions filtrées (a.ni)
+        et l'ensemble des arbres concernés (a.all.size),
+      - utilise nf() (déjà présent) pour formater avec séparateur de milliers
+        en espace insécable fine française,
+      - met à jour les trois compteurs existants (#rni, #rna, #bilan) ET
+        leurs miroirs dans le volet « Filtres avancés » (#rni2, #rna2, #bilan2),
+      - utilise V.length (variable globale = nombre d'arbres actuellement
+        affichés sur la carte, déjà mis à jour à chaque render) pour « arbres
+        affichés sur la carte ».
+  * panel() (déjà appelée à chaque changement de filtre) appelle
+    window.refreshSummaryCounters() à la fin.
+  * map.on('moveend zoomend') appelle aussi refreshSummaryCounters() pour
+    que « arbres affichés » reste synchro avec le zoom.
+  * Aucune modification de la fonction nf() (déjà en français).
+
+Comment tester : changer un filtre (décocher un statut, choisir un
+territoire, etc.) → les trois chiffres + leurs miroirs se mettent à jour
+instantanément avec séparateur de milliers (ex. « 1 946 »).
+
+----------------------------------------------------
+6. SÉLECTION AU LASSO DANS LE MENU DE DROITE
+----------------------------------------------------
+Où : SVG #lassoOverlay superposé à #map, + bouton d'activation dans le volet
+« Filtres avancés » (#lassoBtn).
+Ce qui change :
+  * Ajout d'un <svg id="lassoOverlay"> positionné en absolu sur #map (inset:0,
+    z-index 1050, pointer-events:none par défaut ; activable avec .on →
+    crosshair + pointer-events:auto).
+  * Bouton « Activer la sélection au lasso » (#lassoBtn) dans le volet
+    « Filtres avancés » qui toggle l'état du SVG.
+  * Bouton « Effacer la sélection » (#lassoClear) visible seulement quand le
+    lasso est actif ; remet la sélection à zéro.
+  * Compteur (#lassoCount) affiche le nombre d'arbres sélectionnés à main levée.
+  * Implémentation IIFE :
+      - mousedown → démarre le tracé, push du 1er point,
+      - mousemove → ajoute les points successifs au tableau pts,
+      - mouseup → ferme le polygone (push du 1er point en Z) et sélectionne
+        les arbres de V dont la position container tombe à l'intérieur
+        du polygone (algorithme pointInPath standard ray-casting).
+      - Touche Échap → désactive le lasso sans sélectionner.
+  * Aucune régression sur le rendu existant : le SVG est transparent et
+    n'intercepte la souris que lorsque la classe .on est posée.
+
+Comment tester : ouvrir l'onglet « Filtres avancés » → cliquer « Activer la
+sélection au lasso » → tracer un contour à main levée sur la carte → relâcher ;
+les arbres contenus dans le contour sont sélectionnés (synchronisation avec
+les compteurs).
+
+----------------------------------------------------
+VALIDATION
+----------------------------------------------------
+* 5 blocs <script> extraits et passés à `node --check` : 0 erreur.
+* Comptage global du fichier : accolades Δ = 0, parenthèses Δ = 0,
+  crochets Δ = 0.
+* Tous les identifiants ajoutés (Filtres carto, Filtres avancés, fmapTabs,
+  fmapCarto, fmapAdv, zbIn, zbOut, zbubble, scaleBadge, mapHTMLFramed,
+  _scaleDenom, _scaleText, lassoOverlay, lassoPath, lassoBtn, lassoClear,
+  refreshSummaryCounters, pointInPath) sont présents dans le fichier final.
+
+----------------------------------------------------
+LIMITES / COMPORTEMENTS NON TESTABLES SANS LES DONNÉES CSV RÉELLES
+----------------------------------------------------
+* Le calcul d'échelle et la sélection au lasso dépendent des variables
+  globales PZ, V et de la fonction agg() — toutes alimentées par les
+  CSV (arbres.csv, interventions.csv, classifications.csv). Sans ces
+  fichiers, les compteurs restent à 0 et le lasso n'a aucun polygone
+  candidat, mais aucune erreur JS n'est levée.
+* Le vollet « Filtres avancés » duplique les contrôles du menu de droite ;
+  leur comportement reste lié au state global M, partagé avec le menu de
+  droite d'origine (toujours présent dans le DOM).
+* Le bouton « Réinitialiser les filtres » reste masqué en mode impression
+  et aperçu d'impression via les règles CSS existantes
+  (`body[data-print] #rsM,body[data-pv] #rsM{display:none!important}`),
+  qui restent valides.

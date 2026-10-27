@@ -667,11 +667,45 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 </style>
 <style>
-:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#5d8a6b}
+:root{--ink:#1d2b22;--mut:#5d6b62;--line:#d6dad2;--acc:#F2CEEF;--menu-green:#2e7d32;--menu-green-light:#a5d6a7;--tab-active-bg:#a1d25b;--tab-active-fg:#ffffff;--tab-inactive-bg:#f6fbef;--tab-inactive-fg:#a1d25b;--tab-hover-bg:#a5d6a7;--tab-hover-fg:#1b5e20;--submenu-bg:#ffffff;--submenu-fg:#1d2b22;--submenu-border:#d6dad2;--submenu-active-bg:#eef7e6;--submenu-hover-bg:#f3f8f3;--close-menu-bg:#cfe2f3;--close-menu-fg:#ffffff;--validate-bg:#a1d25b;--validate-fg:#ffffff;--title-color:#2e7d32;--title-size:22px;--menu-btn-bg:#ffffff;--menu-btn-fg:#2e7d32;}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font:13px/1.4 "Segoe UI",system-ui,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #app{--lw:350px;--rw:280px;display:grid;grid-template-columns:var(--lw) 1fr var(--rw);height:100%}
 aside{overflow:auto;border-right:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px;background:#fff}
+aside>.asideTop{position:sticky;top:0;background:#ECECEC;z-index:50;padding:8px 0 10px 0;margin:-2px -10px 6px -10px;border:0;border-top:1px solid #fff;border-left:1px solid #fff;border-bottom:1px solid #999;box-shadow:3px 4px 10px #0005,2px 2px 5px #0003;backdrop-filter:none}
+aside>.asideTop *{z-index:inherit}
+aside h1,#app h1,.asideTop h1{color:var(--title-color);font-size:var(--title-size);font-weight:700;text-align:center;margin:6px 0 10px;letter-spacing:.2px}
+
+.roundMapBtn{position:absolute;left:max(env(safe-area-inset-left),12px);z-index:3501;min-width:44px;height:44px;border-radius:22px;background:var(--menu-btn-bg);color:var(--menu-btn-fg);border:1px solid var(--line);box-shadow:0 4px 10px #0008,inset 0 1px 0 #ffffff40;cursor:pointer;display:none;align-items:center;justify-content:center;font-weight:700;padding:0 14px;gap:8px;font-size:13px}
+.roundMapBtn:hover{background:var(--menu-btn-fg);color:var(--menu-btn-bg);box-shadow:0 4px 12px #000a}
+.roundMapBtn .bars{display:inline-flex;flex-direction:column;gap:4px;width:20px}
+.roundMapBtn .bars span{display:block;height:3px;background:currentColor;border-radius:2px}
+.roundMapBtn .lbl{font-weight:700;letter-spacing:.3px}
+#btnMapMenu{top:78px}
+#btnMapGeo{top:130px;background:#fff;color:#1b5e20;font-size:18px}
+#btnMapGeo:hover{background:#eef7e6;color:#1b5e20}
+@media(min-width:1001px){.roundMapBtn{display:none!important}}
+#btnMapMenu:hover{background:var(--menu-btn-fg);color:var(--menu-btn-bg)}
+#btnMapMenu .bars{display:inline-flex;flex-direction:column;gap:4px;width:20px}
+#btnMapMenu .bars span{display:block;height:3px;background:currentColor;border-radius:2px}
+.leaflet-bottom.leaflet-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;z-index:400}
+.leaflet-control-scale-line{background:rgba(255,255,255,.85)!important;color:#1b5e20!important;font-weight:600!important;padding:2px 6px!important;border:1px solid var(--line)!important;border-radius:4px!important;text-shadow:none!important}
+.mapScaleBox{position:absolute;right:8px;bottom:30px;z-index:500;background:rgba(255,255,255,.92);color:#1b5e20;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:600 12px/1.2 system-ui,sans-serif;box-shadow:0 1px 3px #0003}
+#mapUpdates{position:absolute;left:8px;bottom:6px;z-index:500;background:rgba(255,255,255,.85);color:#1b5e20;font:11px/1.3 system-ui,sans-serif;padding:3px 6px;border-radius:4px;max-width:48vw;word-break:break-word}
+#btnMapGeo:hover{background:#eef7e6}
+.mapScaleBox{position:absolute;right:8px;bottom:8px;z-index:1200;background:#fff;border:1px solid var(--line);border-radius:4px;padding:3px 8px;font:12px/1 'Segoe UI',sans-serif;color:#333;box-shadow:0 1px 4px #0004}
+#mapUpdates{position:absolute;left:8px;bottom:8px;z-index:1200;background:#fff;border:1px solid var(--line);border-radius:4px;padding:4px 8px;font:11px/1.3 'Segoe UI',sans-serif;color:#333;box-shadow:0 1px 4px #0004;max-width:60%}
+#mapUpdates b{color:#1b5e20}
+.btnCloseMenu{background:var(--validate-bg);color:var(--validate-fg);border:1px solid var(--validate-bg);border-radius:6px;padding:6px 10px;font-weight:600;cursor:pointer;margin:2px 0 4px 0;width:100%;text-align:center;font-size:14px}
+.btnCloseMenu:hover{background:#8fc04a;color:#fff}
+.xL{background:var(--validate-bg)!important;color:var(--validate-fg)!important;border:1px solid var(--validate-bg)!important;border-radius:6px;padding:6px 10px;font-weight:600;cursor:pointer;margin:2px 0 4px 0;width:100%;text-align:center}
+.xL:hover{background:#8fc04a!important;color:#fff!important}
+#tbC,#tbS,#tbF{background:var(--menu-green);color:#fff;border:0;border-radius:8px;font-weight:600;padding:8px 6px}
+#tbC.on,#tbS.on,#tbF.on{background:var(--menu-green-light);color:#1b5e20}
+#tbC:hover,#tbS:hover,#tbF:hover{background:var(--menu-green-light);color:#1b5e20}
+.fDetDatesFerme,.fDetDatesActives,.fDetDatesAll{display:flex;flex-direction:column;gap:6px}
+.fDetDatesFerme .grpObj,.fDetDatesActives .grpReal{display:none}
+.fDetDatesAll .grpObj,.fDetDatesAll .grpReal{display:flex;flex-direction:column;gap:6px}
 h1{font-size:16px;margin:0}h3{font-size:13px;margin:4px 0}
 label{display:block;color:var(--mut);font-size:12px;margin-bottom:2px}
 select,input[type=search],input[type=date],button{width:100%;padding:6px;border:1px solid var(--line);border-radius:4px;font:inherit;background:#fff}
@@ -685,12 +719,13 @@ button.s{background:#fff;color:var(--ink);border-color:var(--line)}
 #bilan,#iti,.mut{color:var(--mut);font-size:12px}
 #mw{position:relative;isolation:isolate;background:#e9ebe6;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #map{width:100%;height:100%}
-#stats{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#fff;padding:16px 20px}
+#stats{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#fff;padding:60px 20px 16px 60px}
 #stats table{border-collapse:collapse;margin:6px 0 14px;min-width:420px}#stats td,#stats th{border:1px solid var(--line);padding:4px 8px;text-align:left}
 #stats .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-width:900px}
 #pv{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:1200;background:#fff;padding:6px 10px;border-radius:6px;box-shadow:0 1px 6px #0006;gap:8px;align-items:center}
 #pv button{width:auto;padding:6px 12px}
 body[data-pv] #mw{background:#2b302d}body[data-pv] #map{outline:4px solid #fff;box-shadow:0 0 0 2px #000}
+#fBody details.iv{border-left:4px solid var(--sc)!important;padding-left:6px;}
 #imp{display:none}
 #sb{border:2px solid var(--acc);border-radius:6px;padding:8px;background:#f3f8f3;display:flex;flex-direction:column;gap:6px}#sb input{font-size:15px;padding:8px}#sb button{padding:8px 14px}
 #rp{overflow:auto;border-left:1px solid var(--line);padding:10px;background:#fff}#rp table{border-collapse:collapse;width:100%;margin:4px 0 12px;font-size:12px}#rp td,#rp th{padding:3px 4px;border-bottom:1px solid var(--line);text-align:left}
@@ -710,18 +745,195 @@ table.rt td+td,table.rt th+th{text-align:right}
 .bb{flex:1;background:#eef0ec;border-radius:5px;height:13px}.bb i{display:block;height:100%;border-radius:5px}.bars b{font-size:12px;min-width:44px;text-align:right}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.12}}.blink{animation:blink 1s infinite}
 .x{display:none}#bk{display:none;position:fixed;inset:0;z-index:2900;background:#0006}
-.seg{display:flex;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden}.seg button{border:0;border-radius:0;background:#fff;color:var(--ink);font-weight:600;padding:8px 6px}.seg button.on{background:var(--acc);color:#fff}
+.seg{display:flex;gap:0;border:1px solid var(--menu-green);border-radius:9px;overflow:hidden}.seg button{border:0;border-radius:0;background:var(--tab-inactive-bg);color:var(--tab-inactive-fg);font-weight:600;padding:8px 6px}.seg button:hover{background:var(--tab-hover-bg);color:var(--tab-hover-fg)}.seg button.on{background:var(--tab-active-bg);color:var(--tab-active-fg)}
+#filterBanner{display:none;position:relative;z-index:1100;background:#fff8e1;border-bottom:2px solid var(--menu-green);padding:6px 10px;font-size:12px}#filterBanner.show{display:block}#filterBanner .chip{display:inline-block;background:#eef7e6;border:1px solid var(--menu-green);color:#1b5e20;border-radius:12px;padding:1px 8px;margin:0 4px 0 0;font-weight:600}
 #fstat details,#fpat details{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fafbf9}#fstat summary,#fpat summary{cursor:pointer;font-weight:600;padding:3px 0}
 #fst{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#f6f8f5;padding:14px 20px;font-size:12px;line-height:1.45}
 #fst>.wrap{max-width:1150px;margin:0 auto}#fst h2{font-size:17px;margin:0 0 8px}
-#fst details{background:#fff;border:1px solid var(--line);border-radius:7px;margin:5px 0}
-#fst summary{cursor:pointer;padding:5px 10px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-#fst details.n1>summary{background:#e9f1ea;font-size:13px;border-radius:7px}#fst details.n2>summary{background:#f1f6f2}
-#fst .ch{margin-left:18px;border-left:3px solid #d8e3da;padding-left:9px}
-#fst .sn{font-size:12px}#fst details.sec{border-left:5px solid var(--sc,#999)}#fst details.sec>summary{font-size:12.5px}
-#fst .hd{background:#fff;border:1px solid #d3e2d6;border-left:5px solid var(--acc);border-radius:8px;padding:7px 12px;margin:6px 0}
-#fst .hd h3{font-size:14px;margin:0 0 2px}#fst .chips span{display:inline-flex;align-items:center;gap:5px;background:#f1f6f1;border-radius:12px;padding:1px 9px;margin:4px 6px 0 0}
-#fst .lt{font-size:12.5px;margin:10px 0 4px}
+
+/* ===== Bloc général ===== */
+
+/* --- Tous les blocs dépliables (cadre de base) --- */
+#fst details{
+  background:#fff;                 /* * fond du bloc entier (titre + contenu) */
+  border:1px solid var(--line);    /* * bordure : épaisseur, style, couleur */
+  border-radius:7px;               /* * coins arrondis du cadre */
+  margin:5px 0;                    /* * espace extérieur : haut/bas 5px, gauche/droite 0 */
+}
+
+/* --- Tous les titres cliquables --- */
+#fst summary{
+  cursor:pointer;                  /* * curseur « main » au survol */
+  padding:5px 10px;                /* * espace intérieur : haut/bas 5px, gauche/droite 10px */
+  display:flex;                    /* * éléments du titre alignés sur une ligne */
+  align-items:center;              /* * alignement vertical centré */
+  gap:7px;                         /* * espace entre les éléments du titre */
+  flex-wrap:wrap;                  /* * retour à la ligne si manque de place */
+}
+
+/* --- Niveau 1 : titre --- */
+#fst details.n1>summary{
+  background:#e9f1ea;              /* * fond du titre niveau 1 */
+  font-size:13px;                  /* * taille du texte niveau 1 */
+  border-radius:7px;               /* * coins arrondis du titre */
+}
+
+/* --- Niveau 2 : titre --- */
+#fst details.n2>summary{
+  background:#f1f6f2;              /* * fond du titre niveau 2 */
+  font-size:12px;                  /* * taille du texte niveau 2 */
+}
+
+/* --- Zone de contenu (ce qui s'affiche une fois déplié) --- */
+#fst .ch{
+  margin-left:25px;                /* * décalage vers la droite (indentation) */
+  border-left:3px solid #d8e3da;   /* * barre verticale à gauche : épaisseur, style, couleur */
+  padding-left:9px;                /* * espace entre la barre et le contenu */
+}
+
+/* Texte « Archives municipales » */
+#fst .sn{font-size:11px}                                  /* * taille du texte */
+
+/* ===== Bloc station uniquement (classe "station" à ajouter au <details>) ===== */
+#fst details.station{
+  border:1px solid #0B0492;                              /* * trait tout le tour (couleur, épaisseur, style) */
+  
+  box-shadow:
+   inset 13px 0 0 #F8F8FE,        /* * bande gauche colorÃĐe */
+   inset 18px 0 0 #E3F4FD;        /* * fin liserÃĐ de sÃĐparation (1px de plus) */
+
+ /* border-left:15px solid #F8F8FE;      /* * trait gauche Ã  15px, mÃŠme couleur */
+  border-radius:7px;                                     /* * coins arrondis */
+  margin-left:0px;                                       /* * décalage à droite */
+  background:#F8F8FE;                                    /* * couleur de fond */
+  
+ }
+ /* ===== Décalage des onglets Interventions et Arbres (station dépliée) les boutons eux mêmes===== */
+#fst details.station[open] button[data-tab]{
+  margin-left:0px;                /* * décalage horizontal des onglets */
+  margin-top:8px;                  /* * décalage vertical des onglets */
+}
+
+
+
+ /* ===== Décalage des onglets Interventions et Arbres (station dépliée) ===== le conteneur qui regroupe tous les boutons d'onglets. Son margin-left:25px décale toute la rangée d'un bloc vers la droite. */
+#fst details.station[open] .ftabs{
+  margin-left:20px;                /* * décalage horizontal quand la station est dépliée */
+  margin-top:8px;                  /* * décalage vertical */
+}
+ 
+#fst details.station>summary{
+  font-size:50px;                                       /* * taille du titre de section */
+  background:#E3F4FD;                                   /* * fond du titre de section */
+  border-radius:7px;                                     /* * coins arrondis */
+}
+
+/* ===== En-tête de la station ===== */
+#fst .hd{
+  border:1px solid #E1DBF9;                               /* * couleur du contour */
+  border-left:5px solid #EEF5FC;                       /* * épaisseur du trait gauche */
+  border-radius:8px;                                      /* * arrondi des coins */
+  padding:7px 12px;                                       /* * marge interne */
+  margin:6px 0;                                           /* * marge externe */
+  background:#EEF5FC;                                     /* * couleur de fond */
+  margin-left:20px;                                       /* * décalage à droite */
+}
+#fst details.station .hd h3{
+  font-size:11px;                                         /* * taille du titre (de Brienne_A) */
+  margin:0 0 2px;
+  margin-left:0px;                                       /* * décalage à droite du titre*/
+}
+
+/* ===== Pastilles ===== (station dépliée nb arbres et statuts)*/
+#fst .chips{
+  display:flex;                    /* * le conteneur devient une ligne flex */
+  flex-direction:row;              /* * alignement horizontal (gauche à droite) */
+  flex-wrap:wrap;                  /* * passe à la ligne si ça ne tient pas */
+  align-items:center;              /* * alignement vertical au centre */
+  gap:6px;                         /* * espace entre les pastilles */
+}
+
+#fst .chips span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#DCF8E1;              /* * fond de la pastille */
+  border-radius:12px;              /* * arrondi de la pastille */
+  padding:1px 9px;                 /* * marge interne */
+  margin:4px 0 0 0;                /* * espacement géré par le gap du conteneur */
+}
+
+
+/* ===== Décalage des titres des onglets Interventions et Arbres (station dépliée) ===== */
+#fst details.station[open] h3.lt{
+  margin-left:25px;                /* * décalage horizontal du titre */
+  margin-top:8px;                  /* * décalage vertical du titre */
+}
+
+/* ===== Décalage des elements onglets (station dépliée) =====
+#fst details.station[open] b{
+  margin-left:25px;
+}
+*/
+
+
+
+
+
+/* ===== Bloc de statut (INITIALISEE, etc.) ===== */
+#fst details.sec{
+  border:1px solid var(--line);
+  border-left:8px solid var(--sc,#999);   /* barre de couleur du groupe */
+  border-radius:7px;
+  margin-left:50px;                       /* décalage à droite */
+  margin-top:8px;
+  background:#f7f4fe;                     /* fond du bloc de statut */
+}
+#fst details.sec>summary{
+  background:
+#f7faf8;                     /* fond du titre du statut */
+  border-radius:7px;
+}
+#fst details.sec>.ch{
+  margin-left:20px;                       /* décalage des interventions */
+  border-left:none;                       /* supprime la barre grise du .ch */
+  padding-left:0;
+}
+
+/* ===== Chaque intervention garde sa propre barre ===== */
+#fst details.iv{
+  border:1px solid var(--line);
+  border-left:4px solid var(--sc);
+  background:#fff;
+  padding-left:0;
+}
+
+#fst p.mut{
+  margin-left:50px;     /* * dÃĐcalage vers la droite */
+  margin-top:10px;      /* * dÃĐcalage vers le bas */
+}
+
+/* ===== Couleurs des onglets Interventions / Arbres ===== */
+
+/* * onglet inactif */
+#fst button[data-tab]{
+  background:#E8EEF9;              /* * fond */
+  color:#0B0492;                   /* * texte */
+  border:1px solid #0B0492;        /* * bordure */
+}
+
+/* * survol */
+#fst button[data-tab]:hover{
+  background:#D3DEF5;
+}
+
+/* * onglet actif */
+#fst button[data-tab].on{
+  background:#0B0492;              /* * fond actif */
+  color:#fff;                      /* * texte actif */
+  border-color:#0B0492;
+}
+
 #fst .cl{font-weight:700}#fst .no{font-weight:600;color:#33433a}#fst .dt{color:#5d6b62;font-size:11px}#fst .lt2{color:#c1121f;font-weight:600}
 .bd{display:inline-block;border-radius:9px;padding:0 8px;font-weight:600;font-size:11px}.bd.g{background:#e6f2ea;color:#3b6d4f}.bd.b{background:#2f7de1;color:#fff}.bd.r{background:#fde6e6;color:#c1121f}.bd.s{background:#eceff3;color:#4a5568}
 #fst table{border-collapse:collapse;margin:3px 10px 8px;width:calc(100% - 20px)}#fst th{background:#eef2ec;font-weight:600;font-size:11px}#fst td,#fst th{border-bottom:1px solid var(--line);padding:3px 8px;text-align:left}#fst tr:nth-child(even) td{background:#f8faf7}
@@ -730,7 +942,7 @@ table.rt td+td,table.rt th+th{text-align:right}
 .nv{background:#fff;border:1px solid var(--line);border-radius:7px;margin:4px 0}.nv>summary{cursor:pointer;padding:4px 10px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .nv .ch{margin-left:18px;border-left:3px solid #d8e3da;padding-left:9px}.li{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:3px 6px;border-bottom:1px dotted #d6dad2}
 .nv .cl{font-weight:700}.nv .dt{color:#5d6b62;font-size:11px}.nv .lt2{color:#c1121f;font-weight:600}.nv a{color:#1c64d1;margin-left:auto;font-size:11px}
-.ftabs{display:flex;gap:6px;margin:8px 0 0;border-bottom:2px solid var(--acc)}.ftabs button{width:auto;padding:6px 18px;background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;font-weight:600}.ftabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ftabs{display:flex;gap:6px;margin:8px 0 0;border-bottom:2px solid var(--menu-green)}.ftabs button{width:auto;padding:6px 18px;background:#fff;color:var(--menu-green);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;font-weight:600}.ftabs button:hover{background:var(--menu-green-light);color:#1b5e20}.ftabs button.on{background:var(--menu-green-light);color:#1b5e20;border-color:var(--menu-green)}
 
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0}
 .kpi{border-radius:14px;padding:12px 14px;color:#fff;box-shadow:0 4px 14px #0002;display:flex;flex-direction:column;gap:2px}
@@ -745,13 +957,13 @@ body[data-print] #fm{display:none!important}
 #app.hl{--lw:0px}#app.hr{--rw:0px}
 #app.hl aside,#app.hr #rp{padding:0;border:0;visibility:hidden;overflow:hidden}
 .edge{position:absolute;z-index:2100;top:50%;transform:translateY(-50%);width:auto;padding:12px 8px;background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 1px 6px #0005;opacity:.93;font-size:15px}
-#hL{left:0;border-radius:0 10px 10px 0}#hR{right:0;border-radius:10px 0 0 10px}
+
 body[data-print] .edge,body[data-pv] .edge{display:none!important}
 /* saisie semi-automatique (critère « contient ») */
 #acBox{display:none;position:fixed;z-index:7000;background:#fff;border:1px solid #8a9;border-radius:8px;box-shadow:0 6px 20px #0005;max-height:300px;overflow:auto;font-size:13px}
 #acBox div{padding:7px 12px;cursor:pointer;border-bottom:1px solid #eef0ec}#acBox div.on,#acBox div[data-i]:hover{background:#e3efff}#acBox .m{cursor:default;color:#5d6b62;font-size:12px;background:#f6f8f5}
 /* onglets de la fiche station */
-.ftabs{display:flex;gap:6px;margin:10px 0 0;border-bottom:2px solid var(--acc)}.ftabs button{width:auto;padding:8px 22px;background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom:0;border-radius:9px 9px 0 0;font-weight:600}.ftabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ftabs{display:flex;gap:6px;margin:10px 0 0;border-bottom:2px solid var(--menu-green)}.ftabs button{width:auto;padding:8px 22px;background:var(--submenu-bg);color:var(--submenu-fg);border:1px solid var(--line);border-bottom:0;border-radius:9px 9px 0 0;font-weight:600}.ftabs button:hover{background:var(--submenu-hover-bg);color:var(--tab-hover-fg)}.ftabs button.on{background:var(--submenu-active-bg);color:var(--tab-hover-fg);border-color:var(--menu-green)}
 /* responsive : les volets deviennent des tiroirs */
 @media(max-width:1000px){
  #app,#app.st{grid-template-columns:1fr;grid-template-rows:1fr}
@@ -759,7 +971,7 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
  aside{left:0;transform:translateX(-108%)}#rp{right:0;transform:translateX(108%)}
  #app.ol aside{transform:none}#app.or #rp{transform:none}#app.st #rp{display:none}
  #app.hl aside,#app.hr #rp{visibility:visible;padding:10px;border-right:1px solid var(--line)}
- .edge{top:auto;bottom:34px;transform:none;border-radius:12px;padding:12px 14px;font-size:18px}#hL{left:8px}#hR{right:8px}
+
  select,input,button{font-size:16px;min-height:40px}
  #rsM{left:54px}#stats,#fst{padding:12px}#fst .hd h3{font-size:18px}
  .bars{width:100%}.bl{width:100px}.kpi b{font-size:26px}
@@ -773,6 +985,64 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
  body[data-print] #mw{position:static;display:block;background:none}
  body[data-print] #map{position:fixed;left:0;top:0;width:var(--pw)!important;height:var(--ph)!important;box-shadow:none}
  body[data-print] #imp{display:block;position:fixed;left:8px;bottom:30px;z-index:1000;background:#fffffff2;padding:6px 10px;border:1px solid #888;font-size:11px;max-width:55%}
+}
+/* colonne de droite supprimee : menu de droite integre dans l'onglet Filtres */
+#app,#app.st{grid-template-columns:var(--lw) 1fr}
+
+/* ===== En chiffres (nouvel onglet) ===== */
+#tbE{background:var(--menu-green);color:#fff;border:0;border-radius:8px;font-weight:600;padding:8px 6px}
+#tbE.on{background:var(--menu-green-light);color:#1b5e20}
+#tbE:hover{background:var(--menu-green-light);color:#1b5e20}
+#num{display:none;position:absolute;inset:0;z-index:2000;overflow:auto;background:#fff;padding:60px 20px 16px 60px}
+#num .numBar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0 12px}
+#num .numBar label{margin:0}
+#num .numBar select,#num .numBar button{width:auto;padding:6px 12px;font-size:14px;min-height:34px}
+#num .numBar input[type=checkbox]{width:auto;transform:scale(1.15)}
+#numWrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+#numTable{border-collapse:collapse;width:100%;min-width:980px;table-layout:auto;font-size:12.5px;background:#fff}
+#numTable th,#numTable td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top;white-space:nowrap}
+#numTable th{background:#eef2ec;font-weight:600;position:sticky;top:0;z-index:2;cursor:pointer;user-select:none}#numTable th:hover{background:#dfeede}#numTable th .sortInd{font-size:10px;color:#1b5e20;margin-left:4px}
+#numTable td.r,#numTable th.r{text-align:right;font-variant-numeric:tabular-nums}
+#numTable tr.zebra0 td{background:#ffffff}
+#numTable tr.zebra1 td{background:#eaf3e8}
+#numTable tr.subtotal td{background:#f3f8f3;font-weight:600}
+#numTable tr.grandTotal td{background:#dfeede;font-weight:700;border-top:2px solid var(--menu-green)}
+#numTable tr.group td{background:#fafbf9}
+#numSres{font-weight:600;margin:6px 0}
+#numEmpty{padding:24px;text-align:center;color:#666}
+#numGo,#numPrn{width:auto;padding:6px 14px}
+#numSgo{width:auto;padding:6px 14px}
+@media(max-width:1000px){
+ #num{padding:12px}
+#numWrapScroll{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+#numWrapScroll #numTable{min-width:980px}
+ #numTable{min-width:760px;font-size:11.5px}
+}
+/* bouton Filtrer (responsive) couleur bleu-gris, placé en haut du panneau central */
+.btnFilterResp{background:var(--validate-bg);color:var(--validate-fg);border:1px solid var(--validate-bg);border-radius:8px;font-weight:600;padding:8px 14px;cursor:pointer;display:none;margin:0 0 10px;font-size:14px;box-shadow:2px 2px 6px #0003}
+#numFilterBanner{display:none;background:#eef7e6;border:1px solid #88a98c;color:#1b5e20;padding:6px 10px;border-radius:6px;margin:6px 0;font:12px/1.4 system-ui,sans-serif;flex-wrap:wrap;gap:6px}
+#numFilterBanner.show{display:flex}
+#numFilterBanner .chip{background:#fff;border:1px solid #88a98c;border-radius:10px;padding:1px 8px;margin:0 4px 0 0;font-size:11px}
+#numTable tr.expanded td{background:#fafdf8!important}
+.btnFilterResp,#btnFiltrerRetour{background:var(--validate-bg)!important;color:var(--validate-fg)!important;border:1px solid var(--validate-bg)!important;font-weight:600}.btnFilterResp:hover,#btnFiltrerRetour:hover{background:#8fc04a!important}#btnFiltrerRetour{padding:6px 14px;border-radius:6px;width:auto}
+/* bouton Valider sticky en bas dans le menu de gauche */
+#btnValiderFM,#btnValider,#btnApplyFilters,#btnApply{background:var(--validate-bg)!important;color:var(--validate-fg)!important;border:1px solid var(--validate-bg)!important;font-weight:600}
+#btnValiderFM:hover,#btnValider:hover,#btnApplyFilters:hover,#btnApply:hover{background:#8fc04a!important}
+.submenu,.fpanel,.fmenu{background:var(--submenu-bg);color:var(--submenu-fg);border:1px solid var(--submenu-border);border-radius:6px}
+.submenu button.sel,.submenu button.on{background:var(--submenu-active-bg)}
+#numApply,#patApply,#statApply,#cartoApply{position:sticky;bottom:0;background:#2f7de1;color:#fff;border:0;border-radius:8px;font-weight:600;padding:10px 12px;cursor:pointer;width:100%;margin-top:10px;box-shadow:0 -2px 8px #0002;font-size:15px;z-index:5;display:none}
+#numApply:hover,#patApply:hover,#statApply:hover,#cartoApply:hover{background:#1f5fb6}
+@media(max-width:1000px){
+ #numApply,#patApply,#statApply,#cartoApply,.btnFilterResp{display:block}
+}
+@media print{
+ body[data-numPrint] aside,body[data-numPrint] #stats,body[data-numPrint] #fst,body[data-numPrint] #rsM,body[data-numPrint] #hL,body[data-numPrint] #hR,body[data-numPrint] #pv,body[data-numPrint] #numBar,body[data-numPrint] #numFilterBtn,body[data-numPrint] #numFilterBanner,body[data-numPrint] .roundMapBtn,body[data-numPrint] .btnCloseMenu{display:none!important}
+ @page{size:A4 landscape;margin:8mm}
+ body[data-numPrint] #num{display:block!important;position:static;padding:6mm;background:#fff}
+ body[data-numPrint] #numTable{font-size:10px;min-width:0}
+ body[data-numPrint] #numTable thead{display:table-header-group}
+ body[data-numPrint] #numTable tr{page-break-inside:avoid}
+ body[data-numPrint] #numSres{font-size:12px;margin:0 0 6px}
 }
 </style>
 <script>/* @preserve
@@ -788,11 +1058,21 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
 <div id="chg" style="position:fixed;inset:0;background:#fff;z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font:14px 'Segoe UI',sans-serif;text-align:center;padding:20px"><div id="chgm">Chargement des données…</div><pre id="chgd" style="text-align:left;font-size:12px;max-width:90vw;overflow:auto;color:#555;margin:0"></pre><div id="chgf" style="display:none;text-align:left"><label style="display:block;margin:6px 0">Arbres (arbres.csv)<br><input type="file" id="fa" accept=".csv,.txt"></label><label style="display:block;margin:6px 0">Interventions (interventions.csv)<br><input type="file" id="fi" accept=".csv,.txt"></label></div></div>
 <div id="app">
 <aside>
-  <button class="x" id="xL">✕ Fermer le menu</button>
-  <h1>Interventions sur les arbres</h1>
-  <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button><button id="tbF" class="s">Liste du patrimoine</button></div>
-  <div id="fmap" style="display:flex;flex-direction:column;gap:8px">
-  <div id="sb"><b>Rechercher une intervention</b><div class="row"><input type="search" id="q" placeholder="N° d'intervention ou classification…"><button id="bq" style="flex:none;width:auto">Rechercher</button></div></div>
+  <div class="asideTop">
+    <button id="xL" class="btnCloseMenu" title="Fermer le menu de gauche">✕ Fermer le menu</button>
+    <h1>Interventions sur les arbres</h1>
+    <div class="row"><button id="tbC">Carte</button><button id="tbS" class="s">Statistiques</button><button id="tbF" class="s">Liste du patrimoine</button><button id="tbE" class="s">En chiffres</button></div>
+  </div>
+ 
+ <div id="fmap" style="display:flex;flex-direction:column;gap:8px">
+  <div class="seg" id="mtabs">
+    <button type="button" id="mtA" class="on">Filtres carto</button>
+    <button type="button" id="mtB">Filtres avancés</button>
+  </div>
+
+  <div id="mpA" style="display:flex;flex-direction:column;gap:8px">
+<button id="rsMA" class="s" type="button" style="align-self:flex-start">Réinitialiser les filtres</button>
+<div id="sb"><b>Rechercher une intervention</b><div class="row"><input type="search" id="q" placeholder="N° d'intervention ou classification…"><button id="bq" style="flex:none;width:auto">Rechercher</button></div></div>
   <div id="fiche">
     <div id="ft"></div>
     <button id="bf">Imprimer la fiche d'intervention</button>
@@ -807,9 +1087,30 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
   <div><h3>Classification des interventions</h3><div class="mut" style="margin:-2px 0 4px">Couleur de chaque arbre dès le 1/5000 ; en dessous, interventions regroupées (couleur dominante).</div><div id="clTools" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0"><label class="mut" for="clPreset">Présélection</label><select id="clPreset" style="max-width:210px"><option value="Tout">Tout</option><option value="Aucun">Aucun</option></select><button id="clToggle" type="button" class="s">Tout déplier</button></div><div id="clp"></div></div>
   <div><label>Imprimer la carte (aperçu déplaçable avant impression)</label>
     <div class="row"><button class="s" data-fmt="A4">A4</button><button class="s" data-fmt="A3">A3</button></div></div>
+    <button id="cartoApplyA" type="button">✔ Valider</button>
   </div>
 
+  <div id="mpB" style="display:none;flex-direction:column;gap:8px">
+
+ <button id="rsMB" class="s" type="button" style="align-self:flex-start">Réinitialiser les filtres</button>
+ <div><label>Territoire</label><select id="tp"></select></div>
+ <div style="margin-top:6px"><label>Unité</label><select id="un"></select></div>
+ <div style="margin-top:6px"><label>Quartier</label><select id="qu"></select></div>
+ <div style="margin-top:8px"><label>Rechercher une station (selon le territoire)</label><input type="search" id="qs" placeholder="Nom ou partie du nom…" autocomplete="off"><div id="qsi" class="mut" style="margin-top:3px"></div></div>
+ <div id="rz" class="crit"></div>
+ <div class="big"><div><b id="rni">0</b><span>interventions</span></div><div><b id="rna">0</b><span>arbres concernés</span></div></div>
+ <div class="big sh"><div><b id="bilan">0</b><span>arbres affichés sur la carte</span></div></div>
+ <h3>Statut d'intervention</h3><div id="rst"></div>
+ <h3>Affectation</h3><div id="raf"></div>
+ <h3>Dates</h3>
+ <div><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="d1"><input type="date" id="d2"></div></div>
+ <div style="margin-top:6px"><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="r1"><input type="date" id="r2"></div></div>
+    <button id="cartoApply" type="button">✔ Valider</button>
+</div>
+</div>  <!-- /#fmap -->
+
   <div id="fstat" style="display:none;flex-direction:column;gap:8px">
+    <button id="closeStats" class="btnCloseMenu" title="Fermer le menu de gauche">✕ Fermer le menu</button>
     <button id="rsS" class="s">Réinitialiser les filtres</button>
     <div class="seg"><button id="sgI" class="on">Indicateurs</button><button id="sgD">Statistiques détaillées</button></div>
     <div id="fInd" style="display:flex;flex-direction:column;gap:8px">
@@ -819,15 +1120,20 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
       <div><label>Station (saisie libre)</label><input type="search" id="kqs" placeholder="Nom ou partie du nom…" autocomplete="off"></div>
     </div>
     <div id="fDet" style="display:none;flex-direction:column;gap:8px">
-      <div><label>Type (présélection des statuts)</label><select id="sm"><option value="T">Tous les statuts</option><option value="C">Interventions clôturées</option><option value="I">Interventions initialisées</option></select></div>
+      <div class="stickyTop"><label>Type (présélection des statuts)</label><select id="sm"><option value="T">Tout</option><option value="C">Interventions fermées</option><option value="I">Interventions actives</option></select></div>
       <div><label>Territoire</label><select id="stp"></select></div>
+      <div><label>Unité</label><select id="sun"></select></div>
       <div><label>Quartier</label><select id="squ"></select></div>
-      <div><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="sd1"><input type="date" id="sd2"></div></div>
-      <div><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="sr1"><input type="date" id="sr2"></div></div>
+      <div class="stickyTop"><label>Année</label><select id="syr"><option value="">Toutes</option></select></div>
+      <div class="dateGroups fDetDatesAll">
+        <div class="grpObj"><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="sd1"><input type="date" id="sd2"></div></div>
+        <div class="grpReal"><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="sr1"><input type="date" id="sr2"></div></div>
+      </div>
       <details open><summary>Statut</summary><div id="sks"></div></details>
       <details><summary>Affectation</summary><div id="ska"></div></details>
       <details><summary>Classification</summary><div id="skc"></div></details>
     </div>
+    <button id="statApply" type="button">✔ Valider</button>
   </div>
   <div id="fpat" style="display:none;flex-direction:column;gap:8px">
     <button id="fRst" class="s">Réinitialiser les filtres</button>
@@ -842,12 +1148,34 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
       <label style="margin-top:6px">Échéances — « interv.-arbres » (cocher pour filtrer)</label><div id="fRet"></div>
     </details>
     <details><summary>Classification</summary><div id="fCl"></div></details>
+    <button id="patApply" type="button">✔ Valider</button>
+  </div>
+<div id="fnum" style="display:none;flex-direction:column;gap:8px">
+    <button id="closeNum" class="btnCloseMenu" title="Fermer le menu de gauche">✕ Fermer le menu</button>
+    <button id="numRst" class="s">Réinitialiser les filtres</button>
+    <div><label>Type (présélection des statuts)</label><select id="numSm"><option value="T">Tout</option><option value="C">Interventions fermées</option><option value="I">Interventions actives</option></select></div>
+    <div><label>Territoire</label><select id="numTp"></select></div>
+    <div><label>Unité</label><select id="numUn"></select></div>
+    <div><label>Quartier</label><select id="numQu"></select></div>
+    <div><label>Année</label><select id="numYr"><option value="">Toutes</option></select></div>
+    <div id="numGrpObj"><label>Objectif de fin : du &#8230; au &#8230;</label><div class="row"><input type="date" id="numD1"><input type="date" id="numD2"></div></div>
+    <div id="numGrpReal"><label>Fin réelle : du &#8230; au &#8230;</label><div class="row"><input type="date" id="numR1"><input type="date" id="numR2"></div></div>
+    <details open><summary>Statut</summary><div id="numKs"></div></details>
+    <details><summary>Affectation</summary><div id="numKa"></div></details>
+    <details><summary>Classification</summary><div id="numKc"></div></details>
+    <button id="numApply" type="button">✔ Valider</button>
   </div>
 </aside>
 <div id="mw">
-  <div id="map"></div><button id="rsM" class="s">Réinitialiser les filtres</button><button id="hL" class="edge" title="Menu de gauche (masquer / afficher)">☰</button><button id="hR" class="edge" title="Filtres de droite (masquer / afficher)">⚙</button>
+  <div id="map"></div><button id="cartoFilterBtn" class="btnFilterResp" type="button" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:500">☰ Menu/Filtres</button><button id="rsM" class="s">Réinitialiser les filtres</button>
+  <button id="btnMapMenu" class="roundMapBtn" type="button" title="Menu/Filtres" aria-label="Menu/Filtres" onclick="v6_toggleMapMenu()"><span class="bars"><span></span><span></span><span></span></span><span class="lbl">Menu/Filtres</span></button>
+  <button id="btnMapGeo" class="roundMapBtn" type="button" title="Se géolocaliser" aria-label="Se géolocaliser" onclick="v6_geolocate()">&#9673;</button>
+  <div id="mapScaleBox" class="mapScaleBox">1/<span id="mapScaleVal">&hellip;</span></div>
+  <div id="mapUpdates"><b>Mises &agrave; jour :</b><br>Arbres : <span id="updArbres">&mdash;</span><br>Interventions : <span id="updInterv">&mdash;</span></div>
+  <div id="filterBanner"></div>
   <div id="pv"><span id="pvt"></span><button id="pvp">Imprimer</button><button id="pvc" class="s">Annuler</button></div>
   <div id="stats">
+    <button id="statFilterBtn" class="btnFilterResp" type="button">☰ Menu/Filtres</button>
     <div id="viewInd">
       <h2 style="margin:0 0 6px">Indicateurs</h2>
       <div id="kpi"></div>
@@ -862,29 +1190,37 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
   </div>
 <div id="fst"><div class="wrap">
   <h2>Liste du patrimoine</h2>
+  <button id="patFilterBtn" class="btnFilterResp" type="button">☰ Menu/Filtres</button>
   <div class="row" style="max-width:420px;margin:0 0 8px"><button id="fMap" class="s">Voir sur la carte</button><button id="fPrn" class="s">Imprimer la station ouverte</button></div>
   <div id="fBody"></div>
 </div></div>
+<div id="num">
+  <button id="numFilterBtn" class="btnFilterResp" type="button">☰ Menu/Filtres</button>
+  <div id="numFilterBanner"></div>
+<div class="numBar" id="numBar">
+    <label>Affichage souhaité :</label>
+    <select id="numBy"><option value="qu">Par quartier</option><option value="un">Par unité</option></select>
+    <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" id="numHideSt"> Masquer les stations</label>
+    <button id="numPrn" type="button">Imprimer</button>
+    <button id="numSgo" type="button">Afficher cette sélection sur la carte</button>
+  </div>
+  <div id="numSres"></div>
+  <div id="numWrap"><div class="numEmpty">Chargement…</div></div>
 </div>
-<div id="rp"><button class="x" id="xR">✕ Fermer</button><h3 style="margin-top:0">Zone filtrée</h3>
- <div><label>Territoire</label><select id="tp"></select></div>
- <div style="margin-top:6px"><label>Quartier</label><select id="qu"></select></div>
- <div style="margin-top:8px"><label>Rechercher une station (selon le territoire)</label><input type="search" id="qs" placeholder="Nom ou partie du nom…" autocomplete="off"><div id="qsi" class="mut" style="margin-top:3px"></div></div>
- <div id="rz" class="crit"></div>
- <div class="big"><div><b id="rni">0</b><span>interventions</span></div><div><b id="rna">0</b><span>arbres concernés</span></div></div>
- <div class="big sh"><div><b id="bilan">0</b><span>arbres affichés sur la carte</span></div></div>
- <h3>Statut d'intervention</h3><div id="rst"></div>
- <h3>Affectation</h3><div id="raf"></div>
- <h3>Dates</h3>
- <div><label>Objectif de fin : du … au …</label><div class="row"><input type="date" id="d1"><input type="date" id="d2"></div></div>
- <div style="margin-top:6px"><label>Fin réelle : du … au …</label><div class="row"><input type="date" id="r1"><input type="date" id="r2"></div></div>
 </div>
+
 </div>
+<div id="ll" style="display:none"></div>
 <div id="bk"></div>
 <div id="acBox"></div>
-<div id="fm"><div class="bx"><div class="bar"><b>Fiche d'intervention</b><span style="flex:1"></span><button id="fmP">Imprimer</button><button id="fmC" class="s">Fermer</button></div><iframe id="fmF"></iframe></div></div>
+<div id="fm">
+<div style="display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--line);background:#f3f8f3"><button id="btnResetFiltersInMap" type="button" onclick="v6_resetFilters()" style="background:#fff;color:#1b5e20;border:1px solid var(--menu-green);border-radius:6px;padding:6px 12px;font-weight:600;width:auto">R&eacute;initialiser les filtres</button></div><div class="bx"><div class="bar"><b>Fiche d'intervention</b><span style="flex:1"></span><button id="fmP">Imprimer</button><button id="fmC" class="s">Fermer</button></div><iframe id="fmF"></iframe></div></div>
 <div id="imp"></div>
 <script>
+/* === Null-safe helpers (added to fix TypeError on null) === */
+function $$(id){const el=document.getElementById(id);if(!el&&typeof console!=='undefined')console.warn('[$$] not found:',id);return el}
+function on(id,ev,fn){const el=typeof id==='string'?document.getElementById(id):id;if(!el){if(typeof console!=='undefined')console.warn('[on] not found:',id);return false}if(typeof ev==='function'){el.onclick=ev;return true}if(el.addEventListener){el.addEventListener(ev,fn)}else{const k='on'+ev;if(fn&&typeof el[k]==='function')el[k]=fn}return true}
+
 
 /* ===== Fichiers de données (CSV) : adaptez les chemins si besoin ===== */
 const FICHIERS={arbres:['data/arbres.csv','arbres.csv','data/EV_ARBRE_P_2.csv','EV_ARBRE_P_2.csv','data/EV_ARBRE_P.csv','EV_ARBRE_P.csv'],
@@ -1017,7 +1353,7 @@ const ECL=["Échéance dans moins d'1 mois","Expirée depuis moins d'1 mois","Ex
 const ECC=['#ffd60a','#ff9500','#ff3b00','#c1121f','#6d0019'];
 const ecl=it=>{if(!isAct(it)||!it[5])return -1;const d=(T0-Date.parse(it[5]))/864e5;return d<-30?-1:d<=0?0:d<=30?1:d<=90?2:d<=180?3:4;};
 const lateOf=it=>isAct(it)&&!!it[5]&&it[5]<TODAY;
-const TQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);});
+const TQ={},UQ={};T.forEach(t=>{(TQ[t[4]]??=new Set()).add(t[5]);if(t[6]>=0){(UQ[t[6]]??=new Set()).add(t[5]);}});
 
 /* ---- carte ---- */
 const map=L.map('map',{zoomAnimation:false,zoomSnap:0,zoomDelta:.5,maxZoom:24}).setView([44.8378,-0.5792],13);
@@ -1028,9 +1364,9 @@ const sat=L.tileLayer(esri('World_Imagery'),{maxZoom:24,maxNativeZoom:19,attribu
 const planIgn=L.tileLayer(ignU('GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2','image/png'),{maxZoom:24,maxNativeZoom:19,attribution:'Plan &copy; IGN / Géoplateforme'});
 const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
 const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
-L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);const gg=l=>L.tileLayer(`https://mt{s}.google.com/vt/lyrs=${l}&hl=fr&x={x}&y={y}&z={z}`,{subdomains:'0123',maxZoom:24,maxNativeZoom:20,attribution:'Map data &copy;2026 Google &middot; <a href="https://www.google.com/intl/fr/help/terms_maps/" target="_blank">Terms</a>'});
-const gSat=gg('s'),gHyb=gg('y'),gPlan=gg('m');
 L.control.layers({'Orthophoto IGN':ign,'Satellite Esri':sat,'Plan IGN':planIgn,'Google Satellite':gSat,'Google Hybride':gHyb,'Google Plan':gPlan}).addTo(map);
+
+
 
 const BG={
  ign:{l:ign,u:(z,x,y)=>`https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX=${z}&TILEROW=${y}&TILECOL=${x}`,c:'Orthophotographie © IGN / Géoplateforme'},
@@ -1042,22 +1378,31 @@ const BG={
 };
 const bgCur=()=>BG[Object.keys(BG).find(k=>map.hasLayer(BG[k].l))]||BG.ign;
 
-
-
 L.control.scale({imperial:false}).addTo(map);
 const cv=L.DomUtil.create('canvas','',map.getPanes().overlayPane);cv.style.pointerEvents='none';
 let V=[],BKc={},BKt={},BKe={},PX=new Float64Array(0),PZ=null,sel=new Set(),selSt=new Set(),selK=-1,route=null;
+
+function distanceMin(arbre, tous) {
+  let best = Infinity;
+  for (const autre of tous) {
+    if (autre[0] === arbre[0]) continue;
+    const d = Math.hypot(autre.x - arbre.x, autre.y - arbre.y);
+    if (d < best) best = d;
+  }
+  return best;
+}
+
 function proj(){const z=map.getZoom();PZ=z;PX=new Float64Array(V.length*2);V.forEach((v,k)=>{const p=map.project([v.t[2],v.t[1]],z);PX[2*k]=p.x;PX[2*k+1]=p.y;});}
 /* canvas plus large que l'écran, redessiné en fin de déplacement */
 function draw(){
  if(PZ!==map.getZoom())proj();
  const s=map.getSize(),m=.25,W=Math.round(s.x*(1+2*m)),H=Math.round(s.y*(1+2*m));
  cv.width=W;cv.height=H;L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([-m*s.x,-m*s.y]));
- 
- 
-   /* ---- seuil des étiquettes ---- */ 
- 
- const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1.05,lb=z>=18,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
+
+ /* ---- seuil des etiquettes ---- */
+
+
+ const g=cv.getContext('2d'),o=map.getPixelBounds().min,ox=o.x-m*s.x,oy=o.y-m*s.y,z=map.getZoom(),r=z>=18?6:z>=16?4.5:z>=14?3.2:2,S=z>=18?7:z>=16?5.8:z>=14?4.8:4.2,q=S*1,lb=z>=17,grp=z<16.4; /* 16,4 ≈ 1/5000 : au-delà chaque arbre a la couleur de sa classification */
  const ins=(x,y)=>x>-34&&y>-44&&x<W+34&&y<H+34,XY=k=>[PX[2*k]-ox,PX[2*k+1]-oy];
  const halo=(a,b)=>{g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=a;g.stroke();g.strokeStyle='#fff';g.lineWidth=b;g.stroke();};
  const pin=(x,y)=>{const R=S*.95,cy=y-S*1.6;g.moveTo(x,y);g.bezierCurveTo(x-R*.15,y-S*.7,x-R,cy+R*.75,x-R,cy);g.arc(x,cy,R,Math.PI,0);g.bezierCurveTo(x+R,cy+R*.75,x+R*.15,y-S*.7,x,y);g.closePath();};
@@ -1074,43 +1419,59 @@ function draw(){
  else{for(const c in BKt)for(const k of BKt[c]){const[x,y]=XY(k);if(ins(x,y))pins.push({x,y,c});}
   for(const c in BKe)for(const k of BKe[c]){const[x,y]=XY(k);if(ins(x,y))cones.push({x,y,c:ECC[c]});}}
  const by=l=>{const o={};l.forEach(p=>(o[p.c]??=[]).push(p));return o;};
- const bp=by(pins);for(const c in bp){g.fillStyle=c;g.beginPath();bp[c].forEach(p=>pin(p.x,p.y));halo(3.4,1.8);g.fill();}
+ const bp=by(pins);for(const c in bp){g.fillStyle=c;g.beginPath();bp[c].forEach(p=>pin(p.x,p.y));halo(5,3);g.fill();}
  g.fillStyle='#fff';g.beginPath();pins.forEach(p=>{g.moveTo(p.x+S*.3,p.y-S*1.6);g.arc(p.x,p.y-S*1.6,S*.3,0,6.2832);});g.fill();
  const bc=by(cones);for(const c in bc){g.fillStyle=c;g.beginPath();bc[c].forEach(p=>cone(p.x,p.y));halo(3.4,1.8);g.fill();}
  g.fillStyle='#fff';g.beginPath();cones.forEach(p=>{g.moveTo(p.x-q*.5,p.y-q*1.38);g.lineTo(p.x+q*.5,p.y-q*1.38);g.lineTo(p.x+q*.64,p.y-q*.95);g.lineTo(p.x-q*.64,p.y-q*.95);g.closePath();});g.fill();
- if(sel.size||lb){const lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=2;g.beginPath();
+ if(sel.size||lb){let lbl=[];g.save();g.strokeStyle='#ffd400';g.lineWidth=3;g.beginPath();
   for(let k=0;k<V.length;k++){const[x,y]=XY(k);if(!ins(x,y))continue;const sym=!grp&&(V[k].ti||V[k].cn>=0);
    if(sel.has(V[k].t[0])){const cy=sym?y-S*1.2:y,rr=sym?S*1.1+1.5:r+2.5;g.moveTo(x+rr,cy);g.arc(x,cy,rr,0,6.2832);}
-   
-   
-  /* ---- etiquettes et nb arbres ---- */ 
-   
-   
-   if(lb&&lbl.length<100)lbl.push([lab(V[k].t),x,y+S*2,(V[k].ti||V[k].cn>=0)]);}
+  
+   /* ---- etiquettes et nb arbres ---- */
+   if(lb)lbl.push([lab(V[k].t),x-S*0.3,y+S*1,!!(V[k].ti||V[k].cn>=0)]);}
   g.stroke();g.restore();
+  // Priorité : arbres d'intervention d'abord
+  lbl.sort((a,b)=>(b[3]?1:0)-(a[3]?1:0));
+  // Densité : au-delà de ce seuil, seulement les arbres d'intervention
+  const DENSE = lbl.length > 2000; // seuil à ajuster
+  if (DENSE) lbl = lbl.filter(l => l[3]);
+  // Plafond de performance
+  if (lbl.length > 500) lbl.length = 500;
+  
+  
+  
+  
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
-  g.font=z>=17?'bold 8.5px "Segoe UI",sans-serif':'bold 7px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
+  g.font=z>=18?'bold 10px "Segoe UI",sans-serif':'bold 6.4px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
   const occ=new Map(),CS=40;
-  lbl.forEach(([l,x,y,isLarge])=>{const w=g.measureText(l).width,hh=10,tries=[[0,0],[0,12],[0,-12],[w+8,0],[-w-8,0],[0,24],[0,-24],[w+8,12],[-w-8,12]];let bx=x-w/2,by0=y-hh/2,chosen=null;
-   for(const [dx,dy] of tries){const X=bx+dx,Y=by0+dy;let hit=false;const c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(X<q2[0]+q2[2]&&X+w>q2[0]&&Y<q2[1]+q2[3]&&Y+hh>q2[1]){hit=true;break;}if(!hit){chosen=[X,Y];break;}}
-   if(!chosen)chosen=[bx,by0+24];const [X,Y]=chosen,c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([X,Y,w,hh]);}g.lineWidth=2.6;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,X+w/2,Y+hh/2);g.fillStyle='#111';g.fillText(l,X+w/2,Y+hh/2);});}
+  lbl.forEach(([l,x,y,isLarge])=>{const w=g.measureText(l).width,hh=10,tries=[[0,0],[0,10],[0,-10],[8,0],[-8,0],[8,10],[-8,10],[8,-10],[-8,-10]];let bx=x-w/2,by0=y-hh/2,chosen=null;
+   for(const [dx,dy] of tries) {if(Math.hypot(dx,dy)>1000)continue;const X=bx+dx,Y=by0+dy;let hit=false;const c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(X<q2[0]+q2[2]&&X+w>q2[0]&&Y<q2[1]+q2[3]&&Y+hh>q2[1]){hit=true;break;}if(!hit){chosen=[X,Y];break;}}
+   if(!chosen)chosen=[bx,by0+24];const [X,Y]=chosen,c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([X,Y,w,hh]);}g.lineWidth=isLarge?3:2.5;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,X+w/2,Y+hh/2);g.fillStyle=isLarge?'#d60000':'#111';g.fillText(l,X+w/2,Y+hh/2);});}
 }
 map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
 
+
+
 /* ---- filtres ---- */
-const mkS=()=>({tp:'',qu:'',d1:'',d2:'',r1:'',r2:'',off:{st:new Set(),af:new Set(),cl:new Set()}});
+const mkS=()=>({tp:'',qu:'',un:'',yr:'',d1:'',d2:'',r1:'',r2:'',_sm:'',off:{st:new Set(),af:new Set(),cl:new Set()}});
 const M=mkS(),G=mkS(),offT={st:new Set(DA.s),eg:new Set()},offE=new Set(),NAMES={st:DI.S,af:DI.AF,cl:DI.C},DEFTP=String(DA.tp.indexOf('PT_BORDEAUX'));
 const BDX=[44.8378,-0.5792],BDXZ=13; /* centre de Bordeaux, échelle ~1 km sur la barre d'échelle */
 const opts=(l,a)=>`<option value="">${l}</option>`+a.map((v,i)=>`<option value="${i}">${esc(v)}</option>`).join('');
 const optsS=(l,a)=>`<option value="">${l}</option>`+a.map((_,i)=>i).sort((x,y)=>a[x].localeCompare(a[y],'fr')).map(i=>`<option value="${i}">${esc(a[i])}</option>`).join('');
 $('tp').innerHTML=optsS('Tous les territoires',DA.tp);
-function fillQ(tpEl,quEl){const tp=$(tpEl).value,ids=tp===''?DA.qu.map((_,i)=>i):[...TQ[+tp]];ids.sort((a,b)=>DA.qu[a].localeCompare(DA.qu[b]));
- $(quEl).innerHTML='<option value="">Tous les quartiers</option>'+ids.map(i=>`<option value="${i}">${esc(DA.qu[i])}</option>`).join('');}
-const geoOK=(t,S)=>(S.tp===''||t[4]==S.tp)&&(S.qu===''||t[5]==S.qu);
-const dOK=(it,S)=>(!S.d1||it[5]>=S.d1)&&(!S.d2||(it[5]&&it[5]<=S.d2))&&(!S.r1||it[6]>=S.r1)&&(!S.r2||(it[6]&&it[6]<=S.r2));
+function fillQ(unEl,quEl){const un=$(unEl).value;const ids=un===''?DA.qu.map((_,i)=>i):[...UQ[+un]||[]];ids.sort((a,b)=>DA.qu[a].localeCompare(DA.qu[b]));$(quEl).innerHTML='<option value="">Tous les quartiers</option>'+ids.map(i=>`<option value="${i}">${esc(DA.qu[i])}</option>`).join('');}
+const geoOK=(t,S)=>(S.tp===''||t[4]==S.tp)&&(S.qu===''||t[5]==S.qu)&&(!S.un||String(t[6])===S.un);
+const dOK=(it,S)=>{
+ const m=S._sm||'T';
+ const useObj=m!=='C', useReal=m!=='I';
+ const d1=useObj?S.d1:'',d2=useObj?S.d2:'',r1=useReal?S.r1:'',r2=useReal?S.r2:'';
+ let ok=(!d1||it[5]>=d1)&&(!d2||(it[5]&&it[5]<=d2))&&(!r1||it[6]>=r1)&&(!r2||(it[6]&&it[6]<=r2));
+ if(m!=='T'&&S.yr){const dt=m==='C'?it[6]:it[5];if(!(dt&&dt.startsWith(S.yr)))ok=false;}
+ return ok;
+}
 const passI=(it,S,skip)=>(skip==='st'||!S.off.st.has(it[2]))&&(skip==='af'||!S.off.af.has(it[9]))&&(skip==='cl'||!S.off.cl.has(it[1]))&&dOK(it,S);
 const gcache={};
-function geoG(S){const k=S.tp+'|'+S.qu;return gcache[k]??=I.map(it=>it[7].filter(g=>{const i=tree.get(g);return i!==undefined&&geoOK(T[i],S);}));}
+function geoG(S){const k=S.tp+'|'+S.qu+'|'+S.un;return gcache[k]??=I.map(it=>it[7].filter(g=>{const i=tree.get(g);return i!==undefined&&geoOK(T[i],S);}));}
 function agg(S){
  const GG=geoG(S),r={ni:0,all:new Set(),k:{st:{},af:{},cl:{}},res:{st:{},af:{},cl:{}}};
  const add=(o,key,gs)=>{const e=o[key]??={n:0,g:new Set()};e.n++;gs.forEach(g=>e.g.add(g));};
@@ -1119,7 +1480,7 @@ function agg(S){
   if(pa&&pc)add(r.k.st,it[2],gs);if(ps&&pc)add(r.k.af,it[9],gs);if(ps&&pa)add(r.k.cl,it[1],gs);
   if(ps&&pa&&pc){r.ni++;gs.forEach(g=>r.all.add(g));add(r.res.st,it[2],gs);add(r.res.af,it[9],gs);add(r.res.cl,it[1],gs);}
  });return r;}
-function readM(){M.tp=$('tp').value;M.qu=$('qu').value;['d1','d2','r1','r2'].forEach(k=>M[k]=$(k).value);}
+function readM(){M.tp=$('tp').value;M.un=$('un').value;M.qu=$('qu').value;['d1','d2','r1','r2'].forEach(k=>M[k]=$(k).value);}
 function fitV(){const a=V.filter(v=>v.ti||v.cn>=0),b=a.length?a:V;if(b.length)map.fitBounds(L.latLngBounds(b.map(v=>[v.t[2],v.t[1]])).pad(.05));}
 /* PT_BORDEAUX : vue figée centrée sur Bordeaux ; autres territoires : cadrage sur l'emprise */
 function homeView(){if(M.tp!==''&&DA.tp[M.tp]==='PT_BORDEAUX')map.setView(BDX,BDXZ);else fitV();}
@@ -1169,7 +1530,7 @@ function legendCl(cl){
   html+=g.items.filter(i=>cl[i]||M.off.cl.has(i)).map(i=>`<label class="chk clchild"><input type="checkbox" data-t="cl" data-v="${i}" ${M.off.cl.has(i)?'':'checked'}>${tri(CC(i))}${esc(clLabel(i))} ${cntTxt(cl[i])}</label>`).join('');html+='</div></details>';}
  $('clp').innerHTML=html;if($('ll'))$('ll').scrollTop=sc;$('clToggle').textContent=clAllOpen?'Tout replier':'Tout déplier';}
 /* Rendu partagé des classifications pour les différents filtres. */
-const clStates={G:{open:new Set(),all:false},P:{open:new Set(),all:false}};
+const clStates={G:{open:new Set(),all:false},P:{open:new Set(),all:false},N:{open:new Set(),all:false}};
 function renderClassificationFilter(host,S,cl,after,stateId,prefix){
  const st=clStates[stateId], groups=new Map();
  ord.forEach(i=>{const m=clMeta(i),key=m?.famCode||('__'+i),g=groups.get(key)||{label:m?.famLabel||'Autres classifications',color:m?.color||CC(i),items:[],code:m?.famCode||key};g.items.push(i);groups.set(key,g);});
@@ -1204,8 +1565,7 @@ function panel(){
  const a=agg(M);
  $('rz').innerHTML=critHTML(M);$('rni').textContent=nf(a.ni);$('rna').textContent=nf(a.all.size);$('bilan').textContent=nf(V.length);
  $('rst').innerHTML=ckTable('st',M,a.k.st);$('raf').innerHTML=ckTable('af',M,a.k.af);}
-$('tp').onchange=()=>{fillQ('tp','qu');readM();dlMap();refresh(true);};
-$('qu').onchange=()=>{readM();refresh(true);};
+$('tp').onchange=()=>{fillU('tp','un');fillQ('un','qu');$('qu').value='';readM();dlMap();refresh(true);};$('un').onchange=()=>{fillQ('un','qu');$('qu').value='';readM();refresh(true);};$('qu').onchange=()=>{readM();refresh(true);};
 ['d1','d2','r1','r2'].forEach(i=>$(i).onchange=()=>{readM();refresh(true);});
 $('th').onchange=$('lyA').onchange=$('lyI').onchange=()=>refresh(false);
 bindCk($('rst'),M,()=>refresh(true));bindCk($('raf'),M,()=>refresh(true));bindCk($('clp'),M,()=>refresh(true));
@@ -1218,7 +1578,7 @@ $('lgE').onchange=e=>{const i=e.target.dataset.e;if(i===undefined)return;e.targe
 $('leg').onchange=e=>{const k=e.target.dataset.k;if(k===undefined)return;const s=offT[$('th').value==='eg'?'eg':'st'];e.target.checked?s.delete(k):s.add(k);refresh(false);};
 $('leg').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const eg=$('th').value==='eg';offT[eg?'eg':'st']=a==='all'?new Set():new Set(eg?[...DA.eg,'—']:DA.s);refresh(false);};
 function resetM(){
- $('tp').value=DEFTP;fillQ('tp','qu');['qu','d1','d2','r1','r2'].forEach(i=>$(i).value='');readM();
+ $('tp').value=DEFTP;fillU('tp','un');fillQ('un','qu');['un','qu','d1','d2','r1','r2'].forEach(i=>$(i).value='');readM();
  M.off={st:new Set(['CLOTUREE','TERMINEE','ABANDONNEE'].map(n=>DI.S.indexOf(n)).filter(i=>i>=0)),af:new Set(),cl:new Set()};offT.st=new Set(DA.s);offT.eg=new Set();offE.clear();
  $('th').value='st';$('lyA').checked=$('lyI').checked=true;sel=new Set();selSt=new Set();selK=-1;if(route){map.removeLayer(route);route=null;}
  $('qs').value='';$('qsi').textContent='';$('fiche').style.display='none';$('q').value='';dlMap();refresh(true);}
@@ -1340,53 +1700,71 @@ function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  
  const B=bgCur();
- for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
-  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
+  for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
+  im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
  const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
  const labelItems=[];
+ const otherItems=[];
  const rectsOverlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
  const pinD=(x,y)=>{const cy=y-S*1.6;return `M${x} ${y}C${x-Rr*.15} ${y-S*.7} ${x-Rr} ${cy+Rr*.75} ${x-Rr} ${cy}A${Rr} ${Rr} 0 0 1 ${x+Rr} ${cy}C${x+Rr} ${cy+Rr*.75} ${x+Rr*.15} ${y-S*.7} ${x} ${y}Z`;};
  const q=S*1.05,coneD=(x,y)=>`M${x-q*.36} ${y-q*1.7}L${x+q*.36} ${y-q*1.7}L${x+q*.78} ${y-q*.28}L${x-q*.78} ${y-q*.28}Z M${x-q*.92} ${y-q*.28}h${q*1.84}v${q*.26}h${-q*1.84}Z`;
  for(const t of T){
   if(t[1]<lonA||t[1]>lonB||t[2]>latA||t[2]<latB)continue;
   const x=wxp(t[1],zf)-x0,y=wyp(t[2],zf)-y0,s=DA.s[t[3]];
-  if(mine.has(t[0])){
-   sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;
+    if(mine.has(t[0])){
+   sy+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#ffd400" stroke-width="2"/>`;  
    const d=ec>=0?coneD(x,y):pinD(x,y),c=ec>=0?ECC[ec]:col;
    sy+=`<path d="${d}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${c}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
    sy+=ec>=0?`<path d="M${x-q*.5} ${y-q*1.38}h${q}l${q*.14} ${q*.43}h${-q*1.28}Z" fill="#fff"/>`:`<circle cx="${x}" cy="${y-S*1.6}" r="${S*.3}" fill="#fff"/>`;
    if(!overview){
     const text=String(lab(t)), w=9*Math.max(1,text.length*.58)+6, h=12;
-    labelItems.push({x,y:y+14,w,h,text,priority:labelItems.length});
+    labelItems.push({x,y:y+14,w,h,text,priority:labelItems.length,color:'#d60000'});
    }
-  }else if(!overview&&stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;const other=lab(t);if(other&&!overview)lbl+=`<text x="${x}" y="${y+11}" text-anchor="middle" font-size="6.5" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(other)}</text>`;}
+   
+   }else if(!overview&&stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)&&(s==='VIVANT'||s==='MORT'||s==='SOUCHE')&&cnt++<3000){
+   nb+=`<circle cx="${x}" cy="${y}" r="3" fill="${SC[s]}" stroke="rgba(0,0,0,.55)" stroke-width=".7"/>`;
+   const other=lab(t);
+   if(other)otherItems.push({x,y,w:9*Math.max(1,String(other).length*.58)+6,h:12,text:String(other)});
+  }
  }
- /* Anticollision des numéros : à <= 5 m/px on décale, sinon on masque
-    les suivants en conservant le premier (prioritaire) visible. */
+ 
+ /* Anticollision unique : interventions d'abord, puis hors interventions */
  if(!overview){
   const midLat=la.length?(Math.max(...la)+Math.min(...la))/2:0;
   const metersPerPixel=156543.03392*Math.cos(midLat*Math.PI/180)/2**zf;
   const offsetMode=metersPerPixel<=5;
   const placed=[];
+  const candidates=[[0,0],[0,10],[0,-10],[8,0],[-8,0],[8,10],[-8,10],[8,-10],[-8,-10]];
+
   for(const item of labelItems){
    let x=item.x-item.w/2,y=item.y-item.h;
    if(offsetMode){
-    const candidates=[[0,0],[-18,0],[18,0],[0,-16],[0,16],[-18,-16],[18,-16],[-18,16],[18,16]];
     let chosen=null;
     for(const [dx,dy] of candidates){const r={x:x+dx,y:y+dy,w:item.w,h:item.h};if(!placed.some(p=>rectsOverlap(r,p))){chosen=r;break;}}
-    if(!chosen)chosen={x:x+24,y,w:item.w,h:item.h};
+    if(!chosen)continue;
     placed.push(chosen);x=chosen.x;y=chosen.y;
    }else{
     const r={x,y,w:item.w,h:item.h};
     if(placed.some(p=>rectsOverlap(r,p)))continue;
     placed.push(r);
    }
-   lbl+=`<text x="${x+item.w/2}" y="${y+item.h-2}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="#111">${esc(item.text)}</text>`;
+   lbl+=`<text x="${x+item.w/2}" y="${y+item.h-2}" text-anchor="middle" font-size="9" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" fill="${item.color||'#111'}">${esc(item.text)}</text>`;
   }
- }
- const r0=lab(a[0]),r1=lab(a[a.length-1]);
+
+  /* hors interventions : seulement si la place est libre */
+  for(const o of otherItems){
+   const r={x:o.x-o.w/2,y:o.y-o.h,w:o.w,h:o.h};
+   if(placed.some(p=>rectsOverlap(r,p)))continue;
+   placed.push(r);
+   lbl+=`<text x="${o.x}" y="${o.y+11}" text-anchor="middle" font-size="6.5" font-weight="600" paint-order="stroke" stroke="#fff" stroke-width="2" fill="#26352b">${esc(o.text)}</text>`;
+  }
+ } 
+ 
+ 
+  const r0=lab(a[0]),r1=lab(a[a.length-1]);
+ 
  return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
 }
 const etatCode=t=>{const v=t&&t[9]>=0?String(DA.eg[t[9]]||'').trim().toUpperCase():'';return /^[A-E]$/.test(v)?v:''};
@@ -1488,19 +1866,70 @@ const mq=window.matchMedia?matchMedia('(max-width:1000px)'):{matches:false,addEv
 function syncBk(){$('bk').style.display=mq.matches&&($('app').classList.contains('ol')||$('app').classList.contains('or'))?'block':'none';}
 function closeDr(){if(mq.matches)$('app').classList.remove('ol','or');syncBk();}
 function side(s){const a=$('app'),c=mq.matches?(s==='L'?'ol':'or'):(s==='L'?'hl':'hr');if(mq.matches)a.classList.remove(s==='L'?'or':'ol');a.classList.toggle(c);syncBk();setTimeout(()=>map.invalidateSize(),280);}
-$('hL').onclick=()=>side('L');$('hR').onclick=()=>side('R');$('xL').onclick=closeDr;$('xR').onclick=closeDr;$('bk').onclick=closeDr;
+
+function mTab(b){
+  $('mpA').style.display=b?'none':'flex';
+  $('mpB').style.display=b?'flex':'none';
+  $('mtA').className=b?'':'on';
+  $('mtB').className=b?'on':'';
+}
+$('mtA').onclick=()=>mTab(0);
+$('mtB').onclick=()=>mTab(1);
+
+const hLel=$('hL'); if(hLel) hLel.onclick=()=>side('L');
+const hRel=$('hR'); if(hRel) hRel.onclick=()=>{
+  /* ouvre le menu de gauche (si ferme) sur l'onglet Filtres */
+  const a=$('app'),c=mq.matches?'ol':'hl';
+  showTab(0);
+  mTab(1);
+  if(mq.matches){a.classList.add('ol');}else{a.classList.remove('hl');}
+  syncBk();
+  setTimeout(()=>map.invalidateSize(),280);
+};
+$('xL').onclick=closeDr;$('bk').onclick=closeDr;$('closeStats').onclick=closeDr;
+
+
+
+
+
 mq.addEventListener('change',()=>{$('app').classList.remove('ol','or','hl','hr');syncBk();setTimeout(()=>map.invalidateSize(),50);});
 function showTab(s){
- $('stats').style.display=s===1?'block':'none';$('fst').style.display=s===2?'block':'none';
- $('fmap').style.display=s===0?'flex':'none';$('fstat').style.display=s===1?'flex':'none';$('fpat').style.display=s===2?'flex':'none';
- $('app').classList.toggle('st',!!s);$('tbC').className=s===0?'':'s';$('tbS').className=s===1?'':'s';$('tbF').className=s===2?'':'s';$('rsM').style.display=s?'none':'';
- closeDr();if(s===1)statRender();else if(s===2)patRender();else map.invalidateSize();}
-$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);$('tbF').onclick=()=>showTab(2);
+ $('stats').style.display=s===1?'block':'none';$('fst').style.display=s===2?'block':'none';$('num').style.display=s===3?'block':'none';
+ $('fmap').style.display=s===0?'flex':'none';$('fstat').style.display=s===1?'flex':'none';$('fpat').style.display=s===2?'flex':'none';$('fnum').style.display=s===3?'flex':'none';
+ $('app').classList.toggle('st',!!s);$('tbC').className=s===0?'':'s';$('tbS').className=s===1?'':'s';$('tbF').className=s===2?'':'s';$('tbE').className=s===3?'':'s';$('rsM').style.display=s?'none':'';
+ closeDr();if(s===1)statRender();else if(s===2)patRender();else if(s===3)numRender();else map.invalidateSize();}
+$('tbC').onclick=()=>showTab(0);$('tbS').onclick=()=>showTab(1);$('tbF').onclick=()=>showTab(2);$('tbE').onclick=()=>showTab(3);$('xL').onclick=()=>side('L');$('closeStats').onclick=()=>side('L');$('closeNum').onclick=()=>side('L');
 
 /* ---- statistiques détaillées ---- */
 const sIdx=n=>DI.S.indexOf(n);
-function readG(){G.tp=$('stp').value;G.qu=$('squ').value;G.d1=$('sd1').value;G.d2=$('sd2').value;G.r1=$('sr1').value;G.r2=$('sr2').value;}
-function presetSt(){const m=$('sm').value,keep=m==='C'?sIdx('CLOTUREE'):m==='I'?sIdx('INITIALISEE'):-1;G.off.st=new Set(keep<0?[]:DI.S.map((_,i)=>i).filter(i=>i!==keep));}
+function readG(){G.tp=$('stp').value;G.qu=$('squ').value;G.un=$('sun').value;G.yr=$('syr').value;G.d1=$('sd1').value;G.d2=$('sd2').value;G.r1=$('sr1').value;G.r2=$('sr2').value;G._sm=$('sm').value;}
+function fillU(tpEl,unEl){
+ const tp=$(tpEl).value;
+ const set=new Set();
+ for(const it of I){for(const g of it[7]){const i=tree.get(g);if(i===undefined)continue;const t=T[i];if(tp!==''&&t[4]!=tp)continue;set.add(String(t[6]));}}
+ const ids=[...set].filter(u=>u!=='-1'&&u!=='').sort((a,b)=>{const na=+a<0?'\uFFFF':(DA.un[+a]||'\uFFFF'),nb=+b<0?'\uFFFF':(DA.un[+b]||'\uFFFF');return na.localeCompare(nb,'fr');});
+ $(unEl).innerHTML='<option value="">Toutes les unités</option>'+ids.map(u=>{const k=+u;return `<option value="${u}">${k<0?'(sans unité)':esc(DA.un[k]||'?')}</option>`;}).join('');
+}
+function fillQuFromTp(tpEl,quEl){
+ const tp=$(tpEl).value;
+ const ids=tp===''?DA.qu.map((_,i)=>i):[...(TQ[tp]||[])];
+ ids.sort((a,b)=>DA.qu[a].localeCompare(DA.qu[b],'fr'));
+ $(quEl).innerHTML='<option value="">Tous les quartiers</option>'+ids.map(i=>`<option value="${i}">${esc(DA.qu[i])}</option>`).join('');
+}
+function fillY(mode){
+ const field=mode==='C'?6:5;
+ const yrs=new Set();
+ I.forEach(it=>{const d=it[field];if(d&&/^\d{4}/.test(d))yrs.add(d.slice(0,4));});
+ const ids=[...yrs].sort();
+ $('syr').innerHTML='<option value="">Toutes</option>'+ids.map(y=>`<option value="${y}">${y}</option>`).join('');
+}
+function presetSt(){
+ const m=$('sm').value;
+ let keepIds=new Set();
+ if(m==='C')['ABANDONNEE','CLOTUREE','TERMINEE'].forEach(n=>{const i=sIdx(n);if(i>=0)keepIds.add(i);});
+ else if(m==='I')['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION'].forEach(n=>{const i=sIdx(n);if(i>=0)keepIds.add(i);});
+ G.off.st=new Set(DI.S.map((_,i)=>i).filter(i=>!keepIds.has(i)));
+}
 function donut(ent,colr,label){
  const R=70,C=2*Math.PI*R,tot=ent.reduce((s,e)=>s+e.n,0);let o=0;
  return '<svg width="170" height="170" viewBox="0 0 200 200">'+ent.map((e,i)=>{const l=e.n/tot*C,s=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${colr(i)}" stroke-width="36" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 100 100)"><title>${esc(e.name)} : ${nf(e.n)} (${Math.round(e.n/tot*100)} %)</title></circle>`;o+=l;return s;}).join('')+
@@ -1520,17 +1949,40 @@ function stat(){
  $('sks').innerHTML=ckTable('st',G,a.k.st);$('ska').innerHTML=ckTable('af',G,a.k.af);renderClassificationFilter('skc',G,a.k.cl,stat,'G','s');
  $('sout').innerHTML=resBlock('Par statut',a.res.st,DI.S,'donut')+resBlock('Par affectation',a.res.af,DI.AF,'donut')+resBlock('Par classification',a.res.cl,DI.C,'bars');}
 $('stp').innerHTML=optsS('Tous les territoires',DA.tp);
-$('stp').onchange=()=>{fillQ('stp','squ');stat();};
+fillU('stp','sun');fillQuFromTp('stp','squ');
+$('stp').onchange=()=>{fillU('stp','sun');$('sun').value='';fillQuFromTp('stp','squ');$('squ').value='';stat();};
+$('sun').onchange=()=>{stat();};
+$('squ').onchange=()=>{stat();};
 ['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).onchange=stat);
-$('sm').onchange=()=>{presetSt();stat();};
+function updateDateUI(){
+ const m=$('sm').value;
+ const w=document.querySelector('.dateGroups');
+ if(w){w.classList.remove('fDetDatesFerme','fDetDatesActives','fDetDatesAll');w.classList.add(m==='C'?'fDetDatesFerme':m==='I'?'fDetDatesActives':'fDetDatesAll');}
+ // Vider les champs date masqués
+ if(m!=='T'){
+  if(m==='C'){$('sd1').value='';$('sd2').value='';}
+  if(m==='I'){$('sr1').value='';$('sr2').value='';}
+ }
+ // Filtre année : visible seulement pour C/I
+ const yrWrap=$('syr');
+ if(yrWrap){
+  const lbl=yrWrap.closest('div');
+  if(lbl)lbl.style.display=(m==='C'||m==='I')?'':'none';
+  if(m!=='C'&&m!=='I'){yrWrap.value='';}
+ }
+ if(m==='C'||m==='I')fillY(m);
+}
+$('syr').onchange=()=>{G.yr=$('syr').value;stat();};
+$('sm').onchange=()=>{presetSt();updateDateUI();stat();};
 bindCk($('sks'),G,stat);bindCk($('ska'),G,stat);
-function resetG(){$('stp').value=DEFTP;fillQ('stp','squ');['squ','sd1','sd2','sr1','sr2'].forEach(i=>$(i).value='');$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};}
+function resetG(){$('stp').value='';fillU('stp','sun');fillQuFromTp('stp','squ');['stp','sun','squ','syr','sd1','sd2','sr1','sr2'].forEach(i=>{const el=$(i);if(el)el.value='';});$('sm').value='T';G.off={st:new Set(),af:new Set(),cl:new Set()};updateDateUI();}
 $('sgo').onclick=()=>{readG();
  Object.assign(M,{tp:G.tp,qu:G.qu,d1:G.d1,d2:G.d2,r1:G.r1,r2:G.r2});M.off={st:new Set(G.off.st),af:new Set(G.off.af),cl:new Set(G.off.cl)};
  $('tp').value=M.tp;fillQ('tp','qu');$('qu').value=M.qu;dlMap();['d1','d2','r1','r2'].forEach(k=>$(k).value=M[k]);
  sel=new Set();selSt=new Set();selK=-1;$('fiche').style.display='none';showTab(0);refresh(true);};
 
 /* ---- indicateurs ---- */
+const stList=()=>[...STN.values()],byName=(a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr');
 const fmtP=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
 let kFilt={tp:'',qu:'',un:'',sg:null},kpiLate=[],lateOpen=false,lateClSel='';
 const kOK=(t,g)=>(kFilt.tp===''||t[4]==kFilt.tp)&&(kFilt.qu===''||t[5]==kFilt.qu)&&(kFilt.un===''||t[6]==kFilt.un)&&(!kFilt.sg||kFilt.sg.has(g));
@@ -1576,9 +2028,9 @@ function lateRender(){const b=$('lateBox');if(!lateOpen){b.innerHTML='';return;}
  const cls=[...new Set(kpiLate.map(k=>I[k][1]))].sort((a,c)=>DI.C[a].localeCompare(DI.C[c],'fr'));if(!cls.includes(+lateClSel))lateClSel='';
  b.innerHTML=`<div style="margin:14px 0 6px"><h3 style="margin:0 0 4px">Interventions en retard</h3><label>Filtrer par classification</label><select id="lateCl" style="max-width:420px"><option value="">Toutes les classifications</option>${cls.map(i=>`<option value="${i}">${esc(DI.C[i])}</option>`).join('')}</select></div><div id="lateList">${lateList()}</div>`;
  $('lateCl').value=lateClSel;$('lateCl').onchange=()=>{lateClSel=$('lateCl').value;$('lateList').innerHTML=lateList();};}
-function kpiReset(){$('ktp').value=DEFTP;fillQ('ktp','kqu');$('kqu').value='';kUn();$('kun').value='';$('kqs').value='';lateOpen=false;lateClSel='';}
-$('ktp').innerHTML=optsS('Tous les territoires',DA.tp);$('ktp').value=DEFTP;fillQ('ktp','kqu');
-$('ktp').onchange=()=>{fillQ('ktp','kqu');kUn();kpiRender();};['kqu','kun'].forEach(i=>$(i).onchange=kpiRender);
+function kpiReset(){$('ktp').value=DEFTP;kUn();fillQ('kun','kqu');$('kqu').value='';$('kun').value='';$('kqs').value='';lateOpen=false;lateClSel='';}
+$('ktp').innerHTML=optsS('Tous les territoires',DA.tp);$('ktp').value=DEFTP;kUn();fillQ('kun','kqu');
+$('ktp').onchange=()=>{kUn();fillQ('kun','kqu');kpiRender();};$('kun').onchange=()=>{fillQ('kun','kqu');kpiRender();};$('kqu').onchange=()=>kpiRender();
 let kT;autocomplete($('kqs'),e=>{const tp=$('ktp').value,un=$('kun').value;return(tp===''||e.tp==tp)&&(!un||String(e.un)===un);},e=>{kpiRender();},()=>kpiRender());
 $('kqs').addEventListener('input',()=>{clearTimeout(kT);kT=setTimeout(kpiRender,250);});
 let statMode='I';
@@ -1586,13 +2038,191 @@ function statRender(){const I_=statMode==='I';$('fInd').style.display=I_?'flex':
  $('sgI').classList.toggle('on',I_);$('sgD').classList.toggle('on',!I_);if(I_)kpiRender();else stat();}
 $('sgI').onclick=()=>{statMode='I';statRender();};$('sgD').onclick=()=>{statMode='D';statRender();};
 $('rsS').onclick=()=>{resetG();kpiReset();statRender();};
+/* ===== En chiffres : nouveau tableau imprimable ===== */
+const N={off:{st:new Set(),af:new Set(),cl:new Set()},tp:'',qu:'',un:'',yr:'',d1:'',d2:'',r1:'',r2:'',_sm:'T'};
+function readN(){N.tp=$('numTp').value;N.qu=$('numQu').value;N.un=$('numUn').value;N.yr=$('numYr').value;N.d1=$('numD1').value;N.d2=$('numD2').value;N.r1=$('numR1').value;N.r2=$('numR2').value;N._sm=$('numSm').value;}
+function fillN_U(){const tp=$('numTp').value;const set=new Set();for(const it of I){for(const g of it[7]){const i=tree.get(g);if(i===undefined)continue;const t=T[i];if(tp!==''&&t[4]!=tp)continue;set.add(String(t[6]));}}const ids=[...set].filter(u=>u!=='-1'&&u!=='').sort((a,b)=>{const na=+a<0?'\uFFFF':(DA.un[+a]||'\uFFFF'),nb=+b<0?'\uFFFF':(DA.un[+b]||'\uFFFF');return na.localeCompare(nb,'fr');});$('numUn').innerHTML='<option value="">Toutes les unités</option>'+ids.map(u=>{const k=+u;return `<option value="${u}">${k<0?'(sans unité)':esc(DA.un[k]||'?')}</option>`;}).join('');}
+function fillN_Qu(){const tp=$('numTp').value;const ids=tp===''?DA.qu.map((_,i)=>i):[...(TQ[tp]||[])];ids.sort((a,b)=>DA.qu[a].localeCompare(DA.qu[b],'fr'));$('numQu').innerHTML='<option value="">Tous les quartiers</option>'+ids.map(i=>`<option value="${i}">${esc(DA.qu[i])}</option>`).join('');}
+function fillN_Y(){const field=$('numSm').value==='C'?6:5;const yrs=new Set();I.forEach(it=>{const d=it[field];if(d&&/^\d{4}/.test(d))yrs.add(d.slice(0,4));});const ids=[...yrs].sort();$('numYr').innerHTML='<option value="">Toutes</option>'+ids.map(y=>`<option value="${y}">${y}</option>`).join('');}
+function numPresetSt(){const m=$('numSm').value;let keepIds=new Set();if(m==='C')['ABANDONNEE','CLOTUREE','TERMINEE'].forEach(n=>{const i=sIdx(n);if(i>=0)keepIds.add(i);});else if(m==='I')['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION'].forEach(n=>{const i=sIdx(n);if(i>=0)keepIds.add(i);});else if(m==='T')keepIds=new Set(DI.S.map((_,i)=>i));N.off.st=new Set(DI.S.map((_,i)=>i).filter(i=>!keepIds.has(i)));}
+function numUpdateDateUI(){var m=$('numSm')?$('numSm').value:'T';var yr=$('numYr');if(yr){var w=yr.closest('div');if(w)w.style.display=(m==='C'||m==='I')?'':'none';if(m!=='C'&&m!=='I')yr.value='';}var oG=$('numGrpObj');if(oG){oG.style.display=(m==='C'||m==='I')?'':'none';}var rG=$('numGrpReal');if(rG){rG.style.display=(m==='I')?'':'none';}if(m==='C'){$('numD1').value='';$('numD2').value='';}if(m==='I'){$('numR1').value='';$('numR2').value='';}if(m==='C'||m==='I')fillN_Y();}
+function numReset(){$('numSm').value='T';$('numTp').value='';fillN_U();fillN_Qu();$('numUn').value='';$('numQu').value='';$('numYr').value='';$('numD1').value='';$('numD2').value='';$('numR1').value='';$('numR2').value='';N.off={st:new Set(),af:new Set(),cl:new Set()};numUpdateDateUI();}
+function numBuildTable(){
+ const S=N,hideSt=$('numHideSt').checked,byQu=$('numBy').value==='qu';
+ /* rows = interventions filtrées, sans double comptage */
+ const rows=[];const seenI=new Set();
+ I.forEach((it,k)=>{const ps=!S.off.st.has(it[2]),pa=!S.off.af.has(it[9]),pc=!S.off.cl.has(it[1]);if(!(ps&&pa&&pc))return;if(!dOK(it,S))return;
+  /* récupérer arbres uniques appartenant au territoire/quartier/unité choisis */
+  const gs=(it[7]||[]).filter(g=>{const i=tree.get(g);if(i===undefined)return false;return geoOK(T[i],S);});
+  if(!gs.length)return;
+  const year=(S._sm==='C'?(it[6]||'').slice(0,4):(it[5]||'').slice(0,4))||'—';
+  const gidSet=new Set(gs);
+  rows.push({k,it,gs:gidSet,year});seenI.add(k);});
+ /* regroupement par (année, groupe, station, classification) */
+ const grpKey=byQu?'qu':'un';
+ const getGrp=t=>byQu?+t[5]:+t[6];
+ const grpName=i=>byQu?(i<0?'(sans quartier)':DA.qu[i]):(i<0?'(sans unité)':DA.un[i]);
+ /* key : year|grp|station|clCode */
+ const groups=new Map();
+ rows.forEach(r=>{
+  const t=T[tree.get([...r.gs][0])];
+  const station=t[8], staName=station<0?'(sans station)':DA.sta[station];
+  const gv=getGrp(t);
+  const key=r.year+'|'+gv+'|'+station+'|'+r.it[1];
+  const e=groups.get(key)||{year:r.year,grp:gv,station,staName,cl:r.it[1],clName:clLabel(r.it[1]),stName:DI.S[r.it[2]],obj:r.it[5]||'',real:r.it[6]||'',iSet:new Set(),aSet:new Set()};
+  e.iSet.add(r.k);r.gs.forEach(g=>e.aSet.add(g));
+  /* si plusieurs interventions du même ensemble, on prend la date obj/real la plus informative */
+  if(r.it[5]&&(!e.obj||r.it[5]<e.obj))e.obj=r.it[5];
+  if(r.it[6]&&(!e.real||r.it[6]<e.real))e.real=r.it[6];
+  groups.set(key,e);
+ });
+ /* tri année puis groupe puis station puis classification */
+ const sorted=[...groups.values()].sort((a,b)=>{
+  if(a.year!==b.year)return a.year<b.year?-1:1;
+  if(a.grp!==b.grp){const na=a.grp<0?'\uFFFF':(byQu?DA.qu[a.grp]:DA.un[a.grp]);const nb=b.grp<0?'\uFFFF':(byQu?DA.qu[b.grp]:DA.un[b.grp]);return na.localeCompare(nb,'fr');}
+  if(a.station!==b.station){const na=a.station<0?'\uFFFF':DA.sta[a.station];const nb=b.station<0?'\uFFFF':DA.sta[b.station];return na.localeCompare(nb,'fr');}
+  const A=clMeta(a.cl),B=clMeta(b.cl);return(A?.famCode||'').localeCompare(B?.famCode||'','fr')||(A?.code||'').localeCompare(B?.code||'','fr')||a.cl-b.cl;
+ });
+ /* construction HTML */
+ const m=$('numSm').value;
+ const showObj=m!=='C',showReal=m!=='I';
+ const baseCols=['Année',byQu?'Quartier':'Unité',null,'Classification','Statut','Nb interventions','Nb arbres',showObj?'Date obj fin':null,showReal?'Date de fin réelle':null].filter(Boolean);
+ const ths=hideSt?baseCols:['Année',byQu?'Quartier':'Unité','Station',...baseCols.slice(1)];
+ let html='<table id="numTable"><thead><tr>'+ths.map((h,i)=>`<th class="${i>=4&&!hideSt||(hideSt&&i>=3)?'r':''}">${esc(h)}</th>`).join('')+'</tr></thead><tbody>';
+ /* agrégation par (année, groupe) pour sous-totaux, par groupe pour total */
+ const subAgg=new Map(); /* key=year|grp => {i,a} */
+ const grpAgg=new Map(); /* key=grp => {i,a,years:Set} */
+ const totalI=new Set(),totalA=new Set();
+ sorted.forEach(r=>{
+  const k=r.year+'|'+r.grp;
+  const s=subAgg.get(k)||{i:new Set(),a:new Set()};
+  r.iSet.forEach(x=>s.i.add(x));r.aSet.forEach(x=>s.a.add(x));
+  subAgg.set(k,s);
+  const g=grpAgg.get(r.grp)||{i:new Set(),a:new Set()};
+  r.iSet.forEach(x=>g.i.add(x));r.aSet.forEach(x=>g.a.add(x));
+  grpAgg.set(r.grp,g);
+  r.iSet.forEach(x=>totalI.add(x));r.aSet.forEach(x=>totalA.add(x));
+ });
+ /* émettre les sous-totaux en PREMIÈRE ligne du bloc, puis les lignes détail */
+ let curBlock='';
+ let blocks=new Map(); /* grp => [{sub},{detail}] */
+ sorted.forEach(r=>{
+  const sk=r.year+'|'+r.grp;
+  if(!blocks.has(sk))blocks.set(sk,{sub:r,detail:[]});
+  blocks.get(sk).detail.push(r);
+ });
+ /* émettre dans l'ordre trié */
+ const blockOrder=[...blocks.keys()].sort((a,b)=>{
+  const [ay,ag]=a.split('|').map(Number);const [by,bg]=b.split('|').map(Number);
+  if(ay!==by)return ay<by?-1:1;
+  const na=ag<0?'\uFFFF':(byQu?DA.qu[ag]:DA.un[ag]);const nb=bg<0?'\uFFFF':(byQu?DA.qu[bg]:DA.un[bg]);return na.localeCompare(nb,'fr');
+ });
+ let prevGrp=null;
+ blockOrder.forEach(bk=>{
+  const {sub,detail}=blocks.get(bk);
+  if(sub.grp!==prevGrp){
+   /* total de groupe (optionnel) — on l'affiche dans le sous-total : déjà inclus par somme des sous-totaux */
+   prevGrp=sub.grp;
+  }
+  const sa=subAgg.get(bk);
+  const clsMeta=clMeta(sub.cl);
+  const famLabel=clsMeta?.famLabel||'';
+  const clsDisplay=famLabel?`<b>${esc(famLabel)}</b> · ${esc(sub.clName)}`:esc(sub.clName);
+  /* ligne de sous-total — PREMIÈRE ligne du bloc */
+  const cols=(hideSt?[4,5,6,7,8,9]:[4,5,6,7,8,9,10]);
+  const cells=(sub)=>`<td>${esc(sub.year)}</td><td>${esc(grpName(sub.grp))}</td>${hideSt?'':`<td>${esc(sub.staName)}</td>`}<td>${clsDisplay}</td><td>${esc(sub.stName)}</td><td class="r">${nf(sub.iSet.size||sa.i.size)}</td><td class="r">${nf(sub.aSet.size||sa.a.size)}</td>${showObj?`<td>${esc(fd(sub.obj))}</td>`:''}${showReal?`<td>${esc(fd(sub.real))}</td>`:''}`;
+  html+=`<tr class="subtotal">${cells(sub)}</tr>`;
+  /* puis les autres lignes détail du même bloc (sauf la première, déjà en sous-total) */
+  const detCells=(rr)=>{const cm=clMeta(rr.cl);const fl=cm?.famLabel||'';const cd=fl?`<b>${esc(fl)}</b> · ${esc(rr.clName)}`:esc(rr.clName);return `<td>${esc(rr.year)}</td><td>${esc(grpName(rr.grp))}</td>${hideSt?'':`<td>${esc(rr.staName)}</td>`}<td>${cd}</td><td>${esc(rr.stName)}</td><td class="r">${nf(rr.iSet.size)}</td><td class="r">${nf(rr.aSet.size)}</td>${showObj?`<td>${esc(fd(rr.obj))}</td>`:''}${showReal?`<td>${esc(fd(rr.real))}</td>`:''}`;};
+  for(let i=1;i<detail.length;i++){
+   const r=detail[i];
+   html+=`<tr>${detCells(r)}</tr>`;
+  }
+ });
+ /* total général */
+ html+=`<tr class="grandTotal"><td colspan="${hideSt?(3+(showObj?1:0)+(showReal?1:0)):(4+(showObj?1:0)+(showReal?1:0))}">Total général</td><td class="r">${nf(totalI.size)}</td><td class="r">${nf(totalA.size)}</td>${showObj?`<td></td>`:''}${showReal?`<td></td>`:''}</tr>`;
+ html+='</tbody></table>';
+ const totalRows=sorted.length;
+ const __tNum=document.createElement('div');
+ if(!$('numTitle')){const h=document.createElement('h2');h.id='numTitle';h.style.margin='2px 0 6px';h.textContent='En chiffres';$('numBar').parentNode.insertBefore(h,$('numBar'));}
+ const title=$('numTitle');if(title){const m=$('numSm').value;title.textContent='En chiffres'+(m==='C'?' — Interventions fermées':m==='I'?' — Interventions actives':'');}
+ /* libellés des filtres actifs (mis à jour à chaque changement) */
+ const _sm=$('numSm').value,_tp=$('numTp').value,_un=$('numUn').value,_qu=$('numQu').value,_yr=$('numYr').value,_by=$('numBy').value,_hs=$('numHideSt').checked,_d1=$('numD1').value,_d2=$('numD2').value,_r1=$('numR1').value,_r2=$('numR2').value;
+ const _smL=_sm==='C'?'Interventions fermées':_sm==='I'?'Interventions actives':'Tout';
+ const _tpL=_tp===''?'Tous territoires':DA.tp[_tp]||'?';
+ const _byL=_by==='qu'?'Par quartier':'Par unité';
+ const _hsL=_hs?'Stations masquées':'Stations affichées';
+ const _unL=_un===''?'Toutes unités':(($('numUn').selectedOptions[0]||{}).text||'?');
+ const _quL=_qu===''?'Tous quartiers':(($('numQu').selectedOptions[0]||{}).text||'?');
+ /* statuts actifs = tous - masqués */
+ const _stOn=DI.S.filter((_,i)=>!N.off.st.has(i));
+ const _stL=_stOn.length+' statut(s) : '+(_stOn.length<=6?_stOn.join(', '):_stOn.length+' retenus');
+ /* affectations actives */
+ const _afOn=DI.AF.filter((_,i)=>!N.off.af.has(i));
+ const _afL=_afOn.length===DI.AF.length?'Toutes affectations':(_afOn.length+' affectation(s)');
+ /* classifications actives */
+ const _clOn=(DI.C||[]).filter((_,i)=>!N.off.cl.has(i));
+ const _clL=_clOn.length===(DI.C||[]).length?'Toutes classifications':(_clOn.length+' classification(s)');
+ const _yrL=_yr===''?'Toutes années':_yr;
+ const _dL=[(_d1?'obj ≥ '+_d1:''),(_d2?'obj ≤ '+_d2:''),(_r1?'réelle ≥ '+_r1:''),(_r2?'réelle ≤ '+_r2:'')].filter(Boolean).join(' · ');
+ const filtParts=['Type : '+_smL,'Territoire : '+_tpL,'Unité/Quartier : '+_byL,'Quartier : '+_quL,'Unité : '+_unL,'Année : '+_yrL,'Statut : '+_stL,'Affectation : '+_afL,'Classification : '+_clL,'Affichage : '+_byL,'Stations : '+_hsL];
+ if(_dL)filtParts.push('Dates : '+_dL);
+ $('numSres').textContent=`${nf(totalI.size)} intervention(s) · ${nf(totalA.size)} arbre(s)`;
+ $('numSres').title=filtParts.join(' | ');
+ const wrap=$('numWrap');
+ if(totalRows===0&&totalI.size===0){wrap.innerHTML='<div id="numEmpty">Aucun résultat pour ces filtres.</div>';}
+ else{wrap.innerHTML=html;}
+}
+function numRender(){
+ readN();safe(function(){v6_refreshNumBanner();});
+ /* re-render ckTable filters on change */
+ $('numKs').innerHTML=ckTable('st',N,{},()=>{});
+ /* construire un objet de comptages pour ckTable */
+ const a=agg(N);
+ $('numKs').innerHTML=ckTable('st',N,a.k.st);$('numKa').innerHTML=ckTable('af',N,a.k.af);renderClassificationFilter('numKc',N,a.k.cl,numRender,'N','num');
+ bindCk($('numKs'),N,numRender);bindCk($('numKa'),N,numRender);
+ numBuildTable();
+}
+$('numTp').innerHTML=optsS('Tous les territoires',DA.tp);
+fillN_U();fillN_Qu();fillN_Y();numUpdateDateUI();
+$('numTp').onchange=()=>{fillN_U();$('numUn').value='';fillN_Qu();$('numQu').value='';numRender();};
+/* présélection PT_BORDEAUX par défaut (le bouton change l'état, donc on déclenche manuellement) */
+$('numTp').value=DEFTP;fillN_U();fillN_Qu();
+/* diagnostic : PT_BORDEAUX peut ne montrer qu'1 quartier si les arbres du fichier n'en couvrent qu'un seul — c'est un effet des données, pas du code. */
+if(DA.tp[DEFTP]==='PT_BORDEAUX'&&TQ[DEFTP])console.info('[En chiffres] PT_BORDEAUX: '+TQ[DEFTP].size+' quartier(s) disponible(s) dans les arbres.');
+$('numUn').onchange=numRender;$('numQu').onchange=numRender;$('numYr').onchange=numRender;
+['numD1','numD2','numR1','numR2'].forEach(i=>$(i).onchange=numRender);
+$('numSm').onchange=()=>{numPresetSt();numUpdateDateUI();numRender();};
+$('numBy').onchange=numRender;$('numHideSt').onchange=numRender;
+$('numRst').onclick=()=>{numReset();numRender();};
+/* Bouton Imprimer */
+$('numPrn').onclick=()=>{try{var tbl=$('numTable');if(!tbl){alert('Aucune table à imprimer');return;}var clone=tbl.cloneNode(true);var w=window.open('','_blank','width=1400,height=900');if(!w){alert('Pop-up bloquée');return;}var css='@page{size:A4 landscape;margin:8mm}body{font:11px/1.3 "Segoe UI",Arial,sans-serif;color:#111;margin:0;padding:8px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #888;padding:3px 6px;text-align:left;white-space:nowrap}thead{display:table-header-group}tr{page-break-inside:avoid}th{background:#eef2ec;position:sticky;top:0}tr.subtotal td{background:#f3f8f3;font-weight:600}tr.grandTotal td{background:#dfeede;font-weight:700}tr.zebra0 td{background:#fff}tr.zebra1 td{background:#eaf3e8}@media print{.bar{display:none}}';w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>En chiffres — Tableau</title><style>'+css+'</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button> <button onclick="window.close()">Fermer</button></div><h2>En chiffres</h2>'+clone.outerHTML+'</body></html>');w.document.close();setTimeout(function(){try{w.focus();w.print();}catch(e){}},250);}catch(e){console.error(e);alert('Erreur impression: '+e.message);}};
+/* Afficher cette sélection sur la carte : propage les filtres vers M (carte) */
+$('numSgo').onclick=()=>{try{readN();if(typeof M==='undefined')return;Object.assign(M,{tp:N.tp,un:N.un||'',qu:N.qu,d1:N.d1,d2:N.d2,r1:N.r1,r2:N.r2});if(!M.off)M.off={};M.off.st=new Set(N.off.st||[]);M.off.af=new Set(N.off.af||[]);M.off.cl=new Set(N.off.cl||[]);var t=$('tp');if(t){t.value=M.tp;fillU('tp','un');}var u=$('un');if(u)u.value=M.un||'';fillQ('un','qu');var q=$('qu');if(q)q.value=M.qu;if(typeof dlMap==='function')dlMap();['d1','d2','r1','r2'].forEach(function(k){var e=$(k);if(e)e.value=M[k]||'';});sel=new Set();selSt=new Set();selK=-1;var fch=$('fiche');if(fch)fch.style.display='none';showTab(0);refresh(true);}catch(e){console.error(e);alert('Erreur: '+e.message);}};
+/* Responsive : boutons Filtrer (panneau central) et Valider (menu gauche) */
+function openLeftDrawer(){const a=$('app');if(mq.matches)a.classList.add('ol');else a.classList.add('hl');syncBk();setTimeout(()=>map.invalidateSize(),280);}
+$('numFilterBtn').onclick=()=>{showTab(3);openLeftDrawer();};
+$('patFilterBtn').onclick=()=>{showTab(2);openLeftDrawer();};
+$('statFilterBtn').onclick=()=>{showTab(1);openLeftDrawer();};
+$('cartoFilterBtn').onclick=()=>{showTab(0);openLeftDrawer();};
+$('statApply').onclick=()=>{readG();statRender();closeDr();};
+function applyAndClose(){readN();numRender();closeDr();}
+$('numApply').onclick=applyAndClose;
+$('cartoApply').onclick=()=>{readM();closeDr();refresh(true);};
+$('cartoApplyA').onclick=()=>{readM();closeDr();refresh(true);};
+var _resetM2=function(){try{if(typeof resetM==='function')resetM();else if(typeof M!=='undefined'&&M){M.tp='';M.un='';M.qu='';M.d1=M.d2=M.r1=M.r2='';if(typeof M.off!=='undefined'){M.off.st=new Set();M.off.af=new Set();M.off.cl=new Set();}var t=$('tp');if(t){t.value='';fillU('tp','un');var u=$('un');if(u)u.value='';fillQ('un','qu');var q=$('qu');if(q)q.value='';}['d1','d2','r1','r2'].forEach(function(k){var e=$(k);if(e)e.value='';});if(typeof refresh==='function')refresh(true);}}catch(e){console.warn(e);}};
+var rMA=$('rsMA');if(rMA)rMA.onclick=_resetM2;
+var rMB=$('rsMB');if(rMB)rMB.onclick=_resetM2;
+
+/* Pat appliquer : ré-applique ses filtres et ferme le menu */
+$('patApply').onclick=()=>{readM();closeDr();patRender();refresh(true);};
+
 
 /* ---- liste du patrimoine : unités > sites > stations (tout replié), onglets Interventions / Arbres ---- */
 const ORD=['INITIALISEE','EN COURS DE PREPARATION','EN COURS DE REALISATION','TERMINEE','CLOTUREE','ABANDONNEE'];
 const SCOL={INITIALISEE:'#2f7de1','EN COURS DE PREPARATION':'#7b61ff','EN COURS DE REALISATION':'#7b61ff',TERMINEE:'#12b886',CLOTUREE:'#2f9e44',ABANDONNEE:'#868e96'};
 const PF={off:{st:new Set(),af:new Set(),cl:new Set()},ret:new Set(),oui:true,non:true,d1:'',d2:''};
 let curSt=null,pMulti=null,pFocus=null;
-const stList=()=>[...STN.values()],byName=(a,b)=>DA.sta[a.sta].localeCompare(DA.sta[b.sta],'fr');
 const inSel=e=>{const tp=$('fTp').value,u=$('fUn').value,s=$('fSi').value;return(tp===''||e.tp==tp)&&(u===''||String(e.un)===u)&&(s===''||String(e.si)===s);};
 function scope(){let l=stList().filter(inSel);if(pMulti){const ks=new Set(pMulti.map(e=>e.k));l=l.filter(e=>ks.has(e.k));}return l;}
 const dOKp=it=>(!PF.d1||it[5]>=PF.d1)&&(!PF.d2||(it[5]&&it[5]<=PF.d2));
@@ -1615,7 +2245,8 @@ function fstSections(e,all){
   const nm=DI.S[si],act=ACT.has(nm),ks=by[si].sort(act?cmpAsc:cmpDesc),closed=['CLOTUREE','TERMINEE','ABANDONNEE'].includes(nm);
   return `<details class="sec" style="--sc:${SCOL[nm]||'#999'}" ${all||!closed?'open':''}><summary><b>${esc(nm)}</b> — <b>${ks.length}</b> intervention(s)${act?' <span class="dt">(objectif le plus proche en premier)</span>':''}</summary><div class="ch">`+ks.map(k=>{
    const it=I[k],tr=it[7].filter(g=>gs.has(g)).sort(cmpG),ec=ecl(it),late=lateOf(it);
-   return `<details ${all?'open':''}><summary>${ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]))}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="bd g">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
+   const sc=SCOL[nm]||'#6c757d';
+return `<details class="iv" style="--sc:${sc}" ${all?'open':''}><summary>${ec>=0?coneSvg(ECC[ec],late):tri(CC(it[1]))}<span class="no">N° ${esc(it[0])}</span><b class="cl">${esc(DI.C[it[1]])}</b><span class="dt">objectif <b>${fd(it[5])}</b>${ec>=0?` <span class="lt2">(${ECL[ec]})</span>`:''} · fin réelle ${fd(it[6])}</span><span class="bd g">${tr.length} arbre${tr.length>1?'s':''}</span><a href="#" onclick="fiche(${k});return false">Fiche</a></summary>`+
     (it[4]?`<div class="dt" style="padding:0 12px 3px">${esc(it[4])}</div>`:'')+
     '<table><tr><th></th><th>Numéro</th><th>Espèce</th><th>Statut</th></tr>'+tr.map(g=>{const t=T[tree.get(g)],s=DA.s[t[3]];return `<tr><td>${IC[s]||''}</td><td><b>${esc(lab(t))}</b></td><td>${esc(espT(t))}</td><td>${esc(SL[s]||s)}</td></tr>`;}).join('')+'</table></details>';}).join('')+'</div></details>';}).join('');
  return `<h3 class="lt">Interventions de la station (<b>${its.size}</b>)</h3>`+(sec||'<p class="mut">Aucune intervention ne correspond aux filtres.</p>');
@@ -1639,7 +2270,7 @@ function patBody(){
  l.forEach(x=>{const a=U.get(x.e.un)??{si:new Map(),direct:[]};U.set(x.e.un,a);if(x.e.si<0)a.direct.push(x);else{const c=a.si.get(x.e.si)??[];a.si.set(x.e.si,c);c.push(x);}});
  const sum=xs=>xs.reduce((r,x)=>({st:r.st+1,a:r.a+x.e.gids.length,i:r.i+x.s.n,l:r.l+x.s.late}),{st:0,a:0,i:0,l:0});
  const bds=r=>`<span class="bd s">${nf(r.st)} stations</span><span class="bd g">${nf(r.a)} arbres</span><span class="bd b">${nf(r.i)} interv.</span>${r.l?`<span class="bd r"><span class="blink">⚠</span> ${nf(r.l)} en retard</span>`:''}`;
- const stH=x=>`<details class="n3" data-k="${esc(x.e.k)}"><summary><b class="sn">${esc(DA.sta[x.e.sta])}</b><span class="bd g">${x.e.gids.length} arbres</span><span class="bd b">${x.s.n} interv.</span>${x.s.late?`<span class="bd r"><span class="blink">⚠</span> ${x.s.late}</span>`:''}<a href="#" onclick="stCarte('${x.e.k}');return false">Carte</a></summary><div class="lz"></div></details>`;
+ const stH=x=>`<details class="n3 station" data-k="${esc(x.e.k)}"><summary><b class="sn">${esc(DA.sta[x.e.sta])}</b><span class="bd g">${x.e.gids.length} arbres</span><span class="bd b">${x.s.n} interv.</span>${x.s.late?`<span class="bd r"><span class="blink">⚠</span> ${x.s.late}</span>`:''}<a href="#" onclick="stCarte('${x.e.k}');return false">Carte</a></summary><div class="lz"></div></details>`;
  const us=[...U.keys()].sort((a,c)=>(a<0?'~':DA.un[a]).localeCompare(c<0?'~':DA.un[c],'fr'));
  b.innerHTML=`<div class="dt" style="margin-bottom:4px">${nf(l.length)} station(s)</div>`+us.map(u=>{const a=U.get(u),all=[...a.direct,...[...a.si.values()].flat()];
   const ss=[...a.si.keys()].sort((x,y)=>DA.si[x].localeCompare(DA.si[y],'fr'));
@@ -1672,7 +2303,7 @@ $('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans 
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
 
 /* ---- initialisation ---- */
-$('stp').value=DEFTP;fillQ('stp','squ');$('sm').value='T';
+$('stp').value=DEFTP;fillU('stp','sun');fillQ('sun','squ');$('sun').value='';$('sm').value='T';updateDateUI();
 $('fTp').innerHTML=optsS('Tous les territoires',DA.tp);$('fTp').value=DEFTP;fstUn();fstSi();kUn();
 const qp=new URLSearchParams(location.search),hp=new URLSearchParams(location.hash.replace(/^#/,''));
 const qi=String(qp.get('inter')||qp.get('intervention')||qp.get('num')||hp.get('inter')||hp.get('intervention')||'').trim().replace(/\.0+$/,''),qst=String(qp.get('station')||hp.get('station')||'').trim();
@@ -1683,7 +2314,41 @@ else{resetM();
  else if(qst){const e=stFind(qst,'');if(e){$('qs').value=lblOf(e);selStation(e);}}}
 window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
+
 </script>
+<script>
+(function(){
+function $(id){return document.getElementById(id);}
+function safe(fn){try{return fn&&fn();}catch(e){}}
+window.v6_toggleMapMenu=function(){var fm=$('fm')||$('fmap');if(!fm)return;fm.style.display=(fm.style.display==='none'||fm.style.display==='')?'block':'none';};
+window.v6_geolocate=function(){if(!navigator.geolocation){alert('Geolocalisation non supportee');return;}navigator.geolocation.getCurrentPosition(function(p){safe(function(){if(typeof map!=='undefined'&&map&&map.setView)map.setView([p.coords.latitude,p.coords.longitude],17);});},function(err){alert('Erreur : '+(err.message||err.code));},{enableHighAccuracy:true,timeout:8000});};
+function v6_updateScale(){var el=$('mapScaleVal');if(!el||typeof map==='undefined'||!map)return;var z=map.getZoom();var c=map.getCenter();var lat=(c&&c.lat)?c.lat*Math.PI/180:0;var mpp=156543.03*Math.cos(lat)/Math.pow(2,z);var scale=Math.round(mpp*100);el.textContent=scale.toLocaleString('fr-FR');}
+window.v6_refreshUpdates=function(){var files={'arbres.csv':'updArbres','interventions.csv':'updInterv','classifications.csv':'updClass'};Object.keys(files).forEach(function(f){fetch(f,{method:'HEAD',cache:'no-cache'}).then(function(r){var lm=r.headers.get('Last-Modified');var el=$(files[f]);if(!el)return;var d=lm?new Date(lm):null;if(d){var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');var yy=d.getFullYear();var hh=String(d.getHours()).padStart(2,'0');var mn=String(d.getMinutes()).padStart(2,'0');el.textContent=dd+'/'+mm+'/'+yy+' '+hh+':'+mn;}else{el.textContent='non disponible';}}).catch(function(){});});};
+function v6_applyFilters(){safe(function(){if(typeof refresh==='function')refresh(false);});safe(function(){if(typeof numRender==='function')numRender();});var fm=$('fm');if(fm)fm.style.display='none';v6_refreshFilterBanner();}
+function v6_wireValider(){['btnValider','btnApplyFilters','btnApply','btnValiderFM'].forEach(function(id){var b=$(id);if(b&&!b._v6wired){b._v6wired=1;b.addEventListener('click',v6_applyFilters);}});}
+var _v6timer=null;
+function v6_debouncedRefresh(){clearTimeout(_v6timer);_v6timer=setTimeout(function(){safe(function(){if(typeof refresh==='function')refresh(false);});safe(function(){if(typeof numRender==='function')numRender();});v6_refreshFilterBanner();},80);}
+function v6_wireStatusBoxes(){var root=$('rst')||document;if(!root||!root.addEventListener)return;root.addEventListener('change',function(ev){var t=ev.target;if(!t||t.type!=='checkbox')return;ev.stopPropagation();v6_debouncedRefresh();},true);}
+function v6_wireClassifTout(){var host=$('clp');if(!host)return;host.addEventListener('change',function(ev){var t=ev.target;if(!t||t.type!=='checkbox')return;var val=(t.value||'').toLowerCase();if(val==='tout'||val==='all'){var checked=t.checked;host.querySelectorAll('input[type=checkbox]').forEach(function(cb){if(cb!==t)cb.checked=checked;});v6_debouncedRefresh();}},true);}
+window.v6_sortNumTable=function(thIdx){var tbl=$('numTable');if(!tbl)return;var tbody=tbl.tBodies[0];if(!tbody)return;var rows=Array.prototype.slice.call(tbody.rows);var dir=(tbl._v6sortDir&&tbl._v6sortIdx===thIdx)?-tbl._v6sortDir:1;rows.sort(function(a,b){var ca=a.cells[thIdx]?a.cells[thIdx].textContent.trim():'';var cb=b.cells[thIdx]?b.cells[thIdx].textContent.trim():'';var na=parseFloat(ca.replace(/\s/g,'').replace(',','.'));var nb=parseFloat(cb.replace(/\s/g,'').replace(',','.'));if(!isNaN(na)&&!isNaN(nb))return dir*(na-nb);return dir*ca.localeCompare(cb,'fr');});rows.forEach(function(r){tbody.appendChild(r);});tbl._v6sortIdx=thIdx;tbl._v6sortDir=dir;var ths=tbl.tHead.rows[0].cells;for(var i=0;i<ths.length;i++){var sp=ths[i].querySelector('.sortInd');if(sp)sp.textContent=(i===thIdx)?(dir>0?' \u25b2':' \u25bc'):'';}};
+function v6_wireNumSort(){var tbl=$('numTable');if(!tbl||tbl._v6sortWired)return;tbl._v6sortWired=1;var ths=tbl.tHead&&tbl.tHead.rows[0]&&tbl.tHead.rows[0].cells;if(!ths)return;for(var i=0;i<ths.length;i++){(function(idx){var th=ths[idx];var ind=document.createElement('span');ind.className='sortInd';th.appendChild(ind);th.addEventListener('click',function(){v6_sortNumTable(idx);});})(i);}}
+window.v6_applyTypeVisibility=function(){var sm=$('numSm');if(!sm)return;var v=sm.value;var tbl=$('numTable');if(!tbl)return;tbl.setAttribute('data-type',v);};
+function v6_wireType(){var sm=$('numSm');if(!sm||sm._v6wired)return;sm._v6wired=1;sm.addEventListener('change',v6_applyTypeVisibility);v6_applyTypeVisibility();}
+window.v6_refreshFilterBanner=function(){var b=$('filterBanner');if(!b)return;var parts=[];var M=window.M||window.N||null;if(M){if(M.tp&&M.tp.size&&typeof DA!=='undefined'&&DA.tp){var tps=[];M.tp.forEach(function(i){if(DA.tp[i])tps.push(DA.tp[i]);});if(tps.length)parts.push('Territoire : '+tps.join(', '));}if(M.off&&M.off.cl&&typeof DI!=='undefined'&&DI.C){var cs=[];DI.C.forEach(function(label,i){if(!M.off.cl.has(i))cs.push(label);});if(cs.length&&cs.length<DI.C.length)parts.push('Classifications : '+cs.join(', '));}if(M.off&&M.off.st&&typeof DI!=='undefined'&&DI.S){var ss=[];DI.S.forEach(function(label,i){if(!M.off.st.has(i))ss.push(label);});if(ss.length&&ss.length<DI.S.length)parts.push('Statuts : '+ss.join(', '));}if(M.off&&M.off.af&&typeof DI!=='undefined'&&DI.AF){var as=[];DI.AF.forEach(function(label,i){if(!M.off.af.has(i))as.push(label);});if(as.length&&as.length<DI.AF.length)parts.push('Affectation : '+as.join(', '));}if(M.year)parts.push('Annee : '+M.year);if(M.byL)parts.push(M.byL);}if(!parts.length){b.classList.remove('show');b.innerHTML='';return;}b.innerHTML='<b>Filtres actifs :</b> '+parts.map(function(p){return '<span class="chip">'+p+'</span>';}).join(' ');b.classList.add('show');};
+function v6_getRowInterventions(tr){var txt=tr.textContent||'';var m=txt.match(/\b(\d{4,})\b/g);if(!m||typeof I==='undefined')return [];var seen=new Set();var out=[];for(var g of m){var gid=+g;if(seen.has(gid))continue;seen.add(gid);for(var k=0;k<I.length;k++){if((I[k][7]||[]).indexOf(gid)>=0){out.push({k:k,it:I[k]});break;}}if(out.length>=30)break;}return out;}
+function v6_renderExpandedRow(detailTr,its){var ncol=detailTr.cells.length;var exp=document.createElement('tr');exp.className='expanded';var td=document.createElement('td');td.colSpan=ncol;td.style.background='#fafdf8';td.style.padding='4px 8px 8px 18px';if(!its.length){td.innerHTML='<em style="color:#666">Aucune intervention trouvée.</em>';}else{var html='<div style="display:flex;flex-wrap:wrap;gap:6px">';its.forEach(function(r){var it=r.it;var label=(it[0]||'')+(it[3]?' — '+(it[3]||'').substring(0,40):'');var cl=typeof DI!=='undefined'&&DI.C?DI.C[it[1]]:'';var st=typeof DI!=='undefined'&&DI.S?DI.S[it[2]]:'';html+='<span class="chip" style="background:#eef7e6;border:1px solid #88a98c;padding:2px 8px;border-radius:10px;font-size:11px;cursor:pointer" data-k="'+r.k+'" title="Ouvrir la fiche intervention"><b>'+esc(label)+'</b> · '+(cl||'').substring(0,30)+' · '+st+'</span>';});html+='</div>';td.innerHTML=html;}exp.appendChild(td);detailTr.parentNode.insertBefore(exp,detailTr.nextSibling);return exp;}
+function v6_wireRowExpand(){var tbl=$('numTable');if(!tbl)return;tbl._v6rowWired=1;tbl.addEventListener('click',function(ev){var ch=ev.target.closest&&ev.target.closest('.chip');if(ch&&ch.dataset&&ch.dataset.k){ev.stopPropagation();var kk=+ch.dataset.k;try{safe(function(){if(typeof choisir==='function')choisir(kk);});}catch(e){}return;}var tr=ev.target.closest&&ev.target.closest('tr');if(!tr||!tr.cells||tr.cells.length<4)return;if(tr.classList.contains('subtotal')||tr.classList.contains('grandTotal')||tr.classList.contains('group')||tr.classList.contains('expanded'))return;var nxt=tr.nextSibling;if(nxt&&nxt.classList&&nxt.classList.contains('expanded')&&nxt.dataset&&nxt.dataset.forRow===tr._v6id){nxt.parentNode.removeChild(nxt);return;}if(nxt&&nxt.classList&&nxt.classList.contains('expanded'))nxt.parentNode.removeChild(nxt);var its=v6_getRowInterventions(tr);var exp=v6_renderExpandedRow(tr,its);exp.dataset.forRow=tr._v6id||(tr._v6id='r'+Math.random().toString(36).slice(2));});}
+function v6_ensureDataRowsClass(){var tbl=$('numTable');if(!tbl)return;var tb=tbl.tBodies&&tbl.tBodies[0];if(!tb)return;tb.classList.add('dataRows');var rows=tb.rows;var zi=0;for(var i=0;i<rows.length;i++){var r=rows[i];if(r.classList.contains('subtotal')||r.classList.contains('grandTotal')||r.classList.contains('group')||r.classList.contains('expanded'))continue;r.classList.remove('zebra0');r.classList.remove('zebra1');r.classList.add('zebra'+(zi%2));zi++;}for(var i=0;i<rows.length;i++){var r=rows[i];if(r.classList.contains('subtotal')||r.classList.contains('expanded')){r.classList.remove('zebra0');r.classList.remove('zebra1');}}var gt=tbl.querySelector('tr.grandTotal');if(gt){gt.classList.remove('zebra0');gt.classList.remove('zebra1');}return zi;}
+function v6_wrapScroll(){var tbl=$('numTable');if(!tbl)return;if(tbl.parentElement&&tbl.parentElement.id==='numWrapScroll')return;var wrap=document.createElement('div');wrap.id='numWrapScroll';tbl.parentNode.insertBefore(wrap,tbl);wrap.appendChild(tbl);}
+window.v6_resetFilters=function(){try{safe(function(){if(typeof resetM==='function')resetM();else if(typeof M!=='undefined'&&M&&typeof M.off!=='undefined'){M.off.cl=new Set();M.off.st=new Set();M.off.af=new Set();if(typeof refresh==='function')refresh(false);}});var u=$('numUnit');if(u)u.selectedIndex=0;var q=$('numQu');if(q)q.selectedIndex=0;var y=$('numYr');if(y)y.selectedIndex=0;var sm=$('numSm');if(sm)sm.selectedIndex=0;var tp=$('numTp');if(tp)tp.selectedIndex=0;safe(function(){if(typeof numRender==='function')numRender();});}catch(e){}v6_refreshFilterBanner();};
+function v6_boot(){v6_wireValider();v6_wireStatusBoxes();v6_wireClassifTout();v6_wireNumSort();v6_wireType();v6_wireRowExpand();v6_ensureDataRowsClass();v6_wrapScroll();v6_refreshUpdates();v6_refreshFilterBanner();safe(function(){v6_refreshNumBanner();});try{if(typeof map!=='undefined'&&map&&map.on){map.on('move zoom',v6_updateScale);v6_updateScale();}if(typeof L!=='undefined'&&typeof map!=='undefined'&&map&&!map._v6ScaleCtl){map._v6ScaleCtl=L.control.scale({position:'bottomright',metric:true,imperial:false}).addTo(map);}}catch(e){}}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',v6_boot);}else{v6_boot();}
+setTimeout(v6_boot,500);setTimeout(v6_boot,1500);
+})();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"8607d2a720d14b038279025b2b5a82e5","spa":2}' crossorigin="anonymous"></script>
 </body>
