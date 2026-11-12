@@ -1375,7 +1375,6 @@ body[data-print] .edge,body[data-pv] .edge{display:none!important}
 <div id="mw">
   <div id="map"></div><div id="mapCounts" aria-live="polite"><span class="map-pill"><b id="rni">0</b><small>Interv.</small></span><span class="map-pill"><b id="rna">0</b><small>Arbres</small></span><span class="map-pill"><b id="bilan">0</b><small>Affichés</small></span></div><button id="v6ReturnToTable" type="button" onclick="v6_returnToNumTable()">← Retour au tableau</button><button id="cartoFilterBtn" class="btnFilterResp mapMenuBubble" type="button" title="Menu des filtres de la carte" aria-label="Ouvrir ou fermer le menu des filtres" aria-expanded="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 12h18M8 19h18M8 26h12"/><path d="M29 25l10 17 2-8 7-4-19-5z"/></svg><span>Menu/Filtrer</span></button>
   <button id="btnMapGeo" title="Se géolocaliser" type="button" onclick="v6_geolocate()">&#9673;</button>
-  <div id="mapGeoToast" role="status" aria-live="polite" hidden></div>
   <div id="mapScaleBox" class="mapScaleBox">1/<span id="mapScaleVal">&hellip;</span></div>
   <div id="mapUpdates"><b>Mises &agrave; jour :</b><br>Arbres : <span id="updArbres">&mdash;</span><br>Interventions : <span id="updInterv">&mdash;</span></div>
   <div id="filterBanner"></div>
@@ -1683,11 +1682,11 @@ function draw(){
   
   
   /* numéros : petit texte gras avec halo blanc, posé à droite et au niveau de la pointe (le rond de l'arbre reste visible) */
-  g.font=z>=18?'bold 10px "Segoe UI",sans-serif':'bold 8.5px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
+  g.font=z>=18?'bold 10px "Segoe UI",sans-serif':'bold 6.4px "Segoe UI",sans-serif';g.textBaseline='middle';g.lineJoin='round';
   const occ=new Map(),CS=40;
   lbl.forEach(([l,x,y,isLarge])=>{const w=g.measureText(l).width,hh=10,tries=[[0,0],[0,10],[0,-10],[8,0],[-8,0],[8,10],[-8,10],[8,-10],[-8,-10]];let bx=x-w/2,by0=y-hh/2,chosen=null;
    for(const [dx,dy] of tries) {if(Math.hypot(dx,dy)>1000)continue;const X=bx+dx,Y=by0+dy;let hit=false;const c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1&&!hit;cx++)for(let cy=r0;cy<=r1&&!hit;cy++)for(const q2 of(occ.get(cx+'_'+cy)||[]))if(X<q2[0]+q2[2]&&X+w>q2[0]&&Y<q2[1]+q2[3]&&Y+hh>q2[1]){hit=true;break;}if(!hit){chosen=[X,Y];break;}}
-   if(!chosen)chosen=[bx,by0+24];const [X,Y]=chosen,c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([X,Y,w,hh]);}g.lineWidth=isLarge?3.5:3;g.strokeStyle='rgba(255,255,255,1)';g.strokeText(l,X+w/2,Y+hh/2);g.fillStyle=isLarge?'#d60000':'#111';g.fillText(l,X+w/2,Y+hh/2);});}
+   if(!chosen)chosen=[bx,by0+24];const [X,Y]=chosen,c0=Math.floor(X/CS),c1=Math.floor((X+w)/CS),r0=Math.floor(Y/CS),r1=Math.floor((Y+hh)/CS);for(let cx=c0;cx<=c1;cx++)for(let cy=r0;cy<=r1;cy++){const k2=cx+'_'+cy;if(!occ.has(k2))occ.set(k2,[]);occ.get(k2).push([X,Y,w,hh]);}g.lineWidth=isLarge?3:2.5;g.strokeStyle='rgba(255,255,255,.95)';g.strokeText(l,X+w/2,Y+hh/2);g.fillStyle=isLarge?'#d60000':'#111';g.fillText(l,X+w/2,Y+hh/2);});}
 }
 map.on('moveend resize',draw);map.on('zoomend',()=>{proj();draw();});
 
@@ -2033,51 +2032,39 @@ function selStations(list){closeDr();lastMulti=list;selSt=new Set(list.flatMap(e
 function fstMultiOpen(){pMulti=lastMulti;$('fQ').value=$('qs').value;$('fTp').value=M.tp;fstUn();$('fUn').value='';fstSi();$('fSi').value='';showTab(2);}
 autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length){$('qsi').textContent='Aucune station trouvée dans ce territoire.';return;}selStations(l);});
 
-/* ---- fiche d'intervention : échelles physiques arrondies et découpage lisible ---- */
- const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
- const SCALE_DENOMINATORS=[100,200,250,500,1000,1500,2000,2500,5000,10000,15000,25000,50000,100000,250000,500000,1000000,2500000,5000000,10000000,25000000,50000000,100000000];
- function roundScaleDenominator(value,mode='nearest'){
-  const v=Number(value);if(!Number.isFinite(v)||v<=0)return 100;
-  if(mode==='up')return SCALE_DENOMINATORS.find(x=>x>=v)||Math.ceil(v/100000000)*100000000;
-  if(mode==='down'){const a=SCALE_DENOMINATORS.filter(x=>x<=v);return a.length?a[a.length-1]:100;}
-  return SCALE_DENOMINATORS.reduce((best,x)=>Math.abs(x-v)<Math.abs(best-v)?x:best,SCALE_DENOMINATORS[0]);
- }
- const denominatorAtZoom=(lat,z)=>156543.03392*Math.cos(lat*Math.PI/180)/Math.pow(2,z)*96/0.0254;
- function printedScaleDenominator(lat,z,widthPx,heightPx){const mPerPx=156543.03392*Math.cos(lat*Math.PI/180)/Math.pow(2,z),paperWidthM=widthPx*25.4/96/1000,paperHeightM=heightPx*25.4/96/1000;const fromWidth=mPerPx*widthPx/paperWidthM,fromHeight=mPerPx*heightPx/paperHeightM;return Math.max(fromWidth,fromHeight);}
- const zoomAtDenominator=(lat,d)=>Math.log2(156543.03392*Math.cos(lat*Math.PI/180)*96/(0.0254*d));
- const fmtScale=d=>Number(d).toLocaleString('fr-FR');
- function fitZ(a,W,H,pad){if(!a.length)return 15;const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
-  let z=20;while(z>0&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
- function mapZoomForGroup(a,W,H,pad,overview=false){
-  const mid=a.length?(Math.max(...a.map(t=>t[2]))+Math.min(...a.map(t=>t[2])))/2:0;
-  const required=printedScaleDenominator(mid,fitZ(a,W,H,pad),W,H);
-  if(overview){const d=roundScaleDenominator(Math.max(500,required),'up');return {zoom:zoomAtDenominator(mid,d),denominator:d};}
-  const d=Math.min(1000,roundScaleDenominator(required,'up'));return {zoom:zoomAtDenominator(mid,d),denominator:d};
- }
- const labelZoom=(a,W,H,pad)=>mapZoomForGroup(a,W,H,pad,false).zoom;
- function overlaps(a,W,H,pad){
-  const z=labelZoom(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
-  const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
-  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
-  return false;}
- /* Découpe récursive équilibrée : chaque carte détail reste <=1/1000 et sans collision de libellés. */
- function splitMaps(ts,W,H){const pad=44;let G=ts.length?[ts]:[];
-  for(let n=0;n<10000;n++){
-   const bi=G.findIndex(a=>a.length>1&&(printedScaleDenominator((Math.max(...a.map(t=>t[2]))+Math.min(...a.map(t=>t[2])))/2,fitZ(a,W,H,pad),W,H)>1000||overlaps(a,W,H,pad)));
-   if(bi<0)break;
-   const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
-   const b=[...a].sort((x,y)=>x[ax]-y[ax]||cmpT(x,y)),m=Math.max(1,Math.floor(b.length/2));G.splice(bi,1,b.slice(0,m),b.slice(m));
-  }
-  G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
- function mapHTML(a,all,W,H,i,n,col,ec,overview=false,targetTrees=null){
- const fitted=mapZoomForGroup(a,W,H,50,overview),zf=fitted.zoom,scaleDenominator=fitted.denominator,la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
+/* ---- fiche d'intervention : orientation automatique, cartes pleine largeur découpées, pictos et échéances ---- */
+const wxp=(lo,z)=>(lo+180)/360*256*2**z,wyp=(la,z)=>{const s=Math.sin(la*Math.PI/180);return(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*256*2**z;};
+function fitZ(a,W,H,pad){const la=a.map(t=>t[2]),lo=a.map(t=>t[1]),x1=Math.min(...lo),x2=Math.max(...lo),y1=Math.max(...la),y2=Math.min(...la);
+ let z=20;while(z>10&&(wxp(x2,z)-wxp(x1,z)>W-2*pad||wyp(y2,z)-wyp(y1,z)>H-2*pad))z-=.25;return z;}
+/* Le zoom cartographique est aussi l'échelle de référence pour les numéros.
+   La régression précédente appelait labelZoom sans jamais le définir. */
+const labelZoom=(a,W,H,pad)=>fitZ(a,W,H,pad);
+function overlaps(a,W,H,pad){
+ const z=fitZ(a,W,H,pad),la=a.map(t=>t[2]),lo=a.map(t=>t[1]),cx=(wxp(Math.min(...lo),z)+wxp(Math.max(...lo),z))/2,cy=(wyp(Math.max(...la),z)+wyp(Math.min(...la),z))/2;
+ const R=a.map(t=>{const x=wxp(t[1],z)-cx,y=wyp(t[2],z)-cy;return[[x-7.5,y-21,15,21],[x+6,y-4.5,5.7*lab(t).length+4,9]];});
+ /* on ne compare que des arbres différents (l'épingle d'un arbre touche toujours son propre numéro) */
+ for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++)for(const A of R[i])for(const B of R[j])if(A[0]<B[0]+B[2]&&A[0]+A[2]>B[0]&&A[1]<B[1]+B[3]&&A[1]+A[3]>B[1])return true;
+ return false;}
+/* découpe : on divise jusqu'à ce que numéros et symboles tiennent sans se chevaucher ; la 1re carte commence au plus petit numéro (1, A1…) */
+
+
+
+function splitMaps(ts,W,H){const pad=44,MAXM=40;let G=[ts];
+ const bad=a=>a.length>1&&(a.length>48||labelZoom(a,W,H,pad)<15.8||(a.length>24&&overlaps(a,W,H,pad)));
+ for(let n=0;n<400&&G.length<MAXM;n++){
+  let bi=-1,bs=-1;G.forEach((a,i)=>{if(a.length>bs&&bad(a)){bs=a.length;bi=i;}});if(bi<0)break;
+  const a=G[bi],la=a.map(t=>t[2]),lo=a.map(t=>t[1]),hh=(Math.max(...la)-Math.min(...la))*110540,ww=(Math.max(...lo)-Math.min(...lo))*78000,ax=ww>=hh?1:2;
+  const b=[...a].sort((x,y)=>x[ax]-y[ax]),m=b.length>>1;G.splice(bi,1,b.slice(0,m),b.slice(m));}
+ G.forEach(a=>a.sort(cmpT));G.sort((a,b)=>cmpT(a[0],b[0]));return G;}
+function mapHTML(a,all,W,H,i,n,col,ec,overview=false){
+ const zf=labelZoom(a,W,H,50),la=a.map(t=>t[2]),lo=a.map(t=>t[1]);
  const x0=(wxp(Math.min(...lo),zf)+wxp(Math.max(...lo),zf))/2-W/2,y0=(wyp(Math.max(...la),zf)+wyp(Math.min(...la),zf))/2-H/2;
  const zt=Math.min(19,Math.floor(zf)),sc=2**(zf-zt),TS=256*sc;let im='';
  
  const B=bgCur();
   for(let tx=Math.floor(x0/TS);tx<=Math.floor((x0+W)/TS);tx++)for(let ty=Math.floor(y0/TS);ty<=Math.floor((y0+H)/TS);ty++)
   im+=`<img style="left:${tx*TS-x0}px;top:${ty*TS-y0}px;width:${TS}px;height:${TS}px" src="${B.u(zt,tx,ty)}">`;
- const mine=new Set((targetTrees||a).map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
+ const mine=new Set(all.map(t=>t[0])),stationKeys=new Set(all.map(t=>`${t[6]}|${t[7]}|${t[8]}`)),lonA=x0/(256*2**zf)*360-180,lonB=(x0+W)/(256*2**zf)*360-180,sc2=256*2**zf;
  const mer=y=>{const nn=Math.PI-2*Math.PI*y/sc2;return 180/Math.PI*Math.atan(.5*(Math.exp(nn)-Math.exp(-nn)));},latA=mer(y0),latB=mer(y0+H);
  let nb='',sy='',lbl='',cnt=0;const S=6.5,Rr=S*.95;
  const labelItems=[];
@@ -2140,7 +2127,7 @@ autocomplete($('qs'),e=>M.tp===''||e.tp==M.tp,e=>selStation(e),l=>{if(!l.length)
  
   const r0=lab(a[0]),r1=lab(a[a.length-1]);
  
- return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble de la station, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`} <span class="ms">Échelle 1/${fmtScale(scaleDenominator)}</span></div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
+ return `<div class="map-card"><div class="mt">${overview?`Carte ${i}/${n} — ensemble, tous les arbres de l’intervention`:`Carte ${i}/${n} — arbres ${esc(r0)}${a.length>1?' → '+esc(r1):''} (${a.length})`}</div><div class="m" style="width:${W}px;height:${H}px">${im}<svg width="${W}" height="${H}">${nb}${sy}${lbl}</svg></div></div>`;
 }
 const etatCode=t=>{const v=t&&t[9]>=0?String(DA.eg[t[9]]||'').trim().toUpperCase():'';return /^[A-E]$/.test(v)?v:''};
 const etatBox=t=>{const e=etatCode(t);return `<span class="etat-box" style="background:${e?(EGC[e]||EGN):EGN}">${e||'—'}</span>`};
@@ -2156,10 +2143,11 @@ function fiche(k){
  const ech=ec>=0?`<span class="ech" style="background:${ECC[ec]};${ec===0?'color:#3a2e00':''}">${coneSvg(ECC[ec],false,'#fff')}<span class="bang">${'!'.repeat(ec+1)}</span> ${esc(ECL[ec])}</span>`:'';
  const lons=ts.map(t=>t[1]),lats=ts.map(t=>t[2]),wM=ts.length?(Math.max(...lons)-Math.min(...lons))*78000:0,hM=ts.length?(Math.max(...lats)-Math.min(...lats))*110540:0;
  const portrait=ts.length && hM>0 && wM<hM, W=portrait?540:718,H=portrait?718:540;
- const mp=ts.length?splitMaps(ts,W,H):[], stationKeys=new Set(ts.filter(t=>t[8]>=0).map(t=>`${t[6]}|${t[7]}|${t[8]}`)), stationTrees=T.filter(t=>stationKeys.has(`${t[6]}|${t[7]}|${t[8]}`)), overviewTrees=[...new Map([...stationTrees,...ts].map(t=>[t[0],t])).values()], hasOverview=ts.length>0, totalCards=mp.length+(hasOverview?1:0), overview=hasOverview?mapHTML(overviewTrees,stationTrees,W,H,1,totalCards,col,ec,true,ts):'', maps=overview+mp.map((a,i)=>mapHTML(a,ts,W,H,i+2,totalCards,col,ec,false)).join('');
+ const mp=ts.length?splitMaps(ts,W,H):[], hasOverview=mp.length>=2, totalCards=mp.length+(hasOverview?1:0), overview=hasOverview?mapHTML(ts,ts,W,H,1,totalCards,col,ec,true):'', maps=overview+mp.map((a,i)=>mapHTML(a,ts,W,H,i+(hasOverview?2:1),totalCards,col,ec,false)).join('');
  const rows=[...it[7]].sort(cmpG).map(g=>{const t=T[tree.get(g)],s=t?DA.s[t[3]]:'';
   return `<tr><td class="c">${IC[s]||''}</td><td class="num">${esc(t?lab(t):'gid '+g)}</td><td>${t?esc(espT(t)):'—'}</td><td class="st">${etatBox(t)}</td><td class="c"><span class="box"></span></td><td><div class="ink"></div></td><td><div class="ink"></div></td></tr>`;}).join('');
  const dts=`<div class="card"><div class="k">Objectif de fin</div><div class="v">${fd(it[5])} ${ech}</div></div><div class="card"><div class="k">Fin réelle</div><div class="v">${fd(it[6])}</div></div>`;
+ const zPrint=map.getZoom(),latPrint=map.getCenter().lat*Math.PI/180,scalePrint=Math.round(156543.03392*Math.cos(latPrint)/Math.pow(2,zPrint)*96/0.0254).toLocaleString('fr-FR');
  const buf=[],w={document:{write:s=>buf.push(s),close:()=>ficheShow(buf.join(''))}};
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Intervention ${esc(it[0])}</title><style>
  @page{size:A4 portrait;margin:10mm}
@@ -2176,7 +2164,7 @@ function fiche(k){
  table{border-collapse:collapse;width:100%;table-layout:fixed;box-shadow:0 2px 6px #0001;border-radius:8px;overflow:hidden}
  th{background:#2c6e5c;color:#fff;font-weight:600;padding:5px 6px;text-align:left;font-size:11px}td{border-bottom:1px solid #dce7df;padding:3px 6px;vertical-align:middle}tr:nth-child(even) td{background:#f3f9f5}
  td.c{text-align:center}td.num{font-weight:700;font-size:12.5px}td.st{font-size:11px;color:#3d5546}.box{display:inline-block;width:15px;height:15px;border:1.6px solid #3b5646;border-radius:3px;background:#fff}.ink{height:16px;border-bottom:1.3px dotted #7d948a}
- .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.ms{float:right;font-size:10px;color:#455d50;font-weight:600}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
+ .mt{margin:12px 0 4px;font-weight:700;color:#2c6e5c;break-after:avoid}.m{position:relative;overflow:hidden;border:2px solid #fff;border-radius:10px;box-shadow:0 3px 10px #0004;break-inside:avoid;margin-bottom:6px}.m img{position:absolute;max-width:none}.m svg{position:absolute;left:0;top:0}
  .lg{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 8px;align-items:center}.lg span{display:inline-flex;align-items:center;gap:5px}.sit-title{display:flex;align-items:center;justify-content:space-between}.map-actions{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:400}.map-actions button{width:auto;padding:4px 8px}.etat-box{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:3px;color:#fff;font-weight:700;font-size:11px}.map-card[hidden]{display:none!important}@media print{.map-actions{display:none!important}.map-card{break-inside:avoid}body{height:auto!important;min-height:0!important}}
  </style></head><body>
  <div class="hero"><small>Fiche d'intervention</small><h1>N° ${esc(it[0])}</h1><div class="cl">${esc(DI.C[it[1]])}</div><div style="margin-top:7px"><span class="badge" style="background:${sc}">${esc(nm)}</span>${ech}</div></div>
@@ -2193,7 +2181,7 @@ function fiche(k){
  <h2 class="sit-title">Situation <span class="map-actions"><label><input type="checkbox" checked onchange="document.querySelectorAll('.map-card').forEach(e=>e.hidden=!this.checked)"> Afficher les cartes</label></span></h2>
  <div class="lg">${['VIVANT','MORT','SOUCHE'].map(s=>`<span>${treeSym(s)} ${SL[s]}</span>`).join('')}<span>${ec>=0?coneSvg(ECC[ec],false):tri(col)} Arbres de l'intervention${ec>=0?' (cône : '+esc(ECL[ec])+')':''}</span></div>
  ${maps.replace(/class=\"m\"/g,'class=\"m map-card\"')||'<p>Aucun arbre localisé.</p>'}
- <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);
+ <p style="margin-top:12px;color:#667">Édité le ${new Date().toLocaleDateString('fr-FR')} · Échelle cartographique 1/${scalePrint}</p></body></html>`);
  w.document.close();
 }
 
@@ -2917,7 +2905,7 @@ function stCarte(k){const e=STN.get(k);if(!e)return;showTab(0);$('qs').value=lbl
 $('fMap').onclick=()=>{if(curSt){showTab(0);$('qs').value=lblOf(curSt);selStation(curSt);return;}const l=scope();if(l.length&&l.length<=600){showTab(0);selStations(l);}};
 $('fRst').onclick=()=>{PF.off={st:new Set(),af:new Set(),cl:new Set()};PF.ret=new Set();PF.oui=PF.non=true;PF.d1=PF.d2='';$('pOui').checked=$('pNon').checked=true;$('pd1').value=$('pd2').value='';
  $('fTp').value=DEFTP;fstUn();$('fUn').value='';fstSi();$('fSi').value='';$('fQ').value='';pMulti=null;pFocus=null;curSt=null;patRender();};
-$('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans la liste.');const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
+$('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans la liste.');const zPrint=map.getZoom(),latPrint=map.getCenter().lat*Math.PI/180,scalePrint=Math.round(156543.03392*Math.cos(latPrint)/Math.pow(2,zPrint)*96/0.0254).toLocaleString('fr-FR');const w=window.open('','_blank');if(!w)return alert('Autorisez les fenêtres pop-up pour imprimer.');
  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Station ${esc(DA.sta[curSt.sta])}</title><style>@page{size:A4;margin:10mm}body{font:12px/1.4 "Segoe UI",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.bar button{padding:6px 16px;font:inherit;cursor:pointer;margin-right:8px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:3px 6px;text-align:left}details{border:1px solid #bbb;border-radius:4px;margin:6px 0}summary{padding:4px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hd{border-left:5px solid #5d8a6b;padding:6px 12px;margin:8px 0}.hd h3{font-size:16px;margin:0}.bd{border-radius:9px;padding:0 8px;font-weight:700;background:#e6f2ea}.dt{color:#555}.lt2{color:#c1121f;font-weight:600}.chips span{margin-right:12px}tr.hasI td{background:#fff4d6}@keyframes blink{50%{opacity:.15}}.blink{animation:blink 1s infinite}@media print{.bar{display:none}}
 /* v30: boutons menus compacts et commandes cartographiques sans effet de largeur héritée */
 /* v30: le bouton carte n’existe à l’écran que sur l’onglet Carte; les boutons page gardent leur panneau dédié */
@@ -3002,7 +2990,7 @@ $('fPrn').onclick=()=>{if(!curSt)return alert('Ouvrez d\'abord une station dans 
 }
 @media print{#cartoFilterBtn,#mapCounts,#mapUpdates{display:none!important}}
 
-</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')}</p></body></html>`);w.document.close();};
+</style></head><body><div class="bar"><button onclick="window.print()">Imprimer</button><button onclick="window.close()">Fermer</button></div>${fstHead(curSt)}${fstSections(curSt,true).replace(/<a href="#"[^>]*>Fiche<\/a>/g,'')}${fstArbres(curSt,true)}<p class="dt">Édité le ${new Date().toLocaleDateString('fr-FR')} · Échelle cartographique 1/${scalePrint}</p></body></html>`);w.document.close();};
 
 /* ---- initialisation ---- */
 $('stp').value=DEFTP;fillU('stp','sun');fillQ('sun','squ');$('sun').value='';$('sm').value='T';updateDateUI();
@@ -3016,7 +3004,7 @@ else{resetM();
  else if(qst){const e=stFind(qst,'');if(e){$('qs').value=lblOf(e);selStation(e);}}}
 lassoSetup();
 window.__v6NumGo=function(k){try{const it=window.__v6GetIntervention(k);window.__v6OnlyInterventionTrees=new Set(it?it[7]:[]);resetM();showTab(0);choisir(k);}catch(e){window.__v6OnlyInterventionTrees=null;console.error('Carte intervention:',e);}};window.__v6GetIntervention=function(k){return I[k]||null;};
-window.roundScaleDenominator=roundScaleDenominator;window.splitMaps=splitMaps;window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
+window.fiche=fiche;window.choisir=choisir;window.fstMultiOpen=fstMultiOpen;window.stCarte=stCarte;window.ficheStation=ficheStation;window.clrSt=clrSt;
 }
 
 </script>
@@ -3026,7 +3014,7 @@ function $(id){return document.getElementById(id);}
 function safe(fn){try{return fn&&fn();}catch(e){}}
 window.v6_toggleMapMenu=function(){var fm=$('fm')||$('fmap');if(!fm)return;fm.style.display=(fm.style.display==='none'||fm.style.display==='')?'block':'none';};
 window.v6_geolocate=function(){if(!navigator.geolocation){alert('Geolocalisation non supportee');return;}navigator.geolocation.getCurrentPosition(function(p){safe(function(){if(typeof map!=='undefined'&&map&&map.setView)map.setView([p.coords.latitude,p.coords.longitude],17);});},function(err){alert('Erreur : '+(err.message||err.code));},{enableHighAccuracy:true,timeout:8000});};
-function v6_updateScale(){var el=$('mapScaleVal'),m=window.__v6LeafletMap;if(!el||!m||!m.getZoom)return;var z=m.getZoom(),c=m.getCenter(),lat=(c&&Number.isFinite(c.lat)?c.lat:44.8378)*Math.PI/180,resolution=156543.03392*Math.cos(lat)/Math.pow(2,z),actual=resolution*96/0.0254,den;if(typeof roundScaleDenominator==='function')den=roundScaleDenominator(actual,'nearest');else{var ladder=[100,200,250,500,1000,1500,2000,2500,5000,10000,15000,25000,50000,100000,250000,500000,1000000,2500000,5000000,10000000,25000000,50000000,100000000];den=ladder.reduce(function(a,b){return Math.abs(b-actual)<Math.abs(a-actual)?b:a;},ladder[0]);}if(Number.isFinite(den)&&den>0)el.textContent=Number(den).toLocaleString('fr-FR');v6_positionScaleBox();}function v6_positionScaleBox(){var box=$('mapScaleBox'),mw=$('mw');if(!box||!mw)return;var line=mw.querySelector('.leaflet-control-scale-line');if(!line)return;var mr=mw.getBoundingClientRect(),lr=line.getBoundingClientRect();if(!lr.width||!mr.height)return;box.style.setProperty('bottom',Math.max(0,mr.bottom-lr.top+1)+'px','important');box.style.setProperty('right',Math.max(0,mr.right-lr.right)+'px','important');}function v6_initMenuVisibility(){var app=$('app'),mw=$('mw'),geo=$('btnMapGeo');if(!app||!mw)return;var active=0;[['stats',1],['fst',2],['num',3]].some(function(x){var el=$(x[0]);if(el&&getComputedStyle(el).display!=='none'){active=x[1];return true;}return false;});mw.classList.toggle('map-filter-active',active===0);if(geo)geo.style.display=active===0?'flex':'none';}window.v6_updateScale=v6_updateScale;
+function v6_updateScale(){var el=$('mapScaleVal'),m=window.__v6LeafletMap;if(!el||!m||!m.getZoom)return;var z=m.getZoom(),lat=44.8378*Math.PI/180;/* Référence géographique fixe (Bordeaux) : le rapport reste stable pendant un panoramique. */var resolution=156543.03392*Math.cos(lat)/Math.pow(2,z),denominator=resolution*96/0.0254;if(Number.isFinite(denominator)&&denominator>0)el.textContent=Math.round(denominator).toLocaleString('fr-FR');v6_positionScaleBox();}function v6_positionScaleBox(){var box=$('mapScaleBox'),mw=$('mw');if(!box||!mw)return;var line=mw.querySelector('.leaflet-control-scale-line');if(!line)return;var mr=mw.getBoundingClientRect(),lr=line.getBoundingClientRect();if(!lr.width||!mr.height)return;box.style.setProperty('bottom',Math.max(0,mr.bottom-lr.top+1)+'px','important');box.style.setProperty('right',Math.max(0,mr.right-lr.right)+'px','important');}function v6_initMenuVisibility(){var app=$('app'),mw=$('mw'),geo=$('btnMapGeo');if(!app||!mw)return;var active=0;[['stats',1],['fst',2],['num',3]].some(function(x){var el=$(x[0]);if(el&&getComputedStyle(el).display!=='none'){active=x[1];return true;}return false;});mw.classList.toggle('map-filter-active',active===0);if(geo)geo.style.display=active===0?'flex':'none';}window.v6_updateScale=v6_updateScale;
 window.v6_refreshUpdates=function(){var files={'arbres.csv':'updArbres','interventions.csv':'updInterv','classifications.csv':'updClass'};Object.keys(files).forEach(function(f){fetch(f,{method:'HEAD',cache:'no-cache'}).then(function(r){var lm=r.headers.get('Last-Modified');var el=$(files[f]);if(!el)return;var d=lm?new Date(lm):null;if(d){var dd=String(d.getDate()).padStart(2,'0');var mm=String(d.getMonth()+1).padStart(2,'0');var yy=d.getFullYear();var hh=String(d.getHours()).padStart(2,'0');var mn=String(d.getMinutes()).padStart(2,'0');el.textContent=dd+'/'+mm+'/'+yy+' '+hh+':'+mn;}else{el.textContent='non disponible';}}).catch(function(){});});};
 function v6_applyFilters(){safe(function(){if(typeof refresh==='function')refresh(false);});safe(function(){if(typeof numRender==='function')numRender();});var fm=$('fm');if(fm)fm.style.display='none';v6_refreshFilterBanner();}
 function v6_wireValider(){['btnValider','btnApplyFilters','btnApply','btnValiderFM'].forEach(function(id){var b=$(id);if(b&&!b._v6wired){b._v6wired=1;b.addEventListener('click',v6_applyFilters);}});}
@@ -3061,7 +3049,7 @@ function v6_wireRowExpand(){var tbl=$('numTable');if(!tbl||tbl._v6rowWired)retur
 function v6_ensureDataRowsClass(){var tbl=$('numTable');if(!tbl)return;var tb=tbl.tBodies&&tbl.tBodies[0];if(!tb)return;tb.classList.add('dataRows');}
 function v6_wrapScroll(){var tbl=$('numTable');if(!tbl)return;if(tbl.parentElement&&(tbl.parentElement.id==='numWrapScroll'||tbl.parentElement.id==='numWrap'))return;var wrap=document.createElement('div');wrap.id='numWrapScroll';tbl.parentNode.insertBefore(wrap,tbl);wrap.appendChild(tbl);}
 window.v6_resetFilters=function(){try{safe(function(){if(typeof resetM==='function')resetM();else if(typeof M!=='undefined'&&M&&typeof M.off!=='undefined'){M.off.cl=new Set();M.off.st=new Set();M.off.af=new Set();if(typeof refresh==='function')refresh(false);}});var u=$('numUnit');if(u&&u.selectedIndex>=0)u.selectedIndex=0;var q=$('numQu');if(q&&q.selectedIndex>=0)q.selectedIndex=0;var y=$('numYr');if(y)y.selectedIndex=0;var sm=$('numSm');if(sm)sm.selectedIndex=0;var tp=$('numTp');if(tp)tp.selectedIndex=0;safe(function(){if(typeof numRender==='function')numRender();});}catch(e){}v6_refreshFilterBanner();};
-function v6_boot(){v6_wireValider();v6_wireStatusBoxes();v6_wireClassifTout();v6_wireNumSort();v6_wireType();v6_wireRowExpand();v6_ensureDataRowsClass();v6_wrapScroll();v6_refreshUpdates();v6_refreshFilterBanner();try{v6_initMenuVisibility();var m=window.__v6LeafletMap;if(m&&m.on&&!m.__v6ScaleBound){m.on('load zoomend moveend resize',v6_updateScale);m.__v6ScaleBound=true;}v6_updateScale();setTimeout(v6_updateScale,100);}catch(e){}}
+function v6_boot(){v6_wireValider();v6_wireStatusBoxes();v6_wireClassifTout();v6_wireNumSort();v6_wireType();v6_wireRowExpand();v6_ensureDataRowsClass();v6_wrapScroll();v6_refreshUpdates();v6_refreshFilterBanner();try{v6_initMenuVisibility();var m=window.__v6LeafletMap;if(m&&m.on&&!m.__v6ScaleBound){m.on('load zoomend resize',v6_updateScale);m.__v6ScaleBound=true;}v6_updateScale();setTimeout(v6_updateScale,100);}catch(e){}}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',v6_boot);}else{v6_boot();}
 setTimeout(v6_boot,500);setTimeout(v6_boot,1500);
 })();
@@ -3083,74 +3071,6 @@ setTimeout(v6_boot,500);setTimeout(v6_boot,1500);
  #cartoFilterBtn.mapMenuBubble:active,.btnFilterResp:not(.mapMenuBubble):active{transform:translate(-50%,1px)!important}
 }
 </style>
-
-
-<style id="v38-mobile-map-fixes">
-/* Corrections v38 : empêcher le débordement de document; les commandes sont limitées à la carte. */
-html,body{width:100%;max-width:100%;overflow-x:hidden!important}
-#app{width:100%;max-width:100%;min-width:0;overflow:hidden}
-#mw{position:relative!important;min-width:0!important;max-width:100%;overflow:hidden!important;isolation:isolate}
-#map{width:100%;max-width:100%;min-width:0}
-/* Le bouton de menu n'existe que pendant que la carte est la vue active et reste dans #mw. */
-#cartoFilterBtn.mapMenuBubble{display:none!important;position:absolute!important;inset:58px auto auto 12px!important;z-index:3602!important;transform:none!important}
-#mw.map-filter-active #cartoFilterBtn.mapMenuBubble{display:flex!important}
-#mw:not(.map-filter-active) #cartoFilterBtn.mapMenuBubble{display:none!important}
-#btnMapGeo{position:absolute!important;top:10px!important;left:max(env(safe-area-inset-left),12px)!important;right:auto!important;z-index:3601!important;pointer-events:auto!important}
-/* Ordre stable de la pile gauche : géolocalisation, Menu (58px), Lasso (contrôle Leaflet à 122px). */
-.leaflet-top.leaflet-left .leaflet-control-lasso{margin-top:122px!important;margin-left:10px!important;z-index:1400!important}
-#lassoToggle.lasso-fallback{top:122px!important;left:10px!important;z-index:1400!important}
-/* Compteurs en haut à droite de la carte. Garde un espace pour le sélecteur de couches. */
-#mapCounts{position:absolute!important;top:8px!important;right:58px!important;left:auto!important;bottom:auto!important;z-index:1300!important;pointer-events:none!important}
-@supports selector(#mw:has(.leaflet-control-layers-expanded)){
- #mw:has(.leaflet-control-layers-expanded) #mapCounts{top:8px!important;right:250px!important;left:auto!important}
-}
-#mapGeoToast{position:absolute;z-index:5000;left:50%;top:68px;transform:translateX(-50%);max-width:calc(100% - 24px);padding:9px 13px;border:1px solid #ffffff;border-radius:10px;background:#173f31;color:#fff;box-shadow:0 3px 12px #0005;font:600 13px/1.35 'Segoe UI',sans-serif;text-align:center;pointer-events:none}
-#mapGeoToast[hidden]{display:none}
-/* Renforcer les identifiants sur le canvas : grandissement et halo blanc, sans masque opaque. */
-@media(max-width:1000px){
- #cartoFilterBtn.mapMenuBubble{position:absolute!important;inset:58px auto auto 12px!important;width:40px!important;min-width:40px!important;max-width:40px!important;height:40px!important;min-height:40px!important;max-height:40px!important;transform:none!important}
- #mw.map-filter-active #cartoFilterBtn.mapMenuBubble{display:flex!important}
- #mw:not(.map-filter-active) #cartoFilterBtn.mapMenuBubble{display:none!important}
- #mapCounts{top:8px!important;right:54px!important;left:auto!important;width:94px!important;max-width:94px!important;grid-template-columns:repeat(2,45px)!important;grid-template-rows:repeat(2,45px)!important;gap:3px!important}
- #mapCounts .map-pill{width:45px!important;min-width:45px!important;max-width:45px!important;height:45px!important;min-height:45px!important;max-height:45px!important;padding:2px!important;font-size:7px!important}
- #mapCounts .map-pill b{font-size:12px!important}
- #mapCounts .map-pill small{font-size:7px!important}
- @supports selector(#mw:has(.leaflet-control-layers-expanded)){
-  #mw:has(.leaflet-control-layers-expanded) #mapCounts{top:220px!important;right:8px!important;left:auto!important}
- }
- #mapGeoToast{top:60px;font-size:12px}
-}
-@media(max-width:410px){#mapCounts{right:50px!important;transform:scale(.94);transform-origin:top right}}
-</style>
-<script id="v38-geolocation">
-(function(){
- var button=document.getElementById('btnMapGeo'),toast=document.getElementById('mapGeoToast');
- if(!button)return;
- var marker=null,accuracy=null,timer=0;
- function message(text){if(!toast)return;toast.textContent=text;toast.hidden=false;clearTimeout(timer);timer=setTimeout(function(){toast.hidden=true;},5200);}
- window.v6_geolocate=function(){
-  var m=window.__v6LeafletMap;
-  if(!m||typeof m.setView!=='function'){message('La carte n’est pas encore prête.');return;}
-  if(!window.isSecureContext){message('La géolocalisation exige une connexion HTTPS sécurisée.');return;}
-  if(!navigator.geolocation){message('Géolocalisation indisponible sur cet appareil ou navigateur.');return;}
-  message('Localisation en cours…');
-  navigator.geolocation.getCurrentPosition(function(pos){
-   try{
-    var ll=[pos.coords.latitude,pos.coords.longitude];
-    m.setView(ll,Math.max(m.getZoom(),17),{animate:false});
-    if(marker)m.removeLayer(marker);if(accuracy)m.removeLayer(accuracy);
-    if(window.L&&L.circle){accuracy=L.circle(ll,{radius:Math.max(0,pos.coords.accuracy||0),color:'#1769aa',weight:2,opacity:.8,fillColor:'#3998e8',fillOpacity:.12,interactive:false}).addTo(m);marker=L.circleMarker(ll,{radius:8,color:'#fff',weight:3,fillColor:'#1769aa',fillOpacity:1}).addTo(m);}
-    message('Position localisée'+(pos.coords.accuracy?' · précision ±'+Math.round(pos.coords.accuracy)+' m':''));
-   }catch(e){message('Position reçue, mais impossible de déplacer la carte.');}
-  },function(err){
-   var text=err&&err.code===1?'Autorisation de géolocalisation refusée.':err&&err.code===2?'Position indisponible.':err&&err.code===3?'Délai de géolocalisation dépassé.':'Géolocalisation impossible; vérifiez les autorisations et la connexion HTTPS.';
-   message(text);
-  },{enableHighAccuracy:true,timeout:12000,maximumAge:10000});
- };
- button.onclick=null;
- button.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.v6_geolocate();});
-})();
-</script>
 
 </body>
 </html>
